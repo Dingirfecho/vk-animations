@@ -56,13 +56,6 @@
   .folio .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cinnabar);margin:0 .9em;vertical-align:middle;transform:translateY(-1px)}
 
   header.hero{padding:clamp(56px,11vw,128px) 0 clamp(40px,7vw,80px)}
-  .mark-slot{
-    display:inline-flex;flex-direction:column;gap:10px;align-items:flex-start;
-    border:1px dashed rgba(184,144,42,.55);padding:14px 18px;margin-bottom:clamp(36px,6vw,64px);
-    color:rgba(236,226,204,.7);
-  }
-  .mark-slot b{font-family:var(--display);font-weight:400;font-size:var(--step-2);letter-spacing:.22em;color:rgba(236,226,204,.38)}
-  .mark-slot .label{font-size:.625rem;letter-spacing:.24em;color:var(--gilt)}
 
   h1{font-family:var(--display);font-weight:300;letter-spacing:-.01em;line-height:1.04;font-size:clamp(2.6rem,7.4vw,var(--step-6));max-width:14ch}
   h1 em{font-style:italic;font-weight:300}
@@ -102,7 +95,6 @@
   a.piece:focus-visible{outline:1px solid var(--gilt);outline-offset:6px}
   a.piece::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 100% at 20% 50%,rgba(184,144,42,.07),transparent 70%);opacity:0;transition:opacity 1400ms var(--ease);pointer-events:none}
   a.piece:hover::after{opacity:1}
-  li.pending .piece{opacity:.92}
 
   /* rosary rule between sections */
   .rosary{display:flex;align-items:center;gap:10px;margin-top:clamp(56px,9vw,96px);color:var(--gilt)}
@@ -148,12 +140,6 @@
   </div>
 
   <header class="hero">
-    <!-- PLACEHOLDER: replace with Wordmark lockup A (stacked primary) from the master files. Not re-typeset on purpose. -->
-    <div class="mark-slot rise" style="--d:900ms">
-      <b aria-hidden="true">VAJRAKULA</b>
-      <span class="label">Placeholder · wordmark lockup A, master file pending</span>
-    </div>
-
     <h1 class="rise" style="--d:1500ms">The room, <em>slowly</em> lit.</h1>
     <p class="lede rise" style="--d:2300ms">Animated pages and short films for vajrakula.com, set down in the order they arrive. Nothing here hurries; each one is meant to be sat with.</p>
     <div class="taper draw" style="--d:3000ms" aria-hidden="true"></div>
@@ -164,79 +150,12 @@
       <span class="numeral">i.</span>
       <h2 id="pieces">The pieces</h2>
     </div>
-    <p class="note rise" style="--d:3600ms">Each animation is a page first, then a film rendered from the same source. Those marked <em>forthcoming</em> are drawn from the starter list and have not yet been committed.</p>
+    <p class="note rise" style="--d:3600ms">Each animation is a page first. Open one and sit with it.</p>
 
     <ol class="index">
-
-      <!--
-        TO PUBLISH A PIECE: change its <div class="piece"> to <a class="piece" href="animations/<folder>/">,
-        close with </a>, add class "live" to .status, and swap "Forthcoming" for "Live".
-        Commit the folder animations/<folder>/ (index.html, style.css, script.js, assets/).
-      -->
-
-      <li class="pending rise" style="--d:3900ms">
-        <div class="piece">
-          <span class="n">1</span>
-          <h3>Hero intro: the dusk opening</h3>
-          <p>The wordmark resolving out of indigo light, as a candle catches in a quiet room.</p>
-          <div class="tags label"><span class="tag">Page</span><span class="tag">16:9</span></div>
-          <div class="meta label"><span class="status"><i></i>Forthcoming</span></div>
-        </div>
-      </li>
-
-      <li class="pending rise" style="--d:4200ms">
-        <div class="piece">
-          <span class="n">2</span>
-          <h3>Section openers</h3>
-          <p>A gilt taper draws itself across the page; the numeral and heading rise out of the dark.</p>
-          <div class="tags label"><span class="tag">Page</span><span class="tag">Component</span></div>
-          <div class="meta label"><span class="status"><i></i>Forthcoming</span></div>
-        </div>
-      </li>
-
-      <li class="pending rise" style="--d:4500ms">
-        <div class="piece">
-          <span class="n">3</span>
-          <h3>Mantra reveal: Vajra Guru</h3>
-          <p>The Tibetan line, the Devanagari, and the transliteration arriving in turn, never typed, never hurried.</p>
-          <div class="tags label"><span class="tag">Page</span><span class="tag">Awaiting approved mantra text</span></div>
-          <div class="meta label"><span class="status"><i></i>Forthcoming</span></div>
-        </div>
-      </li>
-
-      <li class="pending rise" style="--d:4800ms">
-        <div class="piece">
-          <span class="n">4</span>
-          <h3>Retreat announcement card</h3>
-          <p>The poster layout brought gently to life: dates, place, and an invitation in the warm register.</p>
-          <div class="tags label"><span class="tag">Page</span><span class="tag">Poster</span></div>
-          <div class="meta label"><span class="status"><i></i>Forthcoming</span></div>
-        </div>
-      </li>
-
-      <li class="pending rise" style="--d:5100ms">
-        <div class="piece">
-          <span class="n">5</span>
-          <h3>Loading &amp; transition</h3>
-          <p>A slow bell and its ripple, or a single flame, to carry a visitor from one room to the next.</p>
-          <div class="tags label"><span class="tag">Page</span><span class="tag">Component</span></div>
-          <div class="meta label"><span class="status"><i></i>Forthcoming</span></div>
-        </div>
-      </li>
-
-      <li class="pending rise" style="--d:5400ms">
-        <div class="piece">
-          <span class="n">6</span>
-          <h3>Short loops for social</h3>
-          <p>Vertical films distilled from the pieces above, each a held breath of a few seconds.</p>
-          <div class="tags label"><span class="tag">Video</span><span class="tag">9:16</span><span class="tag">MP4</span></div>
-          <div class="meta label"><span class="status"><i></i>Forthcoming</span></div>
-        </div>
-      </li>
-
-      <li class="rise" style="--d:5700ms">
+      <li class="rise" style="--d:3900ms">
         <a class="piece" href="animations/utmost-bliss-journey/">
-          <span class="n">7</span>
+          <span class="n">1</span>
           <h3>Journey to the Land of Utmost Bliss</h3>
           <p>A guided visualization of Sukhāvatī, the pure land of Amitābha, drawn scene by scene: refuge, the amber cloud, the golden door, the setting sun, beryl ground, and the light of presence.</p>
           <div class="tags label"><span class="tag">Page</span><span class="tag">16:9</span><span class="tag">About 3 min</span></div>
@@ -247,23 +166,8 @@
     </ol>
   </section>
 
-  <div class="rosary glow" style="--d:5800ms" aria-hidden="true"><hr><span></span><span></span><span></span><hr></div>
 
-  <section aria-labelledby="tempo">
-    <div class="opener rise" style="--d:6000ms">
-      <span class="numeral">ii.</span>
-      <h2 id="tempo">How things move</h2>
-    </div>
-    <p class="note rise" style="--d:6200ms">Proposed defaults for a motion chapter of the Brand Book, held here until approved.</p>
-    <dl class="defaults rise" style="--d:6400ms">
-      <dt class="label">Tempo</dt><dd>800 to 2400 ms, easing <code style="font-family:var(--label);font-size:.8em;letter-spacing:.04em">cubic-bezier(.22,.61,.36,1)</code>. No bounce, no snap.</dd>
-      <dt class="label">Entrance</dt><dd>A fade and a rise of no more than twelve pixels; rules that draw themselves left to right.</dd>
-      <dt class="label">Sequence</dt><dd>Ground, then type, then ornament; gilt and cinnabar last, as punctuation.</dd>
-      <dt class="label">Stillness</dt><dd>Silence is a design element. Every piece holds its frames and honours reduced motion with a composed, static page.</dd>
-    </dl>
-  </section>
-
-  <footer class="label rise" style="--d:6800ms">
+  <footer class="label rise" style="--d:4400ms">
     <span><i class="dot"></i>Vajrakula · A School of Vajrayana</span>
     <span><a href="https://vajrakula.com">vajrakula.com</a></span>
   </footer>
