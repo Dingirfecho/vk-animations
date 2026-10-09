@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Journey to the Land of Utmost Bliss · Animation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Spectral:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400;500&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap">
+<style>
+/* ───────── Tokens (Vajrakula Brand Book) ───────── */
+:root{
+  --midnight:#0E1525; --lapis:#1D3A64; --bone:#ECE2CC; --jade:#3D524A;
+  --cinnabar:#8E2418; --gilt:#B8902A; --sumi:#0A0908;
+  --gilt-soft:#D4AE55; --bone-dim:rgba(236,226,204,.7); --rule:rgba(184,144,42,.35);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --f-display:"Cormorant Garamond","Cormorant",Georgia,serif;
+  --f-body:"Spectral",Georgia,serif;
+  --f-sans:"Inter",system-ui,sans-serif;
+  --f-sanskrit:"Tiro Devanagari Sanskrit","Noto Serif Devanagari",serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--midnight);color:var(--bone);overflow:hidden}
+#stage{position:fixed;inset:0;background:linear-gradient(170deg,var(--midnight) 0%,#101b30 60%,var(--lapis) 220%);overflow:hidden}
+#grain{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 30%,rgba(0,0,0,.55) 100%);z-index:30}
+canvas#motes{position:absolute;inset:0;width:100%;height:100%;z-index:2}
+.layer{position:absolute;inset:0;opacity:0;transition:opacity 1.6s var(--ease);pointer-events:none}
+
+/* ───────── Keyframes (slow, breathing; no bounce) ───────── */
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes sweep{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes cloudMove{from{transform:translate(0,-80px);opacity:0}12%{opacity:1}30%{transform:translate(0,0)}to{transform:translate(335px,0);opacity:.0}}
+@keyframes dim{from{opacity:1}to{opacity:.12}}
+@keyframes settle{from{opacity:1}to{opacity:.0}}
+@keyframes doorGlow{from{opacity:0;transform:scale(1)}40%{opacity:1}to{opacity:1;transform:scale(2.4)}}
+@keyframes orbIn{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:scale(1)}}
+@keyframes orbUp{from{opacity:1;transform:translateY(0) scale(1)}75%{opacity:1}to{opacity:0;transform:translateY(-38vh) scale(.5)}}
+@keyframes orbDown{from{opacity:.95;transform:translateY(-38vh) scale(.5)}70%{opacity:1}to{opacity:0;transform:translateY(0) scale(1)}}
+@keyframes ring{0%{transform:scale(.7)}50%{transform:scale(1)}100%{transform:scale(.7)}}
+@keyframes ph{0%{opacity:0}12%,88%{opacity:1}100%{opacity:0}}
+@keyframes glowL{0%{opacity:.15}4%,33%{opacity:1}37%,66%{opacity:.15}70%,100%{opacity:1}}
+@keyframes glowR{0%,33%{opacity:.15}37%,66%{opacity:1}70%,100%{opacity:1}}
+@keyframes breathe{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes flicker{0%,100%{opacity:.9}35%{opacity:1}60%{opacity:.8}}
+@keyframes ripple{from{transform:scale(.4);opacity:.7}to{transform:scale(1.5);opacity:0}}
+@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:.8}}
+
+/* ───────── Centre text blocks ───────── */
+.blk{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 7vw;gap:18px;opacity:0;transition:opacity 1.4s var(--ease);pointer-events:none;z-index:5}
+.blk.on{opacity:1}
+.blk .rise{opacity:0}
+.blk.on .rise{animation:rise 1.8s var(--ease) var(--d,0s) both}
+.rule{width:120px;height:1px;background:var(--gilt);transform-origin:left;transform:scaleX(0)}
+.blk.on .rule{animation:draw 2.4s var(--ease) var(--d,0s) forwards}
+.lab{font-family:var(--f-sans);font-weight:300;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--bone-dim)}
+h1{font-family:var(--f-display);font-weight:300;font-size:clamp(34px,8.5vw,76px);line-height:1.08;letter-spacing:-.01em;margin:0;max-width:14ch}
+h1 em{font-style:italic;font-weight:400;color:var(--gilt-soft)}
+.sub{font-family:var(--f-body);font-style:italic;font-weight:300;font-size:clamp(15px,2.4vw,20px);color:var(--bone-dim);line-height:1.6;max-width:36em}
+.deva{font-family:var(--f-sanskrit);font-style:italic;font-size:clamp(22px,3.6vw,30px);color:var(--gilt-soft)}
+.line{font-family:var(--f-display);font-weight:400;font-size:clamp(24px,4.6vw,42px);line-height:1.25;margin:0}
+.line em{font-style:italic;color:var(--gilt-soft)}
+.rosary{display:flex;gap:12px}
+.rosary i{width:5px;height:5px;border-radius:50%;background:var(--gilt);opacity:0}
+.blk.on .rosary i{animation:fadeIn 1.2s var(--ease) calc(var(--d,0s) + var(--k)*.22s) forwards}
+.placeholder{border:1px dashed var(--gilt);padding:10px 18px;font-family:var(--f-sans);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--bone-dim)}
+
+/* ───────── Breath ───────── */
+#breath{display:flex;align-items:center;justify-content:center}
+.s-breath #breath{opacity:1}
+#breath svg{width:min(70vw,420px);height:auto;margin-top:-8vh}
+.s-breath #ringg{transform-origin:200px 130px;animation:ring 4s ease-in-out 3 both}
+.s-breath #dotL{animation:glowL 12s linear both}
+.s-breath #dotR{animation:glowR 12s linear both}
+#breath .ph{opacity:0;font-family:var(--f-sans);font-size:11px;letter-spacing:.3em;text-transform:uppercase;fill:var(--gilt-soft)}
+.s-breath #p1{animation:ph 4s ease both}
+.s-breath #p2{animation:ph 4s ease 4s both}
+.s-breath #p3{animation:ph 4s ease 8s both}
+
+/* ───────── Body / amber cloud ───────── */
+#bodyL{display:flex;align-items:center;justify-content:center}
+.s-amber #bodyL,.s-door #bodyL,.s-ret #bodyL{opacity:1}
+#bodyL svg{width:min(92vw,760px);height:auto;margin-top:-10vh;overflow:visible}
+#fill{transform-box:fill-box;transform-origin:left;transform:scaleX(0)}
+.s-amber #fill{animation:sweep 9s ease-in-out 3.5s both}
+.s-door #fill{transform:scaleX(1);animation:dim 4s ease 5s both}
+.s-ret #fill{animation:sweep 8s ease-in-out 4s both, settle 3s ease 12.5s forwards}
+#cloud{opacity:0}
+.s-amber #cloud{animation:cloudMove 9.5s ease-in-out 1s both}
+.s-ret #cloud{animation:cloudMove 8.5s ease-in-out 3s both}
+#door{opacity:0;transform-box:fill-box;transform-origin:center bottom}
+.s-door #door{animation:doorGlow 5s var(--ease) 0.8s both}
+.s-ret #door{animation:fadeIn 3s ease 1s both}
+#orb{position:absolute;left:50%;top:44%;width:96px;height:96px;margin:-48px 0 0 -48px;border-radius:50%;opacity:0;z-index:6;
+  background:radial-gradient(circle,#F3D58A 0%,rgba(212,174,85,.75) 28%,rgba(184,144,42,0) 70%)}
+.s-door #orb{animation:orbIn 3s var(--ease) 5s both}
+.s-ascent #orb{animation:orbUp 9s var(--ease) both}
+.s-ret #orb{animation:orbDown 4s var(--ease) both}
+
+/* ───────── Land (sun → beryl → arrival → presence) ───────── */
+#land{opacity:0}
+#land.on{opacity:1}
+#land svg{position:absolute;inset:0;width:100%;height:100%}
+#sun{opacity:0;transform:translateY(24px);transition:opacity 3s var(--ease),transform 5s var(--ease)}
+.r-sun #sun{opacity:1;transform:none}
+.r-arrival #sun{opacity:.28}
+#stars{opacity:0;transition:opacity 4s var(--ease)}
+.r-ascent #stars{opacity:1}
+#stars circle{animation:twinkle 6s ease-in-out infinite}
+#water,#ice,#beryl,#cols{opacity:0}
+.s-beryl #water{animation:fadeIn 2.5s ease .5s forwards}
+.s-beryl #ice{animation:fadeIn 3s ease 4.5s forwards}
+.s-beryl #beryl{animation:fadeIn 3.5s ease 8s forwards}
+.s-beryl #cols{animation:fadeIn 3s ease 10.5s forwards}
+.r-arrival #water,.r-arrival #ice{opacity:0}
+.r-arrival #beryl{opacity:1}
+.r-arrival #cols{opacity:.5}
+.ripple{transform-box:fill-box;transform-origin:center;opacity:0}
+.s-beryl .ripple{animation:ripple 5s ease-out infinite}
+#paths path{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 4s var(--ease) .5s}
+.r-arrival #paths path{stroke-dashoffset:0}
+#trees,#pond{opacity:0;transform:translateY(10px);transition:opacity 3s var(--ease) 1.2s,transform 4s var(--ease) 1.2s}
+#pond{transition-delay:3.5s}
+.r-arrival #trees,.r-arrival #pond{opacity:1;transform:none}
+#halo,#throne,#attend{opacity:0;transition:opacity 4s var(--ease) 1s}
+.r-presence #halo,.r-presence #throne,.r-presence #attend{opacity:1}
+#core{animation:flicker 5s ease-in-out infinite}
+.rings circle{transform-box:fill-box;transform-origin:center;animation:breathe 7s ease-in-out infinite}
+.rings circle:nth-child(2){animation-delay:1.4s}.rings circle:nth-child(3){animation-delay:2.8s}.rings circle:nth-child(4){animation-delay:4.2s}
+
+/* ───────── Caption ───────── */
+#cap{position:absolute;left:0;right:0;bottom:0;z-index:10;padding:90px 7vw 56px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;background:linear-gradient(to top,rgba(14,21,37,.92) 25%,rgba(14,21,37,0));pointer-events:none}
+#cap.hide{display:none}
+#cap > *{opacity:0}
+#cap.go > *{animation:rise 1.8s var(--ease) both}
+#cap.go .ti{animation-delay:.25s}#cap.go .tx{animation-delay:.6s}#cap.go .qt{animation-delay:1.1s}
+#cap .st{font-family:var(--f-sans);font-weight:300;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gilt-soft)}
+#cap .ti{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,4.4vw,40px);line-height:1.15;margin:0}
+#cap .tx{font-family:var(--f-body);font-weight:300;font-size:clamp(15px,1.9vw,17.5px);line-height:1.7;color:var(--bone);max-width:60ch;margin:0}
+#cap .qt{font-family:var(--f-display);font-style:italic;font-size:clamp(17px,2.3vw,21px);color:var(--gilt-soft);max-width:44ch;margin:6px 0 0}
+
+/* ───────── Chrome ───────── */
+#top{position:absolute;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:18px clamp(16px,4vw,32px)}
+#top .folio{font-family:var(--f-sans);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--bone-dim)}
+#ctl{display:flex;gap:4px;align-items:center}
+#ctl button{background:none;border:1px solid transparent;color:var(--bone-dim);font-family:var(--f-sans);font-size:10px;letter-spacing:.22em;text-transform:uppercase;padding:8px 10px;cursor:pointer;transition:color .3s,border-color .3s}
+#ctl button:hover,#ctl button:focus-visible{color:var(--gilt-soft);border-color:var(--rule);outline:none}
+#count{font-family:var(--f-sans);font-size:10px;letter-spacing:.2em;color:var(--bone-dim);padding:0 8px}
+#bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--gilt);z-index:25;opacity:.8}
+.paused *{animation-play-state:paused!important}
+
+/* ───────── Reduced motion: static, fully composed ───────── */
+#static{display:none}
+html.rm,html.rm body{overflow:auto}
+html.rm #stage{display:none}
+html.rm #static{display:block;max-width:640px;margin:0 auto;padding:64px 24px 96px}
+#static h1{max-width:none;margin-bottom:12px}
+#static section{padding:28px 0;border-bottom:1px solid var(--rule)}
+#static .st{font-family:var(--f-sans);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gilt-soft);margin-bottom:8px}
+#static h2{font-family:var(--f-display);font-weight:400;font-size:28px;margin:0 0 10px}
+#static p{font-family:var(--f-body);font-weight:300;line-height:1.75;margin:0}
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <canvas id="motes"></canvas>
+
+  <!-- Land: sky, sun, water→ice→beryl, trees, pond, presence -->
+  <div id="land" class="layer">
+    <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E1525"/><stop offset=".75" stop-color="#1D3A64" stop-opacity=".75"/><stop offset="1" stop-color="#6b5a3c" stop-opacity=".55"/></linearGradient>
+        <radialGradient id="sunG"><stop offset="0" stop-color="#F3D58A"/><stop offset=".55" stop-color="#D4AE55"/><stop offset="1" stop-color="#B8902A"/></radialGradient>
+        <radialGradient id="glow"><stop offset="0" stop-color="#D4AE55" stop-opacity=".55"/><stop offset="1" stop-color="#D4AE55" stop-opacity="0"/></radialGradient>
+        <linearGradient id="berylG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5b9d92"/><stop offset=".5" stop-color="#3D6E6A"/><stop offset="1" stop-color="#1D3A64"/></linearGradient>
+        <linearGradient id="iceG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b7cadb" stop-opacity=".8"/><stop offset="1" stop-color="#1D3A64" stop-opacity=".9"/></linearGradient>
+        <filter id="blur"><feGaussianBlur stdDeviation="6"/></filter>
+      </defs>
+      <rect width="800" height="450" fill="url(#sky)"/>
+      <g id="stars" fill="#ECE2CC">
+        <circle cx="90" cy="60" r="1.1" style="animation-delay:0s"/><circle cx="210" cy="110" r="1" style="animation-delay:1.2s"/><circle cx="330" cy="40" r="1.2" style="animation-delay:2.1s"/>
+        <circle cx="520" cy="70" r="1" style="animation-delay:.6s"/><circle cx="640" cy="130" r="1.2" style="animation-delay:3s"/><circle cx="730" cy="50" r="1" style="animation-delay:1.8s"/>
+        <circle cx="440" cy="120" r=".9" style="animation-delay:2.6s"/><circle cx="150" cy="170" r=".9" style="animation-delay:.9s"/><circle cx="690" cy="200" r=".9" style="animation-delay:3.4s"/>
+      </g>
+      <g id="sun">
+        <circle cx="400" cy="290" r="110" fill="url(#glow)"/>
+        <circle cx="400" cy="285" r="46" fill="url(#sunG)"/>
+      </g>
+      <!-- ground -->
+      <rect id="base" y="290" width="800" height="160" fill="#0B111F"/>
+      <rect id="water" y="290" width="800" height="160" fill="#1D3A64" fill-opacity=".85"/>
+      <rect id="ice" y="290" width="800" height="160" fill="url(#iceG)"/>
+      <rect id="beryl" y="290" width="800" height="160" fill="url(#berylG)"/>
+      <line x1="0" y1="290" x2="800" y2="290" stroke="#D4AE55" stroke-opacity=".5" stroke-width=".6"/>
+      <g stroke="#ECE2CC" stroke-opacity=".5" fill="none" stroke-width=".7">
+        <ellipse class="ripple" cx="400" cy="350" rx="120" ry="14"/>
+        <ellipse class="ripple" cx="400" cy="350" rx="120" ry="14" style="animation-delay:2.5s"/>
+      </g>
+      <g id="cols" stroke="#D4AE55" stroke-opacity=".5" stroke-width=".6">
+        <line x1="120" y1="310" x2="120" y2="450"/><line x1="240" y1="305" x2="240" y2="450"/><line x1="560" y1="305" x2="560" y2="450"/><line x1="680" y1="310" x2="680" y2="450"/>
+      </g>
+      <g id="paths" stroke="#D4AE55" stroke-opacity=".55" stroke-width=".7" fill="none">
+        <path pathLength="1" d="M400 292 L120 450"/><path pathLength="1" d="M400 292 L680 450"/><path pathLength="1" d="M400 292 L400 450"/><path pathLength="1" d="M0 340 L800 340"/>
+      </g>
+      <!-- jeweled trees -->
+      <g id="trees">
+        <g stroke="#D4AE55" stroke-opacity=".6" stroke-width="1.2">
+          <line x1="110" y1="318" x2="110" y2="215"/><line x1="200" y1="308" x2="200" y2="240"/><line x1="600" y1="308" x2="600" y2="240"/><line x1="690" y1="318" x2="690" y2="215"/>
+          <line x1="285" y1="298" x2="285" y2="258"/><line x1="515" y1="298" x2="515" y2="258"/>
+        </g>
+        <g fill-opacity=".72">
+          <circle cx="110" cy="205" r="22" fill="#5b9d92"/><circle cx="92" cy="222" r="14" fill="#3b6aa8"/><circle cx="128" cy="222" r="14" fill="#a8453a"/><circle cx="110" cy="236" r="10" fill="#D4AE55"/>
+          <circle cx="200" cy="232" r="17" fill="#3b6aa8"/><circle cx="186" cy="246" r="10" fill="#5b9d92"/><circle cx="214" cy="246" r="10" fill="#D4AE55"/>
+          <circle cx="600" cy="232" r="17" fill="#a8453a"/><circle cx="586" cy="246" r="10" fill="#D4AE55"/><circle cx="614" cy="246" r="10" fill="#5b9d92"/>
+          <circle cx="690" cy="205" r="22" fill="#3b6aa8"/><circle cx="672" cy="222" r="14" fill="#5b9d92"/><circle cx="708" cy="222" r="14" fill="#D4AE55"/><circle cx="690" cy="236" r="10" fill="#a8453a"/>
+          <circle cx="285" cy="252" r="10" fill="#D4AE55"/><circle cx="515" cy="252" r="10" fill="#5b9d92"/>
+        </g>
+      </g>
+      <!-- pond & lotus -->
+      <g id="pond">
+        <ellipse cx="400" cy="392" rx="170" ry="28" fill="#1D3A64" fill-opacity=".7" stroke="#D4AE55" stroke-opacity=".55" stroke-width=".8"/>
+        <g stroke="#0E1525" stroke-width=".5">
+          <g fill="#4a78b5"><ellipse cx="330" cy="392" rx="9" ry="5"/><ellipse cx="330" cy="388" rx="4" ry="7"/></g>
+          <g fill="#D4AE55"><ellipse cx="385" cy="402" rx="9" ry="5"/><ellipse cx="385" cy="398" rx="4" ry="7"/></g>
+          <g fill="#b0402f"><ellipse cx="430" cy="388" rx="9" ry="5"/><ellipse cx="430" cy="384" rx="4" ry="7"/></g>
+          <g fill="#ECE2CC"><ellipse cx="478" cy="398" rx="9" ry="5"/><ellipse cx="478" cy="394" rx="4" ry="7"/></g>
+        </g>
+      </g>
+      <!-- presence: light, not likeness -->
+      <g id="halo">
+        <circle cx="400" cy="205" r="150" fill="url(#glow)" filter="url(#blur)"/>
+        <g class="rings" fill="none" stroke="#D4AE55" stroke-width=".6">
+          <circle cx="400" cy="205" r="52" stroke-opacity=".7"/><circle cx="400" cy="205" r="76" stroke-opacity=".5"/><circle cx="400" cy="205" r="104" stroke-opacity=".35"/><circle cx="400" cy="205" r="136" stroke-opacity=".2"/>
+        </g>
+        <ellipse id="core" cx="400" cy="205" rx="22" ry="40" fill="url(#sunG)" opacity=".95"/>
+        <ellipse cx="400" cy="205" rx="40" ry="62" fill="none" stroke="#D4AE55" stroke-opacity=".6" stroke-width=".8"/>
+        <circle cx="400" cy="180" r="2.2" fill="#ECE2CC"/>
+      </g>
+      <g id="throne" fill="#D4AE55" fill-opacity=".1" stroke="#D4AE55" stroke-opacity=".8" stroke-width=".8">
+        <g transform="translate(400 285)">
+          <ellipse cx="0" cy="-22" rx="13" ry="30"/>
+          <ellipse cx="0" cy="-22" rx="13" ry="30" transform="rotate(-24)"/><ellipse cx="0" cy="-22" rx="13" ry="30" transform="rotate(24)"/>
+          <ellipse cx="0" cy="-22" rx="13" ry="30" transform="rotate(-48)"/><ellipse cx="0" cy="-22" rx="13" ry="30" transform="rotate(48)"/>
+          <ellipse cx="0" cy="-22" rx="13" ry="30" transform="rotate(-72)"/><ellipse cx="0" cy="-22" rx="13" ry="30" transform="rotate(72)"/>
+        </g>
+      </g>
+      <g id="attend">
+        <circle cx="300" cy="238" r="38" fill="url(#glow)"/><ellipse cx="300" cy="238" rx="7" ry="14" fill="#D4AE55" fill-opacity=".8"/>
+        <circle cx="500" cy="238" r="38" fill="url(#glow)"/><ellipse cx="500" cy="238" rx="7" ry="14" fill="#D4AE55" fill-opacity=".8"/>
+        <g fill="none" stroke="#D4AE55" stroke-opacity=".6" stroke-width=".7"><ellipse cx="300" cy="262" rx="14" ry="5"/><ellipse cx="500" cy="262" rx="14" ry="5"/></g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Breath -->
+  <div id="breath" class="layer">
+    <svg viewBox="0 0 400 260" aria-hidden="true">
+      <g id="ringg"><circle cx="200" cy="130" r="86" fill="none" stroke="#D4AE55" stroke-opacity=".5" stroke-width=".8"/><circle cx="200" cy="130" r="86" fill="#D4AE55" fill-opacity=".05"/></g>
+      <circle id="dotL" cx="178" cy="130" r="7" fill="#D4AE55" style="filter:drop-shadow(0 0 8px #D4AE55)"/>
+      <circle id="dotR" cx="222" cy="130" r="7" fill="#D4AE55" style="filter:drop-shadow(0 0 8px #D4AE55)"/>
+      <g text-anchor="middle">
+        <text id="p1" x="200" y="248" class="ph">Left nostril</text>
+        <text id="p2" x="200" y="248" class="ph">Right nostril</text>
+        <text id="p3" x="200" y="248" class="ph">Both together</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Body & amber cloud -->
+  <div id="bodyL" class="layer">
+    <svg viewBox="0 0 420 200" aria-hidden="true">
+      <defs>
+        <linearGradient id="amberG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F0CF84"/><stop offset="1" stop-color="#B8902A"/></linearGradient>
+        <radialGradient id="cloudG"><stop offset="0" stop-color="#F3D58A" stop-opacity=".95"/><stop offset=".5" stop-color="#D4AE55" stop-opacity=".5"/><stop offset="1" stop-color="#B8902A" stop-opacity="0"/></radialGradient>
+        <clipPath id="bodyClip">
+          <circle cx="60" cy="100" r="26"/><rect x="80" y="92" width="18" height="16"/>
+          <rect x="92" y="70" width="170" height="60" rx="26"/>
+          <rect x="110" y="52" width="120" height="12" rx="6"/><rect x="110" y="136" width="120" height="12" rx="6"/>
+          <rect x="262" y="82" width="130" height="16" rx="8"/><rect x="262" y="102" width="130" height="16" rx="8"/>
+        </clipPath>
+      </defs>
+      <g fill="none" stroke="#D4AE55" stroke-opacity=".38" stroke-width=".8">
+        <circle cx="60" cy="100" r="26"/><rect x="92" y="70" width="170" height="60" rx="26"/>
+        <rect x="110" y="52" width="120" height="12" rx="6"/><rect x="110" y="136" width="120" height="12" rx="6"/>
+        <rect x="262" y="82" width="130" height="16" rx="8"/><rect x="262" y="102" width="130" height="16" rx="8"/>
+      </g>
+      <g clip-path="url(#bodyClip)"><rect id="fill" x="20" y="40" width="380" height="120" fill="url(#amberG)" fill-opacity=".9"/></g>
+      <ellipse id="cloud" cx="60" cy="100" rx="64" ry="38" fill="url(#cloudG)"/>
+      <g id="door" fill="#D4AE55" fill-opacity=".25" stroke="#F0CF84" stroke-width="1"><path d="M53 66 V46 a7 7 0 0 1 14 0 V66 Z"/></g>
+    </svg>
+  </div>
+  <div id="orb"></div>
+
+  <!-- Centre text blocks -->
+  <div class="blk" data-s="open">
+    <svg class="rise" style="--d:.4s" viewBox="0 0 120 120" width="40" height="40" fill="none" stroke="#D4AE55" stroke-width="1.3" aria-hidden="true">
+      <ellipse cx="60" cy="60" rx="6" ry="36"/><ellipse cx="60" cy="60" rx="6" ry="36" transform="rotate(45 60 60)"/><ellipse cx="60" cy="60" rx="6" ry="36" transform="rotate(90 60 60)"/><ellipse cx="60" cy="60" rx="6" ry="36" transform="rotate(135 60 60)"/><circle cx="60" cy="60" r="5" fill="#D4AE55"/>
+    </svg>
+    <div class="lab rise" style="--d:1s">A Guided Meditation for Vajrakula</div>
+    <h1 class="rise" style="--d:1.8s">Journey to the Land of <em>Utmost Bliss</em></h1>
+    <div class="rule" style="--d:3.4s"></div>
+    <div class="sub rise" style="--d:4.2s">A visualization of Sukhāvatī, the pure land of Amitābha</div>
+    <div class="deva rise" style="--d:5.6s">अमिताभ</div>
+  </div>
+
+  <div class="blk" data-s="refuge">
+    <div class="lab rise" style="--d:.4s">Before the journey</div>
+    <p class="line rise" style="--d:1.2s">Go for refuge.</p>
+    <p class="sub rise" style="--d:2s">Buddha, Dharma, Sangha — and your own teachers.</p>
+    <div class="rosary" style="--d:3.4s"><i style="--k:0"></i><i style="--k:1"></i><i style="--k:2"></i><i style="--k:3"></i><i style="--k:4"></i><i style="--k:5"></i><i style="--k:6"></i></div>
+    <p class="line rise" style="--d:4.6s">Generate <em>bodhicitta.</em></p>
+    <p class="sub rise" style="--d:5.4s">Dedicate this practice to the liberation of all beings.</p>
+  </div>
+
+  <div class="blk" data-s="dedicate">
+    <div class="lab rise" style="--d:.4s">Closing</div>
+    <p class="line rise" style="--d:1.2s">Dedicate the merit.</p>
+    <p class="sub rise" style="--d:2.2s">To your teachers, to all beings, and to the swift and complete<br>removal of suffering everywhere.</p>
+    <div class="rule" style="--d:3.6s"></div>
+    <p class="line rise" style="--d:4.6s"><em>May all beings find their way to the Purelands.</em></p>
+    <div class="placeholder rise" style="--d:7s">Wordmark · Lockup A · master file placeholder</div>
+  </div>
+
+  <div id="cap" class="hide"><div class="st"></div><h2 class="ti"></h2><p class="tx"></p><p class="qt"></p></div>
+
+  <div id="top">
+    <div class="folio">Vajrakula · Utmost Bliss</div>
+    <div id="ctl"><button id="prev" aria-label="Previous scene">Prev</button><button id="pp" aria-label="Pause or play">Pause</button><button id="next" aria-label="Next scene">Next</button><span id="count">01 / 12</span></div>
+  </div>
+  <div id="bar"></div>
+  <div id="grain"></div>
+</div>
+
+<!-- Static fallback for prefers-reduced-motion -->
+<main id="static"></main>
+
+<script>
+/* ───────── Scene script ───────── */
+const S=[
+ {id:'open',d:12000},
+ {id:'refuge',d:12000},
+ {id:'breath',d:14000,st:'Before the journey',ti:'Purify the breath',tx:'Exhale through the left nostril, inhale left. Exhale through the right, inhale right. Exhale through both, releasing whatever remains. Then let the breath settle on its own.'},
+ {id:'amber',d:15000,st:'Stage I · Entering',ti:'The Amber Cloud',tx:'Just above the head, a small cloud of warm amber light begins to descend — over the eyes, the brow, the jaw; down through the shoulders, hands, heart, spine and legs. Each place softens. There is nothing left to do.'},
+ {id:'door',d:12000,st:'Stage I · Entering',ti:'Through the Golden Door',tx:'At the point between the eyebrows, a small golden door stands open. The light gathers itself toward it and becomes a single vehicle — a cloud that carries you rather than covers you.'},
+ {id:'ascent',d:10000,st:'Stage II · Approaching the Land',ti:'Carried, Unhurried',tx:'There is no climbing and no effort. The cloud already knows the way, as water knows how to flow downhill — toward Amitābha, the Buddha of Immeasurable Light, far to the west.'},
+ {id:'sun',d:10000,st:'Stage II · Approaching the Land',ti:'The Setting Sun',tx:'Low on the western horizon, a sun full and steady, the colour of deep gold. Rest your attention on it without strain. The land lies directly beyond.'},
+ {id:'beryl',d:15000,st:'Stage II · Approaching the Land',ti:'Water, Ice, Beryl',tx:'The horizon fills with still water. It settles into ice, clear to its depth — and the ice becomes beryl: a ground of blue-green jewel-light, shining from within, held up by columns of diamond.'},
+ {id:'arrival',d:15000,st:'Stage III · Arrival',ti:'Jewelled Trees, Ponds of Lotus',tx:'The cloud sets you down on ground of seven jewels. Jewelled trees stand in rows. Clear ponds carry lotuses — blue, yellow, red, white. Even the sound of water and wind is teaching.'},
+ {id:'presence',d:19000,st:'Stage IV · The Presence',ti:'In the Presence of Amitābha',tx:'Light with no boundary you can find. At his sides, Avalokiteśvara and Mahāsthāmaprāpta; around them, the buddhas and bodhisattvas of the ten directions. You need not approach. Simply be held in the light.',qt:'Presence alone, sustained a little longer than feels necessary, is itself the practice here.'},
+ {id:'ret',d:17000,st:'Stage V · Abiding and Return',ti:'The Return',tx:'When a soft signal tells you it is time, the amber cloud gathers you once more — back through the golden door, spreading through the body until it is simply your own body again, sitting where you have been sitting all along.'},
+ {id:'dedicate',d:14000}
+];
+const STATIC_EXTRA={open:['A Guided Meditation for Vajrakula','Journey to the Land of Utmost Bliss','A visualization of Sukhāvatī, the pure land of Amitābha · अमिताभ'],
+ refuge:['Before the journey','Refuge & Bodhicitta','Go for refuge — Buddha, Dharma, Sangha, and your own teachers. Generate bodhicitta: dedicate this practice to the liberation of all beings.'],
+ dedicate:['Closing','Dedicate the Merit','To your teachers, to all beings, and to the swift and complete removal of suffering everywhere. May all beings find their way to the Purelands.']};
+
+const $=s=>document.querySelector(s), stage=$('#stage'), cap=$('#cap'), land=$('#land');
+const blks=[...document.querySelectorAll('.blk')];
+let idx=0, el=0, playing=true, last=performance.now(), finished=false;
+const LAND_FROM=S.findIndex(s=>s.id==='ascent'), LAND_TO=S.findIndex(s=>s.id==='presence');
+
+function go(i){
+  idx=Math.max(0,Math.min(S.length-1,i)); el=0; finished=false;
+  const sc=S[idx];
+  stage.className=''; void stage.offsetWidth;
+  stage.className=S.slice(0,idx+1).map(s=>'r-'+s.id).join(' ')+' s-'+sc.id+(playing?'':' paused');
+  land.classList.toggle('on', idx>=LAND_FROM && idx<=LAND_TO);
+  blks.forEach(b=>b.classList.toggle('on', b.dataset.s===sc.id));
+  if(sc.ti){
+    cap.classList.remove('hide','go'); void cap.offsetWidth;
+    cap.querySelector('.st').textContent=sc.st; cap.querySelector('.ti').textContent=sc.ti;
+    cap.querySelector('.tx').textContent=sc.tx; cap.querySelector('.qt').textContent=sc.qt||'';
+    cap.classList.add('go');
+  } else cap.classList.add('hide');
+  $('#count').textContent=String(idx+1).padStart(2,'0')+' / '+String(S.length).padStart(2,'0');
+}
+function tick(now){
+  const dt=now-last; last=now;
+  if(playing && !finished){
+    el+=dt; $('#bar').style.width=(el/S[idx].d*100)+'%';
+    if(el>=S[idx].d){ if(idx<S.length-1) go(idx+1); else { finished=true; $('#pp').textContent='Replay'; } }
+  }
+  requestAnimationFrame(tick);
+}
+function setPlay(p){ playing=p; stage.classList.toggle('paused',!p); $('#pp').textContent=p?'Pause':'Play'; }
+$('#pp').onclick=()=>{ if(finished){ setPlay(true); go(0); } else setPlay(!playing); };
+$('#prev').onclick=()=>go(idx-1);
+$('#next').onclick=()=>go(idx+1);
+addEventListener('keydown',e=>{ if(e.key===' '){e.preventDefault();$('#pp').click();} if(e.key==='ArrowRight')go(idx+1); if(e.key==='ArrowLeft')go(idx-1); });
+
+/* ───────── Incense motes (canvas, very low opacity) ───────── */
+const cv=$('#motes'), cx=cv.getContext('2d'); let W,H,motes=[];
+function size(){ W=cv.width=innerWidth*devicePixelRatio; H=cv.height=innerHeight*devicePixelRatio; }
+addEventListener('resize',size); size();
+for(let i=0;i<70;i++) motes.push({x:Math.random(),y:Math.random(),r:Math.random()*1.6+.4,v:Math.random()*.00004+.00002,ph:Math.random()*6.28,a:Math.random()*.18+.05});
+function drawMotes(t){
+  cx.clearRect(0,0,W,H);
+  const boost=(S[idx].id==='presence')?1.8:1;
+  if(playing) for(const m of motes){
+    m.y-=m.v*16; if(m.y<-.02){m.y=1.02;m.x=Math.random();}
+    const x=(m.x+Math.sin(t/4000+m.ph)*.012)*W, y=m.y*H;
+    cx.beginPath(); cx.arc(x,y,m.r*devicePixelRatio,0,6.283);
+    cx.fillStyle='rgba(212,174,85,'+Math.min(.4,m.a*boost)+')'; cx.fill();
+  }
+  requestAnimationFrame(drawMotes);
+}
+requestAnimationFrame(drawMotes);
+
+/* ───────── Reduced motion → static composition ───────── */
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.documentElement.classList.add('rm');
+  const st=$('#static'); let h='<div class="st">A Guided Meditation for Vajrakula</div><h1>Journey to the Land of <em>Utmost Bliss</em></h1><p style="font-style:italic;color:var(--bone-dim)">A visualization of Sukhāvatī, the pure land of Amitābha · <span class="deva" style="font-size:20px">अमिताभ</span></p>';
+  S.forEach(s=>{ if(s.ti) h+=`<section><div class="st">${s.st}</div><h2>${s.ti}</h2><p>${s.tx}</p>${s.qt?`<p style="margin-top:10px;font-family:var(--f-display);font-style:italic;color:var(--gilt-soft)">${s.qt}</p>`:''}</section>`;
+    else if(STATIC_EXTRA[s.id]&&s.id!=='open'){const e=STATIC_EXTRA[s.id]; h+=`<section><div class="st">${e[0]}</div><h2>${e[1]}</h2><p>${e[2]}</p></section>`;}});
+  st.innerHTML=h;
+} else { go(0); requestAnimationFrame(tick); }
+</script>
+</body>
+</html>
