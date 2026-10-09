@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vajrakula Motion Studio</title>
+<meta name="description" content="An index of animated pages and short films for vajrakula.com.">
+<meta name="theme-color" content="#0E1525">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --midnight:#0E1525; --lapis:#1D3A64; --bone:#ECE2CC; --jade:#3D524A;
+    --cinnabar:#8E2418; --gilt:#B8902A; --sumi:#0A0908;
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --display:"Cormorant Garamond","Cormorant",Georgia,"Times New Roman",serif;
+    --body:"Spectral",Georgia,"Times New Roman",serif;
+    --label:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --step-0:1rem; --step-1:1.25rem; --step-2:1.5625rem; --step-3:1.953rem; --step-4:2.441rem; --step-5:3.052rem; --step-6:3.815rem;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:var(--midnight);-webkit-text-size-adjust:100%}
+  body{
+    min-height:100vh;color:var(--bone);background:var(--midnight);
+    font-family:var(--body);font-weight:300;font-size:1.0625rem;line-height:1.7;
+    position:relative;overflow-x:hidden;
+  }
+
+  /* ground: lapis cooling toward midnight, drifting very slowly */
+  .dusk{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(120% 70% at 70% -10%, rgba(29,58,100,.55), transparent 60%),
+      radial-gradient(90% 60% at 10% 110%, rgba(29,58,100,.28), transparent 65%),
+      var(--midnight);
+    background-size:140% 140%,140% 140%,auto;
+    animation:drift 48s var(--ease) infinite alternate;}
+  @keyframes drift{from{background-position:0% 0%,100% 100%,0 0}to{background-position:30% 12%,70% 88%,0 0}}
+  #smoke{position:fixed;inset:0;z-index:0;pointer-events:none;width:100%;height:100%;opacity:.9}
+
+  .page{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:clamp(28px,6vw,72px) clamp(20px,5vw,56px) 56px}
+
+  /* entrance: fade + slight rise, sequenced by --d */
+  .rise{opacity:0;transform:translateY(12px);animation:rise 1600ms var(--ease) forwards;animation-delay:var(--d,0ms)}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .draw{transform:scaleX(0);transform-origin:left center;animation:draw 2200ms var(--ease) forwards;animation-delay:var(--d,0ms)}
+  @keyframes draw{to{transform:scaleX(1)}}
+  .glow{opacity:0;animation:glow 2400ms var(--ease) forwards;animation-delay:var(--d,0ms)}
+  @keyframes glow{to{opacity:1}}
+
+  /* Inter: labels, folios only */
+  .label{font-family:var(--label);font-weight:400;font-size:.6875rem;letter-spacing:.28em;text-transform:uppercase}
+
+  /* head */
+  .folio{display:flex;justify-content:space-between;gap:16px;color:rgba(236,226,204,.62)}
+  .folio .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cinnabar);margin:0 .9em;vertical-align:middle;transform:translateY(-1px)}
+
+  header.hero{padding:clamp(56px,11vw,128px) 0 clamp(40px,7vw,80px)}
+  .mark-slot{
+    display:inline-flex;flex-direction:column;gap:10px;align-items:flex-start;
+    border:1px dashed rgba(184,144,42,.55);padding:14px 18px;margin-bottom:clamp(36px,6vw,64px);
+    color:rgba(236,226,204,.7);
+  }
+  .mark-slot b{font-family:var(--display);font-weight:400;font-size:var(--step-2);letter-spacing:.22em;color:rgba(236,226,204,.38)}
+  .mark-slot .label{font-size:.625rem;letter-spacing:.24em;color:var(--gilt)}
+
+  h1{font-family:var(--display);font-weight:300;letter-spacing:-.01em;line-height:1.04;font-size:clamp(2.6rem,7.4vw,var(--step-6));max-width:14ch}
+  h1 em{font-style:italic;font-weight:300}
+  .lede{font-size:var(--step-1);font-style:italic;max-width:56ch;margin-top:28px;color:rgba(236,226,204,.86)}
+
+  /* gilt taper */
+  .taper{height:1px;width:100%;margin:clamp(32px,5vw,52px) 0 0;
+    background:linear-gradient(90deg,var(--gilt) 0%,rgba(184,144,42,.6) 45%,transparent 100%)}
+
+  /* sections */
+  section{margin-top:clamp(56px,9vw,104px)}
+  .opener{display:flex;align-items:baseline;gap:20px;margin-bottom:10px}
+  .numeral{font-family:var(--display);font-style:italic;font-weight:300;font-size:var(--step-3);color:var(--gilt)}
+  h2{font-family:var(--display);font-weight:400;letter-spacing:-.01em;font-size:var(--step-4);line-height:1.1}
+  .note{max-width:60ch;color:rgba(236,226,204,.78);margin:14px 0 clamp(28px,4vw,44px)}
+
+  /* animation list */
+  ol.index{list-style:none}
+  .piece{position:relative;display:grid;grid-template-columns:3.2rem 1fr auto;gap:8px 28px;align-items:baseline;
+    padding:28px 0;border-top:1px solid rgba(236,226,204,.12);color:inherit;text-decoration:none}
+  ol.index li:last-child .piece{border-bottom:1px solid rgba(236,226,204,.12)}
+  .piece .n{font-family:var(--display);font-style:italic;font-size:var(--step-2);color:rgba(184,144,42,.8)}
+  .piece h3{font-family:var(--display);font-weight:400;font-size:var(--step-3);line-height:1.15;letter-spacing:-.01em;grid-column:2}
+  .piece p{grid-column:2;max-width:60ch;color:rgba(236,226,204,.78);font-size:1rem}
+  .piece .meta{grid-column:3;grid-row:1 / span 2;text-align:right;display:flex;flex-direction:column;gap:8px;align-items:flex-end;color:rgba(236,226,204,.62)}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;grid-column:2;margin-top:6px}
+  .tag{border:1px solid rgba(236,226,204,.2);padding:4px 10px;color:rgba(236,226,204,.7)}
+  .status{display:inline-flex;align-items:center;gap:.7em}
+  .status i{width:6px;height:6px;border-radius:50%;background:var(--jade);box-shadow:0 0 0 1px rgba(236,226,204,.25)}
+  .status.live i{background:var(--cinnabar);box-shadow:none}
+  .status.live{color:var(--bone)}
+
+  /* live pieces are links; the gilt rule draws under the title on hover/focus */
+  a.piece h3{background:linear-gradient(var(--gilt),var(--gilt)) 0 100%/0% 1px no-repeat;
+    transition:background-size 1200ms var(--ease);display:inline-block;justify-self:start;padding-bottom:4px}
+  a.piece:hover h3,a.piece:focus-visible h3{background-size:100% 1px}
+  a.piece:focus-visible{outline:1px solid var(--gilt);outline-offset:6px}
+  a.piece::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 100% at 20% 50%,rgba(184,144,42,.07),transparent 70%);opacity:0;transition:opacity 1400ms var(--ease);pointer-events:none}
+  a.piece:hover::after{opacity:1}
+  li.pending .piece{opacity:.92}
+
+  /* rosary rule between sections */
+  .rosary{display:flex;align-items:center;gap:10px;margin-top:clamp(56px,9vw,96px);color:var(--gilt)}
+  .rosary span{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.75}
+  .rosary hr{flex:1;border:0;height:1px;background:rgba(184,144,42,.35)}
+
+  /* motion defaults */
+  dl.defaults{display:grid;grid-template-columns:minmax(120px,170px) 1fr;gap:18px 28px;max-width:760px}
+  dl.defaults dt{color:var(--gilt)}
+  dl.defaults dd{color:rgba(236,226,204,.85);font-size:1rem}
+
+  /* footer */
+  footer{margin-top:clamp(64px,10vw,120px);padding-top:28px;border-top:1px solid rgba(184,144,42,.35);
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:rgba(236,226,204,.55)}
+  footer .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cinnabar);margin-right:.9em;vertical-align:middle}
+  footer a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(184,144,42,.5)}
+
+  @media (max-width:640px){
+    .piece{grid-template-columns:2.4rem 1fr;gap:6px 16px}
+    .piece .meta{grid-column:2;grid-row:auto;flex-direction:row;align-items:center;text-align:left;margin-top:4px}
+    dl.defaults{grid-template-columns:1fr;gap:4px 0}
+    dl.defaults dd{margin-bottom:14px}
+  }
+
+  /* reduced motion: fully composed, static */
+  @media (prefers-reduced-motion:reduce){
+    .rise,.draw,.glow{animation:none!important;opacity:1!important;transform:none!important}
+    .dusk{animation:none}
+    #smoke{display:none}
+    a.piece h3{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="dusk" aria-hidden="true"></div>
+<canvas id="smoke" aria-hidden="true"></canvas>
+
+<main class="page">
+
+  <div class="folio label rise" style="--d:200ms">
+    <span>Vajrakula<i class="dot"></i>Motion Studio</span>
+    <span>Index · Vol. I · MMXXVI</span>
+  </div>
+
+  <header class="hero">
+    <!-- PLACEHOLDER: replace with Wordmark lockup A (stacked primary) from the master files. Not re-typeset on purpose. -->
+    <div class="mark-slot rise" style="--d:900ms">
+      <b aria-hidden="true">VAJRAKULA</b>
+      <span class="label">Placeholder · wordmark lockup A, master file pending</span>
+    </div>
+
+    <h1 class="rise" style="--d:1500ms">The room, <em>slowly</em> lit.</h1>
+    <p class="lede rise" style="--d:2300ms">Animated pages and short films for vajrakula.com, set down in the order they arrive. Nothing here hurries; each one is meant to be sat with.</p>
+    <div class="taper draw" style="--d:3000ms" aria-hidden="true"></div>
+  </header>
+
+  <section aria-labelledby="pieces">
+    <div class="opener rise" style="--d:3400ms">
+      <span class="numeral">i.</span>
+      <h2 id="pieces">The pieces</h2>
+    </div>
+    <p class="note rise" style="--d:3600ms">Each animation is a page first, then a film rendered from the same source. Those marked <em>forthcoming</em> are drawn from the starter list and have not yet been committed.</p>
+
+    <ol class="index">
+
+      <!--
+        TO PUBLISH A PIECE: change its <div class="piece"> to <a class="piece" href="animations/<folder>/">,
+        close with </a>, add class "live" to .status, and swap "Forthcoming" for "Live".
+        Commit the folder animations/<folder>/ (index.html, style.css, script.js, assets/).
+      -->
+
+      <li class="pending rise" style="--d:3900ms">
+        <div class="piece">
+          <span class="n">1</span>
+          <h3>Hero intro: the dusk opening</h3>
+          <p>The wordmark resolving out of indigo light, as a candle catches in a quiet room.</p>
+          <div class="tags label"><span class="tag">Page</span><span class="tag">16:9</span></div>
+          <div class="meta label"><span class="status"><i></i>Forthcoming</span></div>
+        </div>
+      </li>
+
+      <li class="pending rise" style="--d:4200ms">
+        <div class="piece">
+          <span class="n">2</span>
+          <h3>Section openers</h3>
+          <p>A gilt taper draws itself across the page; the numeral and heading rise out of the dark.</p>
+          <div class="tags label"><span class="tag">Page</span><span class="tag">Component</span></div>
+          <div class="meta label"><span class="status"><i></i>Forthcoming</span></div>
+        </div>
+      </li>
+
+      <li class="pending rise" style="--d:4500ms">
+        <div class="piece">
+          <span class="n">3</span>
+          <h3>Mantra reveal: Vajra Guru</h3>
+          <p>The Tibetan line, the Devanagari, and the transliteration arriving in turn, never typed, never hurried.</p>
+          <div class="tags label"><span class="tag">Page</span><span class="tag">Awaiting approved mantra text</span></div>
+          <div class="meta label"><span class="status"><i></i>Forthcoming</span></div>
+        </div>
+      </li>
+
+      <li class="pending rise" style="--d:4800ms">
+        <div class="piece">
+          <span class="n">4</span>
+          <h3>Retreat announcement card</h3>
+          <p>The poster layout brought gently to life: dates, place, and an invitation in the warm register.</p>
+          <div class="tags label"><span class="tag">Page</span><span class="tag">Poster</span></div>
+          <div class="meta label"><span class="status"><i></i>Forthcoming</span></div>
+        </div>
+      </li>
+
+      <li class="pending rise" style="--d:5100ms">
+        <div class="piece">
+          <span class="n">5</span>
+          <h3>Loading &amp; transition</h3>
+          <p>A slow bell and its ripple, or a single flame, to carry a visitor from one room to the next.</p>
+          <div class="tags label"><span class="tag">Page</span><span class="tag">Component</span></div>
+          <div class="meta label"><span class="status"><i></i>Forthcoming</span></div>
+        </div>
+      </li>
+
+      <li class="pending rise" style="--d:5400ms">
+        <div class="piece">
+          <span class="n">6</span>
+          <h3>Short loops for social</h3>
+          <p>Vertical films distilled from the pieces above, each a held breath of a few seconds.</p>
+          <div class="tags label"><span class="tag">Video</span><span class="tag">9:16</span><span class="tag">MP4</span></div>
+          <div class="meta label"><span class="status"><i></i>Forthcoming</span></div>
+        </div>
+      </li>
+
+    </ol>
+  </section>
+
+  <div class="rosary glow" style="--d:5800ms" aria-hidden="true"><hr><span></span><span></span><span></span><hr></div>
+
+  <section aria-labelledby="tempo">
+    <div class="opener rise" style="--d:6000ms">
+      <span class="numeral">ii.</span>
+      <h2 id="tempo">How things move</h2>
+    </div>
+    <p class="note rise" style="--d:6200ms">Proposed defaults for a motion chapter of the Brand Book, held here until approved.</p>
+    <dl class="defaults rise" style="--d:6400ms">
+      <dt class="label">Tempo</dt><dd>800 to 2400 ms, easing <code style="font-family:var(--label);font-size:.8em;letter-spacing:.04em">cubic-bezier(.22,.61,.36,1)</code>. No bounce, no snap.</dd>
+      <dt class="label">Entrance</dt><dd>A fade and a rise of no more than twelve pixels; rules that draw themselves left to right.</dd>
+      <dt class="label">Sequence</dt><dd>Ground, then type, then ornament; gilt and cinnabar last, as punctuation.</dd>
+      <dt class="label">Stillness</dt><dd>Silence is a design element. Every piece holds its frames and honours reduced motion with a composed, static page.</dd>
+    </dl>
+  </section>
+
+  <footer class="label rise" style="--d:6800ms">
+    <span><i class="dot"></i>Vajrakula · A School of Vajrayana</span>
+    <span><a href="https://vajrakula.com">vajrakula.com</a></span>
+  </footer>
+</main>
+
+<script>
+/* Incense smoke: a few slow, faint drifting wisps. Skipped entirely under reduced motion. */
+(function(){
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var c = document.getElementById('smoke'), x = c.getContext('2d'), W, H, P = [], dpr = Math.min(window.devicePixelRatio||1, 2);
+  function size(){ W = c.width = innerWidth*dpr; H = c.height = innerHeight*dpr; }
+  function spawn(init){
+    return { x: Math.random()*W, y: init ? Math.random()*H : H + 80*dpr,
+      r: (60 + Math.random()*120)*dpr, vy: -(.10 + Math.random()*.16)*dpr,
+      ph: Math.random()*6.28, sw: (.15 + Math.random()*.25)*dpr, a: .018 + Math.random()*.03 };
+  }
+  size(); addEventListener('resize', size);
+  for (var i=0;i<14;i++) P.push(spawn(true));
+  function frame(t){
+    x.clearRect(0,0,W,H);
+    for (var i=0;i<P.length;i++){
+      var p=P[i]; p.y+=p.vy; p.x+=Math.sin(t/4000+p.ph)*p.sw;
+      if (p.y < -p.r) P[i]=spawn(false);
+      var g=x.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);
+      g.addColorStop(0,'rgba(236,226,204,'+p.a+')'); g.addColorStop(1,'rgba(236,226,204,0)');
+      x.fillStyle=g; x.beginPath(); x.arc(p.x,p.y,p.r,0,6.283); x.fill();
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
