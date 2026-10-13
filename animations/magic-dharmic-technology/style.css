@@ -240,8 +240,9 @@ svg { overflow: visible; }
 .notice .label { display: block; margin-bottom: calc(var(--u) * 8); font-style: normal; }
 @media (orientation: portrait) {
   .stack > .panel.duo { grid-template-columns: 1fr; row-gap: calc(var(--u) * 34); }
-  .fig, .fig.mandala { max-width: calc(var(--u) * 330); }
-  .fig svg { max-height: calc(var(--u) * 330); }
+  .fig, .fig.mandala { max-width: calc(var(--u) * 270); }
+  .fig svg { max-height: calc(var(--u) * 270); }
+  .copy h3 { font-size: max(22px, calc(var(--u) * 48)); }
   .copy { align-items: flex-start; gap: calc(var(--u) * 18); }
   .stack.tall { min-height: 0; }
 }
@@ -326,3 +327,18 @@ html:not(.anim) .pulse, html:not(.anim) .ripple { display: none; }
 .pulse, .ripple { transform-box: fill-box; transform-origin: center; }
 
 .fig.mandala { max-width: calc(var(--u) * 700); }
+
+/* ── language switcher ────────────────────────────────────── */
+.langbar { position: fixed; z-index: 10; top: calc(var(--u) * 70); right: calc(var(--u) * 100); display: flex; gap: calc(var(--u) * 6); opacity: .6; transition: opacity .6s var(--ease); }
+.langbar:hover, .langbar:focus-within { opacity: 1; }
+.langbar button { font: 400 max(10px, calc(var(--u) * 16))/1 var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--bone-72); background: none; border: 0; border-bottom: 1px solid transparent; padding: 8px 8px 6px; cursor: pointer; }
+.langbar button:hover { color: var(--bone); }
+.langbar button[aria-current="true"] { color: var(--bone); border-bottom-color: var(--gilt); }
+.langbar button:focus-visible { outline: 1px solid var(--gilt); outline-offset: 2px; }
+html.embed .langbar, html.render .langbar { display: none; }
+@media (orientation: portrait) {
+  .langbar { right: auto; left: 50%; transform: translateX(-50%); top: calc(var(--u) * 50); }
+  .folio { top: calc(var(--u) * 108); }
+  .scene { padding-top: calc(var(--u) * 196); }
+}
+html:not(.anim) .langbar { position: fixed; }

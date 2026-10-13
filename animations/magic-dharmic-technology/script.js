@@ -29,6 +29,59 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var stage = $('#stage');
 
+  /* ═════════ language (en · es · pt) ═════════ */
+  var LANGS = ['en', 'es', 'pt'];
+  function pickLang() {
+    var p = param('lang', '');
+    if (LANGS.indexOf(p) > -1) return p;
+    try { var s = localStorage.getItem('vk-lang'); if (LANGS.indexOf(s) > -1) return s; } catch (e) {}
+    var nav = (navigator.languages || [navigator.language || 'en']);
+    for (var i = 0; i < nav.length; i++) { var c = String(nav[i]).slice(0, 2).toLowerCase(); if (LANGS.indexOf(c) > -1) return c; }
+    return 'en';
+  }
+  var LANG = pickLang();
+  var DICT = (window.VK_I18N && window.VK_I18N[LANG]) || {};
+  var tr = function (s) { return DICT[s] || s; };
+  var normTxt = function (s) { return s.replace(/\s+/g, ' ').trim(); };
+  function applyLang() {
+    root.setAttribute('lang', LANG);
+    var M = window.VK_I18N && window.VK_I18N.meta && window.VK_I18N.meta[LANG];
+    if (M) {
+      document.title = M.title;
+      var d = $('meta[name="description"]'); if (d) d.setAttribute('content', M.desc);
+      stage.setAttribute('aria-label', M.aria);
+    }
+    var btns = document.querySelectorAll('#langbar button');
+    for (var b = 0; b < btns.length; b++) btns[b].setAttribute('aria-current', btns[b].getAttribute('data-l') === LANG ? 'true' : 'false');
+    if (LANG === 'en') return;
+    var done = [], all = stage.querySelectorAll('*');
+    for (var i = 0; i < all.length; i++) {
+      var el = all[i], tag = el.tagName.toLowerCase();
+      if (tag === 'script' || tag === 'style' || tag === 'canvas' || tag === 'defs') continue;
+      if (!stage.contains(el)) continue;
+      var inside = false; for (var d2 = 0; d2 < done.length; d2++) if (done[d2].contains(el)) { inside = true; break; }
+      if (inside) continue;
+      var direct = false; for (var n = 0; n < el.childNodes.length; n++) if (el.childNodes[n].nodeType === 3 && el.childNodes[n].textContent.trim()) { direct = true; break; }
+      if (!direct) continue;
+      done.push(el);
+      var key = normTxt(el.innerHTML), val = DICT[key];
+      if (val) { if (el instanceof SVGElement) el.textContent = val.replace(/<[^>]+>/g, ''); else el.innerHTML = val; }
+      else if (flag('i18ncheck')) console.warn('i18n missing [' + LANG + ']:', key);
+    }
+  }
+  applyLang();
+  Array.prototype.forEach.call(document.querySelectorAll('#langbar button'), function (b) {
+    b.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var L = b.getAttribute('data-l'); if (L === LANG) return;
+      try { localStorage.setItem('vk-lang', L); } catch (er) {}
+      var q = Q.replace(/^\?/, '').split('&').filter(function (x) { return x && !/^(lang|t)=/.test(x); });
+      q.push('lang=' + L);
+      if (window.vkTimeline && window.vkTimeline.ready) q.push('t=' + Math.floor(window.vkTimeline.time / 1000));
+      location.search = '?' + q.join('&');
+    });
+  });
+
   /* ═════════ the web of causes (SVG built in JS, drawn per frame) ═════════ */
   var NS = 'http://www.w3.org/2000/svg';
   var web = { nodes: [], edges: [], label: null, built: false };
@@ -70,7 +123,7 @@
       gN.appendChild(c); n.el = c;
     });
     var halo = document.createElementNS(NS, 'circle'); halo.setAttribute('r', 14); halo.setAttribute('fill', 'none'); halo.setAttribute('stroke', '#B8902A'); halo.setAttribute('stroke-width', '1'); halo.setAttribute('opacity', '0');
-    var lab = document.createElementNS(NS, 'text'); lab.setAttribute('class', 'svg-cap sm knock'); lab.setAttribute('text-anchor', 'middle'); lab.textContent = 'Intervention'; lab.setAttribute('opacity', '0');
+    var lab = document.createElementNS(NS, 'text'); lab.setAttribute('class', 'svg-cap sm knock'); lab.setAttribute('text-anchor', 'middle'); lab.textContent = tr('Intervention'); lab.setAttribute('opacity', '0');
     svg.appendChild(gE); svg.appendChild(gN); svg.appendChild(halo); svg.appendChild(lab);
     web.nodes = nodes; web.halo = halo; web.label = lab; web.built = true;
   }

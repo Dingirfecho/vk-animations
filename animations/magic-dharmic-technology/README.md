@@ -5,6 +5,7 @@ Vanilla HTML/CSS/JS, no build step, GitHub Pages–ready (relative paths; fonts 
 
 ## Preview
 Open `index.html` (or `python3 -m http.server` in this folder). Space = play/pause, ←/→ = chapter, `f` = fullscreen.
+Languages: English, Español, Português — `?lang=en|es|pt`; otherwise the visitor's last choice, then the browser language. Switcher (top right) keeps your place in the timeline.
 Flags: `?t=90` start at 90 s · `?autoplay=0` · `?loop` · `?speed=1.25` · `?embed` (no transport) · `?render` (paused, no transport) · `?static` (the composed reduced-motion page).
 
 ## Deploy
@@ -18,6 +19,11 @@ One master timeline, fully seekable: `await page.evaluate(ms => vkTimeline.seek(
 ## Chapters
 Title · Invocation · Thesis · Working definition (grows in four revisions) · Causes & conditions (web re-arranges around one intervention) ·
 Shop-owner / relative ↔ ultimate · Three streams (Atanatiya, Cundi, four enlightened activities) · Two objections · Ganapati · Dedication.
+
+## Translations
+All on-screen text lives in `i18n.js`, keyed by the exact English source string; `index.html` stays English. Sanskrit/mantras, sutra names and the wordmark placeholder are deliberately untranslated.
+Spanish is neutral Latin American (infinitives for the ritual steps); Portuguese is Brazilian. `?i18ncheck` logs any string without a translation.
+Translations are mine, not a native reviewer's — worth a read-through, especially the Buddhist terms (e.g. *vacuidad/vacuidade*, *Triple Gema / Três Joias*, the four activities).
 
 ## Open items for review
 - **Wordmark**: Lockup D is a clearly marked placeholder on the final frame. Needs the master file.
