@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Magic as Dharmic Technology — Vajrakula Motion</title>
+<meta name="description" content="An animated companion to Vajrabudha's talk “Magic is a Dharmic Technology for Liberation”.">
+<meta name="theme-color" content="#0E1525">
+<script>
+  /* Motion is on by default; static, fully composed page for reduced-motion, no-JS, or ?static */
+  (function () {
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var forceStatic = /[?&]static\b/.test(location.search);
+    var forceMotion = /[?&]motion\b/.test(location.search);
+    if ((!reduce || forceMotion) && !forceStatic) document.documentElement.classList.add('anim');
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500&family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main class="stage" id="stage" aria-label="Magic is a Dharmic Technology for Liberation — an animated companion to a talk by Vajrabudha">
+  <div class="ground" aria-hidden="true"></div>
+  <canvas id="smoke" aria-hidden="true"></canvas>
+  <div class="frame" aria-hidden="true"></div>
+
+  <!-- ───────────── 0 · TITLE ───────────── -->
+  <section class="scene" id="s-title" data-chapter="Title">
+    <div class="center">
+      <svg class="mark flame" data-k="flame" viewBox="0 0 40 80" aria-hidden="true">
+        <path d="M20 4 C29 20 34 30 34 42 A14 14 0 0 1 6 42 C6 30 11 20 20 4 Z"/>
+        <path d="M20 24 C25 33 26 40 20 50 C14 40 15 33 20 24 Z" opacity=".75"/>
+        <path d="M20 62 V76 M13 69 H27"/>
+      </svg>
+      <h1 class="display" data-k="magic">magic</h1>
+      <i class="taper" data-k="taper"></i>
+      <p class="lockup" data-k="sub"><span>is a</span> <span>dharmic</span> <span>technology</span> <span>for</span> <span>liberation</span></p>
+      <p class="label credit" data-k="credit">A teaching by Vajrabudha &nbsp;·&nbsp; Vajrakula</p>
+    </div>
+  </section>
+
+  <!-- ───────────── 1 · INVOCATION ───────────── -->
+  <section class="scene" id="s-opening" data-chapter="Invocation">
+    <header class="folio" data-k="folio">Opening · Invocation</header>
+    <div class="center narrow">
+      <h2 class="invocation" data-k="namo">Namo Guru Avalokitesvaraya!</h2>
+      <i class="rosary" data-k="rosary"></i>
+      <p class="verse" data-k="v1">Buddha of limitless compassion,</p>
+      <p class="verse" data-k="v2">You take on all forms needed and use all means necessary to help beings.</p>
+      <p class="verse" data-k="v3">Increase our wisdom and compassion so that we may also use all means, material and magical, to do so!</p>
+    </div>
+  </section>
+
+  <!-- ───────────── 2 · THESIS ───────────── -->
+  <section class="scene" id="s-thesis" data-chapter="Thesis">
+    <header class="folio" data-k="folio">I · Thesis</header>
+    <div class="center">
+      <p class="label" data-k="label">My thesis</p>
+      <h2 class="statement" data-k="statement">Buddhist magic is an application of <em>wisdom</em> and <em>compassion.</em></h2>
+      <svg class="sunmoon" viewBox="0 0 640 250" role="img" aria-label="Two overlapping circles, wisdom and compassion">
+        <defs><clipPath id="clipA"><circle cx="270" cy="105" r="95"/></clipPath></defs>
+        <g data-k="sm-a"><circle cx="270" cy="105" r="95" class="ring"/></g>
+        <g data-k="sm-b"><circle cx="370" cy="105" r="95" class="ring"/></g>
+        <g clip-path="url(#clipA)" data-k="sm-lens"><circle cx="370" cy="105" r="95" class="lens"/></g>
+        <circle data-k="sm-dot" cx="320" cy="105" r="3.5" class="gilt-fill"/>
+        <text data-k="sm-la" x="222" y="236" text-anchor="middle" class="svg-cap">Wisdom</text>
+        <text data-k="sm-lb" x="418" y="236" text-anchor="middle" class="svg-cap">Compassion</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ───────────── 3 · DEFINITION ───────────── -->
+  <section class="scene" id="s-definition" data-chapter="A working definition">
+    <header class="folio" data-k="folio">II · A working definition</header>
+    <div class="center wide left">
+      <div class="labelstack" data-k="labels">
+        <p class="label" data-k="l1">A working definition</p>
+        <p class="label" data-k="l2">Through impermanence &amp; interdependence</p>
+        <p class="label" data-k="l3">Through merit &amp; wisdom</p>
+        <p class="label" data-k="l4">For the sake of beings</p>
+      </div>
+      <div class="ledger-wrap">
+        <i class="vrule" data-k="vrule"></i>
+        <ol class="ledger">
+          <li data-k="r1">
+            <b class="num">i.</b>
+            <p class="clause">The ability to produce effects in the world through supernatural means.</p>
+            <p class="side">This covers most of our bases — blessings, protections, banishings, divination.</p>
+          </li>
+          <li data-k="r2">
+            <b class="num">ii.</b>
+            <p class="clause">through the skilful arrangement of causes and conditions to produce outcomes,</p>
+            <p class="side">Karma simply means “causes produce outcomes.”</p>
+          </li>
+          <li data-k="r3">
+            <b class="num">iii.</b>
+            <p class="clause">by the dedication of merit and wisdom</p>
+            <p class="side">Merit — positive karma that leads to liberation. Wisdom — experiential understanding of emptiness.</p>
+          </li>
+          <li data-k="r4">
+            <b class="num">iv.</b>
+            <p class="clause">in order to <em>benefit beings.</em></p>
+            <p class="side">&nbsp;</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 4 · SEALS · WEB OF CAUSES ───────────── -->
+  <section class="scene" id="s-web" data-chapter="Causes &amp; conditions">
+    <header class="folio" data-k="folio">III · Causes &amp; conditions</header>
+    <div class="split">
+      <div class="seals">
+        <div class="labelstack small" data-k="labels">
+          <p class="label" data-k="l1">The four dharma seals</p>
+          <p class="label" data-k="l2">Impermanence &amp; interdependence</p>
+        </div>
+        <ol class="seal-list">
+          <li data-k="seal1"><b>i.</b><span>All compounded things are impermanent.</span></li>
+          <li data-k="seal2"><b>ii.</b><span>Everything influenced by ignorance creates suffering.</span></li>
+          <li data-k="seal3"><b>iii.</b><span>All phenomena are without inherent existence.</span></li>
+          <li data-k="seal4"><b>iv.</b><span>Nirvana is beyond extremes.</span></li>
+        </ol>
+      </div>
+      <figure class="web">
+        <svg id="web" viewBox="0 0 800 520" role="img" aria-label="A web of interconnected points; when one point is moved, the whole web re-arranges around it"></svg>
+        <figcaption class="capstack">
+          <p data-k="cap1">All things arise from causes and conditions.</p>
+          <p data-k="cap2">By intervening in them, we produce different outcomes.</p>
+          <p data-k="cap3">Magic is not outside interdependence — it works within it.</p>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ───────────── 5 · SHOP OWNER ───────────── -->
+  <section class="scene" id="s-shop" data-chapter="Two responses">
+    <header class="folio" data-k="folio">IV · Helping and liberating beings</header>
+    <div class="center">
+      <div class="stack">
+        <div class="panel" data-k="p1">
+          <p class="label">You meet a shop owner</p>
+          <blockquote class="quote">“My business is suffering!”</blockquote>
+          <p class="verse">Which response is more compassionate?</p>
+        </div>
+        <div class="panel" data-k="p2">
+          <div class="duo cards">
+            <article class="card" data-k="cardA">
+              <p class="label">One</p>
+              <p class="body">You feel bad because you are attached to money. Let go of your attachment and your suffering will end.</p>
+            </article>
+            <article class="card" data-k="cardB">
+              <p class="label">Two</p>
+              <p class="body">Let me help you bring in business so you can remain financially afloat.</p>
+            </article>
+          </div>
+          <p class="verse" data-k="note">By intervening in causes and conditions to alleviate his material suffering, we help him to practice diligently to alleviate ultimate suffering.</p>
+        </div>
+        <div class="panel" data-k="p3">
+          <svg class="relult" viewBox="0 0 640 220" role="img" aria-label="Relative and ultimate liberation, joined by a thread of gilt">
+            <g data-k="ru-a"><circle cx="150" cy="95" r="62" class="ring"/><circle cx="150" cy="95" r="3" class="gilt-fill"/></g>
+            <g data-k="ru-b"><circle cx="490" cy="95" r="62" class="ring"/><circle cx="490" cy="95" r="3" class="gilt-fill"/></g>
+            <line data-k="ru-thread" x1="214" y1="95" x2="426" y2="95" class="thread" pathLength="1"/>
+            <g data-k="ru-dot"><circle cx="214" cy="95" r="5" class="gilt-fill"/></g>
+            <text data-k="ru-la" x="150" y="206" text-anchor="middle" class="svg-cap">Relative liberation</text>
+            <text data-k="ru-lb" x="490" y="206" text-anchor="middle" class="svg-cap">Ultimate liberation</text>
+          </svg>
+          <h2 class="statement small" data-k="ru-text">Magic functions as the interplay between relative and ultimate liberation.</h2>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 6 · THREE STREAMS ───────────── -->
+  <section class="scene" id="s-streams" data-chapter="Three streams">
+    <header class="folio" data-k="folio">V · Magic across the three streams</header>
+    <div class="center wide">
+      <nav class="tabs" data-k="tabs" aria-hidden="true">
+        <span data-k="tab1">Theravāda</span><span data-k="tab2">Mahāyāna</span><span data-k="tab3">Vajrayāna</span>
+      </nav>
+      <div class="stack tall">
+
+        <div class="panel" data-k="intro">
+          <h2 class="statement" data-k="intro-h">How do the three streams of Buddhism employ magic to benefit beings?</h2>
+          <p class="verse" data-k="intro-n">A non-exhaustive survey. Yes — there is magic in all of them!</p>
+        </div>
+
+        <div class="panel duo" data-k="thera">
+          <figure class="fig guard">
+            <svg viewBox="0 0 420 420" role="img" aria-label="A protective ring with four guardians at the cardinal points">
+              <circle data-k="g-pulse" cx="210" cy="210" r="150" class="pulse"/>
+              <circle data-k="g-ring1" cx="210" cy="210" r="84" class="ring dim" pathLength="1"/>
+              <circle data-k="g-ring2" cx="210" cy="210" r="150" class="ring dashed"/>
+              <g data-k="g-spokes" class="ring dim">
+                <line x1="210" y1="210" x2="210" y2="58"/><line x1="210" y1="210" x2="362" y2="210"/>
+                <line x1="210" y1="210" x2="210" y2="362"/><line x1="210" y1="210" x2="58" y2="210"/>
+              </g>
+              <circle data-k="g-n" cx="210" cy="58" r="9" class="node"/>
+              <circle data-k="g-e" cx="362" cy="210" r="9" class="node"/>
+              <circle data-k="g-s" cx="210" cy="362" r="9" class="node"/>
+              <circle data-k="g-w" cx="58" cy="210" r="9" class="node"/>
+              <circle data-k="g-c" cx="210" cy="210" r="6" class="gilt-fill"/>
+            </svg>
+          </figure>
+          <div class="copy">
+            <h3 data-k="t-h">Atanatiya Sutta</h3>
+            <p class="body" data-k="t-b">A protection ritual that invokes the Four Great Kings — protectors of Buddhism and Buddhists — and their spirit armies. A directional protection, to help Buddhists quell disturbances so we can live and practice in peace.</p>
+          </div>
+        </div>
+
+        <div class="panel duo" data-k="maha">
+          <figure class="fig lotus">
+            <svg viewBox="0 0 300 300" role="img" aria-label="An abstracted lotus">
+              <g transform="translate(150 150)"><g data-k="lotus" class="ring">
+                <ellipse cx="0" cy="-70" rx="26" ry="70"/>
+                <ellipse cx="0" cy="-70" rx="26" ry="70" transform="rotate(45)"/>
+                <ellipse cx="0" cy="-70" rx="26" ry="70" transform="rotate(90)"/>
+                <ellipse cx="0" cy="-70" rx="26" ry="70" transform="rotate(135)"/>
+                <ellipse cx="0" cy="-70" rx="26" ry="70" transform="rotate(180)"/>
+                <ellipse cx="0" cy="-70" rx="26" ry="70" transform="rotate(225)"/>
+                <ellipse cx="0" cy="-70" rx="26" ry="70" transform="rotate(270)"/>
+                <ellipse cx="0" cy="-70" rx="26" ry="70" transform="rotate(315)"/>
+                <circle r="8" class="gilt-fill"/>
+              </g></g>
+            </svg>
+          </figure>
+          <div class="copy">
+            <h3 data-k="m-h">Cundi Dharani Sutra</h3>
+            <p class="body" data-k="m-b">Dharani sutras rely on the blessings of the buddhas to produce benefits for practitioners. Cundi is a form of Avalokitesvara / Guanyin.</p>
+            <p class="mantra" data-k="m-mantra"><span>namaḥ</span> <span>saptānāṁ</span> <span>samyak-saṁbuddha</span> <span>koṭināṁ</span> <span>|</span> <span>tad-yathā</span> <span>oṁ</span> <span>cale</span> <span>cule</span> <span>cundi</span> <span>svāhā</span> <span>||</span></p>
+            <p class="verse" data-k="m-t">Out of compassion, Buddhist magic arises.</p>
+          </div>
+        </div>
+
+        <div class="panel duo" data-k="vajra">
+          <figure class="fig mandala">
+            <svg viewBox="-90 10 700 510" role="img" aria-label="Three concentric rings — outer, inner, secret — with the four enlightened activities at the four sides">
+              <circle data-k="v-r1" cx="260" cy="260" r="196" class="ring" pathLength="1"/>
+              <circle data-k="v-r2" cx="260" cy="260" r="132" class="ring" pathLength="1"/>
+              <circle data-k="v-r3" cx="260" cy="260" r="68" class="ring" pathLength="1"/>
+              <circle data-k="v-c" cx="260" cy="260" r="4" class="gilt-fill"/>
+              <text data-k="v-t1" x="399" y="121" class="svg-cap sm knock">Outer</text>
+              <text data-k="v-t2" x="353" y="167" class="svg-cap sm knock">Inner</text>
+              <text data-k="v-t3" x="307" y="213" class="svg-cap sm knock">Secret</text>
+              <g data-k="v-a1"><circle cx="260" cy="64" r="5" class="node"/><text x="260" y="38" text-anchor="middle" class="svg-act knock">Pacifying</text></g>
+              <g data-k="v-a2"><circle cx="456" cy="260" r="5" class="node"/><text x="478" y="270" text-anchor="start" class="svg-act knock">Increasing</text></g>
+              <g data-k="v-a3"><circle cx="260" cy="456" r="5" class="node"/><text x="260" y="498" text-anchor="middle" class="svg-act knock">Magnetising</text></g>
+              <g data-k="v-a4"><circle cx="64" cy="260" r="5" class="node"/><text x="42" y="270" text-anchor="end" class="svg-act knock">Destroying</text></g>
+            </svg>
+          </figure>
+          <div class="copy">
+            <h3 data-k="v-h">The four enlightened activities</h3>
+            <p class="body" data-k="v-b">Each produces relative and ultimate benefit, and each manifests on the <em>outer</em> (material), <em>inner</em> (mental and emotional) and <em>secret</em> (wisdom) levels.</p>
+            <p class="note" data-k="v-n">Destroying — destroy my ignorance so I might have merit and wisdom; grant me the resilience and power to face my challenges; get rid of external obstacles.</p>
+            <p class="notice" data-k="v-warn"><span class="label">A note</span>Vajrayana is a strictly initiation-based tradition. These examples are illustrations, not recommendations to practice. Seek out a Vajrayana guru to discuss further.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 7 · OBJECTIONS ───────────── -->
+  <section class="scene" id="s-objections" data-chapter="Objections">
+    <header class="folio" data-k="folio">VI · Two common objections</header>
+    <div class="center">
+      <div class="stack">
+        <div class="panel" data-k="o1">
+          <p class="label" data-k="o1-l1">The objection</p>
+          <blockquote class="quote" data-k="o1-q">“Magic is worldly, not Buddhist.”</blockquote>
+          <p class="note" data-k="o1-g">Doing magic to improve your material conditions strengthens your attachments.</p>
+          <i class="rosary" data-k="o1-r"></i>
+          <p class="label" data-k="o1-l2">The response</p>
+          <p class="reply" data-k="o1-a">The view of Buddhist magic is interdependence and compassion.</p>
+        </div>
+        <div class="panel" data-k="o2">
+          <p class="label" data-k="o2-l1">The objection</p>
+          <blockquote class="quote" data-k="o2-q">“Magic is just culture.”</blockquote>
+          <p class="note" data-k="o2-g">“Real Buddhism” is a philosophy. Everything magical is a cultural add-on that does not exist in “Real Buddhism”.</p>
+          <i class="rosary" data-k="o2-r"></i>
+          <p class="label" data-k="o2-l2">The response</p>
+          <p class="reply" data-k="o2-a">How else do the buddhas and their teachings arise if not through culture?</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 8 · GANAPATI ───────────── -->
+  <section class="scene" id="s-ganapati" data-chapter="Ganapati">
+    <header class="folio" data-k="folio">VII · Practical — the Ganapati Hridaya Dharani Sutra</header>
+    <div class="center wide">
+      <div class="stack tall">
+
+        <div class="panel" data-k="g1">
+          <p class="label" data-k="g1-l">Practical</p>
+          <h2 class="statement" data-k="g1-h">The Ganapati Hridaya Dharani Sutra</h2>
+          <i class="taper" data-k="g1-t"></i>
+          <p class="body centered" data-k="g1-b">Ganapati is a liberated buddha who can grant both material and spiritual attainments — a form of Avalokitesvara who, out of compassion, specialises in clearing obstacles and increasing wealth, on both the material and spiritual level.</p>
+        </div>
+
+        <div class="panel" data-k="g2">
+          <svg class="bgmark" viewBox="0 0 300 300" aria-hidden="true">
+            <g transform="translate(150 150)"><g data-k="g2-lotus" class="ring">
+              <ellipse cx="0" cy="-70" rx="26" ry="70"/><ellipse cx="0" cy="-70" rx="26" ry="70" transform="rotate(45)"/>
+              <ellipse cx="0" cy="-70" rx="26" ry="70" transform="rotate(90)"/><ellipse cx="0" cy="-70" rx="26" ry="70" transform="rotate(135)"/>
+              <ellipse cx="0" cy="-70" rx="26" ry="70" transform="rotate(180)"/><ellipse cx="0" cy="-70" rx="26" ry="70" transform="rotate(225)"/>
+              <ellipse cx="0" cy="-70" rx="26" ry="70" transform="rotate(270)"/><ellipse cx="0" cy="-70" rx="26" ry="70" transform="rotate(315)"/>
+            </g></g>
+          </svg>
+          <p class="label" data-k="g2-l">Bonus transmission</p>
+          <!-- Devanagari / Tibetan line: not supplied — awaiting exact text from Fede (Latin transliteration only, as given in the talk) -->
+          <p class="bigmantra" data-k="g2-m">
+            <span class="line"><span class="wd"><span class="syl">OM</span></span> <span class="wd"><span class="syl">GAM</span></span></span>
+            <span class="line"><span class="wd"><span class="syl">GA</span><span class="syl">NA</span><span class="syl">PA</span><span class="syl">TA</span><span class="syl">YE</span></span> <span class="wd"><span class="syl">SVA</span><span class="syl">HA</span></span></span>
+          </p>
+          <p class="verse" data-k="g2-n">Not part of the sutra — a separate mantra of Ganapati, to build your connection with him.</p>
+        </div>
+
+        <div class="panel" data-k="g3">
+          <p class="label" data-k="g3-l">Magical functions</p>
+          <div class="quad">
+            <figure data-k="i1">
+              <svg viewBox="0 0 120 120" class="icon" aria-hidden="true"><path d="M32 110 L80 22"/><path d="M68 34 C82 8 114 10 116 44 C102 40 92 50 90 70 C76 62 62 52 68 34 Z"/></svg>
+              <figcaption><b>Axe</b><span>cutting down obstacles; road opening</span></figcaption>
+            </figure>
+            <figure data-k="i2">
+              <svg viewBox="0 0 120 120" class="icon" aria-hidden="true"><path d="M22 72 H98 C98 94 80 106 60 106 C40 106 22 94 22 72 Z"/><path d="M46 110 H74"/><circle cx="42" cy="62" r="12"/><circle cx="78" cy="62" r="12"/><circle cx="60" cy="46" r="12"/></svg>
+              <figcaption><b>Bowl of laddus</b><span>increasing abundance and enjoyment</span></figcaption>
+            </figure>
+            <figure data-k="i3">
+              <svg viewBox="0 0 120 120" class="icon" aria-hidden="true">
+                <ellipse cx="60" cy="52" rx="7" ry="26"/>
+                <ellipse cx="60" cy="52" rx="7" ry="26" transform="rotate(-32 60 94)"/>
+                <ellipse cx="60" cy="52" rx="7" ry="26" transform="rotate(32 60 94)"/>
+                <ellipse cx="60" cy="58" rx="7" ry="20" transform="rotate(-62 60 94)"/>
+                <ellipse cx="60" cy="58" rx="7" ry="20" transform="rotate(62 60 94)"/>
+                <circle cx="60" cy="96" r="16"/><circle cx="60" cy="96" r="2.5" class="gilt-fill"/>
+              </svg>
+              <figcaption><b>Open palm</b><span>dispensing blessings</span></figcaption>
+            </figure>
+            <figure data-k="i4">
+              <svg viewBox="0 0 120 120" class="icon" aria-hidden="true"><path d="M45 72 C32 63 28 44 39 31 C50 18 72 18 82 31 C92 44 88 63 75 72"/><rect x="51" y="68" width="18" height="13" rx="4"/><path d="M54 81 C50 93 40 99 33 110"/><path d="M66 81 C70 93 80 99 87 110"/></svg>
+              <figcaption><b>Noose</b><span>binding obstacles</span></figcaption>
+            </figure>
+          </div>
+          <p class="verse" data-k="g3-t">And above all, as the sutra states — attaining the mind of awakening.</p>
+        </div>
+
+        <div class="panel duo" data-k="g4">
+          <div class="copy">
+            <p class="label" data-k="g4-l">How to work the sutra</p>
+            <ol class="steps">
+              <li data-k="st1"><b>i.</b>Take refuge in Ganapati and the Triple Gem</li>
+              <li data-k="st2"><b>ii.</b>Set your intention — to help beings</li>
+              <li data-k="st3"><b>iii.</b>Recite the sutra</li>
+              <li data-k="st4"><b>iv.</b>Within the frame of the sutra, recite the dharani seven times</li>
+              <li data-k="st5"><b>v.</b>Make your wish</li>
+              <li data-k="st6"><b>vi.</b>Stomp your foot thrice</li>
+            </ol>
+          </div>
+          <figure class="fig ritual">
+            <svg viewBox="0 0 520 420" role="img" aria-label="Seven beads, a wish, and three ripples">
+              <g id="beads"></g>
+              <circle data-k="wish" cx="260" cy="200" r="7" class="gilt-fill"/>
+              <ellipse data-k="rip1" cx="260" cy="330" rx="200" ry="44" class="ring ripple"/>
+              <ellipse data-k="rip2" cx="260" cy="330" rx="200" ry="44" class="ring ripple"/>
+              <ellipse data-k="rip3" cx="260" cy="330" rx="200" ry="44" class="ring ripple"/>
+            </svg>
+          </figure>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 9 · DEDICATION ───────────── -->
+  <section class="scene" id="s-dedication" data-chapter="Dedication">
+    <header class="folio" data-k="folio">VIII · Dedication of merit</header>
+    <div class="center narrow">
+      <h2 class="invocation" data-k="namo">Namo Guru Avalokitesvaraya!</h2>
+      <i class="rosary" data-k="rosary"></i>
+      <p class="verse" data-k="v1">Buddha of limitless compassion,</p>
+      <p class="verse" data-k="v2">You take on all forms needed and use all means necessary to help beings.</p>
+      <p class="verse" data-k="v3">By the merit of this practice, may we all attain your state to help all beings with magic, and to bring all beings beyond it too.</p>
+      <div class="swasti" data-k="swasti">
+        <i class="cdot"></i>
+        <p class="lockup small">Om swasti! &nbsp; Sarva mangalam!</p>
+      </div>
+      <div class="wm-placeholder" data-k="wm" role="img" aria-label="Placeholder for the Vajrakula wordmark, lockup D">
+        <span>Wordmark · Lockup D</span><span>placeholder — master file required</span>
+      </div>
+      <p class="label credit" data-k="credit">Based on “Magic is a Dharmic Technology for Liberation” &nbsp;·&nbsp; Vajrabudha</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- Transport (hidden in ?embed / ?render) -->
+<nav class="controls" id="controls" aria-label="Playback">
+  <button class="btn" id="btn-play" type="button" aria-label="Play / pause"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M8 5v14M16 5v14"/><path class="i-play" d="M8 5l11 7-11 7z"/><path class="i-replay" d="M5 12a7 7 0 1 0 2.2-5.1M5 4v4h4"/></svg></button>
+  <div class="bar" id="bar" role="group" aria-label="Chapters"></div>
+  <output class="time" id="time">0:00</output>
+</nav>
+
+<noscript><p class="ns">This piece is best seen with JavaScript enabled; the full text is below in static form.</p></noscript>
+<script src="script.js"></script>
+</body>
+</html>
