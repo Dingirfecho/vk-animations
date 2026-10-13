@@ -51,6 +51,14 @@
   /* Inter: labels, folios only */
   .label{font-family:var(--label);font-weight:400;font-size:.6875rem;letter-spacing:.28em;text-transform:uppercase}
 
+  /* language switcher */
+  .langbar{display:flex;justify-content:flex-end;gap:6px;opacity:.6;transition:opacity .6s var(--ease)}
+  .langbar:hover,.langbar:focus-within{opacity:1}
+  .langbar button{font:400 .6875rem/1 var(--label);letter-spacing:.24em;text-transform:uppercase;color:rgba(236,226,204,.7);background:none;border:0;border-bottom:1px solid transparent;padding:8px 8px 6px;cursor:pointer}
+  .langbar button:hover{color:var(--bone)}
+  .langbar button[aria-current="true"]{color:var(--bone);border-bottom-color:var(--gilt)}
+  .langbar button:focus-visible{outline:1px solid var(--gilt);outline-offset:2px}
+
   /* head */
   .folio{display:flex;justify-content:space-between;gap:16px;color:rgba(236,226,204,.62)}
   .folio .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cinnabar);margin:0 .9em;vertical-align:middle;transform:translateY(-1px)}
@@ -134,42 +142,44 @@
 
 <main class="page">
 
+  <nav class="langbar" id="langbar" aria-label="Language"><button data-l="en">EN</button><button data-l="es">ES</button><button data-l="pt">PT</button></nav>
+
   <div class="folio label rise" style="--d:200ms">
     <span>Vajrakula<i class="dot"></i>Motion Studio</span>
-    <span>Index · Vol. I · MMXXVI</span>
+    <span data-t>Index · Vol. I · MMXXVI</span>
   </div>
 
   <header class="hero">
-    <h1 class="rise" style="--d:1500ms">The room, <em>slowly</em> lit.</h1>
-    <p class="lede rise" style="--d:2300ms">Animated pages and short films for vajrakula.com, set down in the order they arrive. Nothing here hurries; each one is meant to be sat with.</p>
+    <h1 class="rise" style="--d:1500ms" data-t>The room, <em>slowly</em> lit.</h1>
+    <p class="lede rise" style="--d:2300ms" data-t>Animated pages and short films for vajrakula.com, set down in the order they arrive. Nothing here hurries; each one is meant to be sat with.</p>
     <div class="taper draw" style="--d:3000ms" aria-hidden="true"></div>
   </header>
 
   <section aria-labelledby="pieces">
     <div class="opener rise" style="--d:3400ms">
       <span class="numeral">i.</span>
-      <h2 id="pieces">The pieces</h2>
+      <h2 id="pieces" data-t>The pieces</h2>
     </div>
-    <p class="note rise" style="--d:3600ms">Each animation is a page first. Open one and sit with it.</p>
+    <p class="note rise" style="--d:3600ms" data-t>Each animation is a page first. Open one and sit with it.</p>
 
     <ol class="index">
       <li class="rise" style="--d:3900ms">
         <a class="piece" href="animations/utmost-bliss-journey/">
           <span class="n">1</span>
-          <h3>Journey to the Land of Utmost Bliss</h3>
-          <p>A guided visualization of Sukhāvatī, the pure land of Amitābha, drawn scene by scene: refuge, the amber cloud, the golden door, the setting sun, beryl ground, and the light of presence.</p>
-          <div class="tags label"><span class="tag">Page</span><span class="tag">16:9</span><span class="tag">About 3 min</span></div>
-          <div class="meta label"><span class="status live"><i></i>Live</span></div>
+          <h3 data-t>Journey to the Land of Utmost Bliss</h3>
+          <p data-t>A guided visualization of Sukhāvatī, the pure land of Amitābha, drawn scene by scene: refuge, the amber cloud, the golden door, the setting sun, beryl ground, and the light of presence.</p>
+          <div class="tags label"><span class="tag" data-t>Page</span><span class="tag">16:9</span><span class="tag" data-t>About 3 min</span></div>
+          <div class="meta label"><span class="status live"><i></i><b data-t style="font-weight:inherit">Live</b></span></div>
         </a>
       </li>
 
       <li class="rise" style="--d:4300ms">
         <a class="piece" href="animations/magic-dharmic-technology/">
           <span class="n">2</span>
-          <h3>Magic as Dharmic Technology</h3>
-          <p>An animated companion to Vajrabudha's talk on magic as wisdom and compassion at work: the working definition, the web of causes, the three streams, and the Ganapati practice.</p>
-          <div class="tags label"><span class="tag">Page</span><span class="tag">16:9 · 9:16</span><span class="tag">About 4 min</span></div>
-          <div class="meta label"><span class="status live"><i></i>Live</span></div>
+          <h3 data-t>Magic as Dharmic Technology</h3>
+          <p data-t>An animated companion to Vajrabudha's talk on magic as wisdom and compassion at work: the working definition, the web of causes, the three streams, and the Ganapati practice.</p>
+          <div class="tags label"><span class="tag" data-t>Page</span><span class="tag">16:9 · 9:16</span><span class="tag" data-t>About 4 min</span></div>
+          <div class="meta label"><span class="status live"><i></i><b data-t style="font-weight:inherit">Live</b></span></div>
         </a>
       </li>
 
@@ -178,10 +188,74 @@
 
 
   <footer class="label rise" style="--d:4400ms">
-    <span><i class="dot"></i>Vajrakula · A School of Vajrayana</span>
+    <span><i class="dot"></i><b data-t style="font-weight:inherit">Vajrakula · A School of Vajrayana</b></span>
     <span><a href="https://vajrakula.com">vajrakula.com</a></span>
   </footer>
 </main>
+
+<script>
+/* Language: ?lang= → saved choice (shared with the animations) → browser language → English */
+(function(){
+  var DICT={
+ "es": {
+  "Index · Vol. I · MMXXVI": "Índice · Vol. I · MMXXVI",
+  "The room, <em>slowly</em> lit.": "La sala, <em>lentamente</em> iluminada.",
+  "Animated pages and short films for vajrakula.com, set down in the order they arrive. Nothing here hurries; each one is meant to be sat with.": "Páginas animadas y cortometrajes para vajrakula.com, dispuestos en el orden en que van llegando. Nada aquí se apresura; cada pieza está pensada para sentarse junto a ella.",
+  "The pieces": "Las piezas",
+  "Each animation is a page first. Open one and sit with it.": "Cada animación es, ante todo, una página. Abra una y quédese con ella.",
+  "Journey to the Land of Utmost Bliss": "Viaje a la Tierra de la Dicha Suprema",
+  "A guided visualization of Sukhāvatī, the pure land of Amitābha, drawn scene by scene: refuge, the amber cloud, the golden door, the setting sun, beryl ground, and the light of presence.": "Una visualización guiada de Sukhāvatī, la tierra pura de Amitābha, dibujada escena por escena: el refugio, la nube ámbar, la puerta dorada, el sol poniente, el suelo de berilo y la luz de la presencia.",
+  "Magic as Dharmic Technology": "La magia como tecnología dhármica",
+  "An animated companion to Vajrabudha's talk on magic as wisdom and compassion at work: the working definition, the web of causes, the three streams, and the Ganapati practice.": "Un acompañamiento animado de la charla de Vajrabudha sobre la magia como sabiduría y compasión en acción: la definición de trabajo, la red de causas, las tres corrientes y la práctica de Ganapati.",
+  "Page": "Página",
+  "About 3 min": "Unos 3 min",
+  "About 4 min": "Unos 4 min",
+  "Live": "Disponible",
+  "Vajrakula · A School of Vajrayana": "Vajrakula · Una escuela de Vajrayana"
+ },
+ "pt": {
+  "Index · Vol. I · MMXXVI": "Índice · Vol. I · MMXXVI",
+  "The room, <em>slowly</em> lit.": "A sala, <em>lentamente</em> iluminada.",
+  "Animated pages and short films for vajrakula.com, set down in the order they arrive. Nothing here hurries; each one is meant to be sat with.": "Páginas animadas e curtas-metragens para vajrakula.com, dispostas na ordem em que vão chegando. Nada aqui tem pressa; cada peça foi pensada para que a gente se sente ao lado dela.",
+  "The pieces": "As peças",
+  "Each animation is a page first. Open one and sit with it.": "Cada animação é, antes de tudo, uma página. Abra uma e fique com ela.",
+  "Journey to the Land of Utmost Bliss": "Jornada à Terra da Suprema Felicidade",
+  "A guided visualization of Sukhāvatī, the pure land of Amitābha, drawn scene by scene: refuge, the amber cloud, the golden door, the setting sun, beryl ground, and the light of presence.": "Uma visualização guiada de Sukhāvatī, a terra pura de Amitābha, desenhada cena a cena: o refúgio, a nuvem âmbar, a porta dourada, o sol poente, o chão de berilo e a luz da presença.",
+  "Magic as Dharmic Technology": "A magia como tecnologia dhármica",
+  "An animated companion to Vajrabudha's talk on magic as wisdom and compassion at work: the working definition, the web of causes, the three streams, and the Ganapati practice.": "Um acompanhamento animado da palestra de Vajrabudha sobre a magia como sabedoria e compaixão em ação: a definição de trabalho, a rede de causas, as três correntes e a prática de Ganapati.",
+  "Page": "Página",
+  "About 3 min": "Cerca de 3 min",
+  "About 4 min": "Cerca de 4 min",
+  "Live": "Disponível",
+  "Vajrakula · A School of Vajrayana": "Vajrakula · Uma escola de Vajrayana"
+ }
+}, META={"es": "Un índice de páginas animadas y cortometrajes para vajrakula.com.", "pt": "Um índice de páginas animadas e curtas-metragens para vajrakula.com."}, LANGS=['en','es','pt'];
+  function q(n){try{return new URLSearchParams(location.search).get(n);}catch(e){return null;}}
+  function pick(){
+    var p=q('lang'); if(LANGS.indexOf(p)>-1) return p;
+    try{var s=localStorage.getItem('vk-lang'); if(LANGS.indexOf(s)>-1) return s;}catch(e){}
+    var n=navigator.languages||[navigator.language||'en'];
+    for(var i=0;i<n.length;i++){var c=String(n[i]).slice(0,2).toLowerCase(); if(LANGS.indexOf(c)>-1) return c;}
+    return 'en';
+  }
+  var L=pick(), D=DICT[L]||{};
+  document.documentElement.setAttribute('lang',L);
+  if(META[L]){var m=document.querySelector('meta[name=description]'); if(m) m.setAttribute('content',META[L]);}
+  Array.prototype.forEach.call(document.querySelectorAll('[data-t]'),function(el){
+    var k=el.innerHTML.replace(/\s+/g,' ').trim();
+    if(!D[k]) return;
+    el.innerHTML=D[k];
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('#langbar button'),function(b){
+    if(b.getAttribute('data-l')===L) b.setAttribute('aria-current','true');
+    b.addEventListener('click',function(){
+      var l=b.getAttribute('data-l'); if(l===L) return;
+      try{localStorage.setItem('vk-lang',l);}catch(e){}
+      location.search='?lang='+l;
+    });
+  });
+})();
+</script>
 
 <script>
 /* Incense smoke: a few slow, faint drifting wisps. Skipped entirely under reduced motion. */

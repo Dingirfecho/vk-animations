@@ -149,6 +149,17 @@ h1 em{font-style:italic;font-weight:400;color:var(--gilt-soft)}
 #bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--gilt);z-index:25;opacity:.8}
 .paused *{animation-play-state:paused!important}
 
+/* ───────── Language switcher (en · es · pt) ───────── */
+#lang{position:fixed;top:52px;right:clamp(16px,4vw,32px);z-index:40;display:flex;gap:4px;opacity:.6;transition:opacity .6s var(--ease)}
+#lang:hover,#lang:focus-within{opacity:1}
+#lang button{font-family:var(--f-sans);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--bone-dim);background:none;border:0;border-bottom:1px solid transparent;padding:6px 7px 5px;cursor:pointer}
+#lang button:hover{color:var(--bone)}
+#lang button[aria-current="true"]{color:var(--bone);border-bottom-color:var(--gilt)}
+#lang button:focus-visible{outline:1px solid var(--gilt);outline-offset:2px}
+html.rm #lang{top:16px}
+#count{white-space:nowrap}
+@media (max-width:520px){#top .folio{display:none}#top{justify-content:flex-end}}
+
 /* ───────── Reduced motion: static, fully composed ───────── */
 #static{display:none}
 html.rm,html.rm body{overflow:auto}
@@ -260,9 +271,9 @@ html.rm #static{display:block;max-width:640px;margin:0 auto;padding:64px 24px 96
       <circle id="dotL" cx="178" cy="130" r="7" fill="#D4AE55" style="filter:drop-shadow(0 0 8px #D4AE55)"/>
       <circle id="dotR" cx="222" cy="130" r="7" fill="#D4AE55" style="filter:drop-shadow(0 0 8px #D4AE55)"/>
       <g text-anchor="middle">
-        <text id="p1" x="200" y="248" class="ph">Left nostril</text>
-        <text id="p2" x="200" y="248" class="ph">Right nostril</text>
-        <text id="p3" x="200" y="248" class="ph">Both together</text>
+        <text id="p1" x="200" y="248" class="ph" data-t>Left nostril</text>
+        <text id="p2" x="200" y="248" class="ph" data-t>Right nostril</text>
+        <text id="p3" x="200" y="248" class="ph" data-t>Both together</text>
       </g>
     </svg>
   </div>
@@ -297,46 +308,180 @@ html.rm #static{display:block;max-width:640px;margin:0 auto;padding:64px 24px 96
     <svg class="rise" style="--d:.4s" viewBox="0 0 120 120" width="40" height="40" fill="none" stroke="#D4AE55" stroke-width="1.3" aria-hidden="true">
       <ellipse cx="60" cy="60" rx="6" ry="36"/><ellipse cx="60" cy="60" rx="6" ry="36" transform="rotate(45 60 60)"/><ellipse cx="60" cy="60" rx="6" ry="36" transform="rotate(90 60 60)"/><ellipse cx="60" cy="60" rx="6" ry="36" transform="rotate(135 60 60)"/><circle cx="60" cy="60" r="5" fill="#D4AE55"/>
     </svg>
-    <div class="lab rise" style="--d:1s">A Guided Meditation for Vajrakula</div>
-    <h1 class="rise" style="--d:1.8s">Journey to the Land of <em>Utmost Bliss</em></h1>
+    <div class="lab rise" style="--d:1s" data-t>A Guided Meditation for Vajrakula</div>
+    <h1 class="rise" style="--d:1.8s" data-t>Journey to the Land of <em>Utmost Bliss</em></h1>
     <div class="rule" style="--d:3.4s"></div>
-    <div class="sub rise" style="--d:4.2s">A visualization of Sukhāvatī, the pure land of Amitābha</div>
+    <div class="sub rise" style="--d:4.2s" data-t>A visualization of Sukhāvatī, the pure land of Amitābha</div>
     <div class="deva rise" style="--d:5.6s">अमिताभ</div>
   </div>
 
   <div class="blk" data-s="refuge">
-    <div class="lab rise" style="--d:.4s">Before the journey</div>
-    <p class="line rise" style="--d:1.2s">Go for refuge.</p>
-    <p class="sub rise" style="--d:2s">Buddha, Dharma, Sangha — and your own teachers.</p>
+    <div class="lab rise" style="--d:.4s" data-t>Before the journey</div>
+    <p class="line rise" style="--d:1.2s" data-t>Go for refuge.</p>
+    <p class="sub rise" style="--d:2s" data-t>Buddha, Dharma, Sangha — and your own teachers.</p>
     <div class="rosary" style="--d:3.4s"><i style="--k:0"></i><i style="--k:1"></i><i style="--k:2"></i><i style="--k:3"></i><i style="--k:4"></i><i style="--k:5"></i><i style="--k:6"></i></div>
-    <p class="line rise" style="--d:4.6s">Generate <em>bodhicitta.</em></p>
-    <p class="sub rise" style="--d:5.4s">Dedicate this practice to the liberation of all beings.</p>
+    <p class="line rise" style="--d:4.6s" data-t>Generate <em>bodhicitta.</em></p>
+    <p class="sub rise" style="--d:5.4s" data-t>Dedicate this practice to the liberation of all beings.</p>
   </div>
 
   <div class="blk" data-s="dedicate">
-    <div class="lab rise" style="--d:.4s">Closing</div>
-    <p class="line rise" style="--d:1.2s">Dedicate the merit.</p>
-    <p class="sub rise" style="--d:2.2s">To your teachers, to all beings, and to the swift and complete<br>removal of suffering everywhere.</p>
+    <div class="lab rise" style="--d:.4s" data-t>Closing</div>
+    <p class="line rise" style="--d:1.2s" data-t>Dedicate the merit.</p>
+    <p class="sub rise" style="--d:2.2s" data-t>To your teachers, to all beings, and to the swift and complete<br>removal of suffering everywhere.</p>
     <div class="rule" style="--d:3.6s"></div>
-    <p class="line rise" style="--d:4.6s"><em>May all beings find their way to the Purelands.</em></p>
+    <p class="line rise" style="--d:4.6s" data-t><em>May all beings find their way to the Purelands.</em></p>
     <div class="placeholder rise" style="--d:7s">Wordmark · Lockup A · master file placeholder</div>
   </div>
 
   <div id="cap" class="hide"><div class="st"></div><h2 class="ti"></h2><p class="tx"></p><p class="qt"></p></div>
 
   <div id="top">
-    <div class="folio">Vajrakula · Utmost Bliss</div>
-    <div id="ctl"><button id="prev" aria-label="Previous scene">Prev</button><button id="pp" aria-label="Pause or play">Pause</button><button id="next" aria-label="Next scene">Next</button><span id="count">01 / 12</span></div>
+    <div class="folio" data-t>Vajrakula · Utmost Bliss</div>
+    <div id="ctl"><button id="prev" aria-label="Previous scene" data-a="Previous scene" data-t>Prev</button><button id="pp" aria-label="Pause or play" data-a="Pause or play" data-t>Pause</button><button id="next" aria-label="Next scene" data-a="Next scene" data-t>Next</button><span id="count">01 / 12</span></div>
   </div>
   <div id="bar"></div>
   <div id="grain"></div>
 </div>
+
+<nav id="lang" aria-label="Language"><button data-l="en">EN</button><button data-l="es">ES</button><button data-l="pt">PT</button></nav>
 
 <!-- Static fallback for prefers-reduced-motion -->
 <main id="static"></main>
 
 <script>
 /* ───────── Scene script ───────── */
+/* ───────── Language: ?lang= → saved choice (shared) → browser → English ───────── */
+const DICT={
+ "es": {
+  "A Guided Meditation for Vajrakula": "Una meditación guiada para Vajrakula",
+  "Journey to the Land of <em>Utmost Bliss</em>": "Viaje a la Tierra de la <em>Dicha Suprema</em>",
+  "A visualization of Sukhāvatī, the pure land of Amitābha": "Una visualización de Sukhāvatī, la tierra pura de Amitābha",
+  "Before the journey": "Antes del viaje",
+  "Go for refuge.": "Tomar refugio.",
+  "Buddha, Dharma, Sangha — and your own teachers.": "Buda, Dharma, Sangha — y los propios maestros.",
+  "Generate <em>bodhicitta.</em>": "Generar <em>bodhicitta.</em>",
+  "Dedicate this practice to the liberation of all beings.": "Dedicar esta práctica a la liberación de todos los seres.",
+  "Closing": "Cierre",
+  "Dedicate the merit.": "Dedicar el mérito.",
+  "To your teachers, to all beings, and to the swift and complete<br>removal of suffering everywhere.": "A los maestros, a todos los seres, y a la pronta y completa<br>eliminación del sufrimiento en todas partes.",
+  "<em>May all beings find their way to the Purelands.</em>": "<em>Que todos los seres encuentren el camino a las Tierras Puras.</em>",
+  "Left nostril": "Fosa nasal izquierda",
+  "Right nostril": "Fosa nasal derecha",
+  "Both together": "Ambas a la vez",
+  "Vajrakula · Utmost Bliss": "Vajrakula · Dicha Suprema",
+  "Prev": "Anterior",
+  "Next": "Siguiente",
+  "Pause": "Pausa",
+  "Play": "Reproducir",
+  "Replay": "Repetir",
+  "Previous scene": "Escena anterior",
+  "Pause or play": "Pausar o reproducir",
+  "Next scene": "Escena siguiente",
+  "Stage I · Entering": "Etapa I · Entrada",
+  "Stage II · Approaching the Land": "Etapa II · Acercamiento a la Tierra",
+  "Stage III · Arrival": "Etapa III · Llegada",
+  "Stage IV · The Presence": "Etapa IV · La Presencia",
+  "Stage V · Abiding and Return": "Etapa V · Permanencia y regreso",
+  "Purify the breath": "Purificar la respiración",
+  "The Amber Cloud": "La nube ámbar",
+  "Through the Golden Door": "A través de la puerta dorada",
+  "Carried, Unhurried": "Sin esfuerzo, sin prisa",
+  "The Setting Sun": "El sol poniente",
+  "Water, Ice, Beryl": "Agua, hielo, berilo",
+  "Jewelled Trees, Ponds of Lotus": "Árboles de joyas, estanques de loto",
+  "In the Presence of Amitābha": "En presencia de Amitābha",
+  "The Return": "El regreso",
+  "Exhale through the left nostril, inhale left. Exhale through the right, inhale right. Exhale through both, releasing whatever remains. Then let the breath settle on its own.": "Exhalar por la fosa nasal izquierda, inhalar por la izquierda. Exhalar por la derecha, inhalar por la derecha. Exhalar por ambas, soltando lo que quede. Luego dejar que la respiración se asiente por sí sola.",
+  "Just above the head, a small cloud of warm amber light begins to descend — over the eyes, the brow, the jaw; down through the shoulders, hands, heart, spine and legs. Each place softens. There is nothing left to do.": "Justo sobre la cabeza, una pequeña nube de cálida luz ámbar comienza a descender: sobre los ojos, la frente, la mandíbula; luego por los hombros, las manos, el corazón, la columna y las piernas. Cada lugar se suaviza. Ya no queda nada por hacer.",
+  "At the point between the eyebrows, a small golden door stands open. The light gathers itself toward it and becomes a single vehicle — a cloud that carries you rather than covers you.": "En el punto entre las cejas, una pequeña puerta dorada permanece abierta. La luz se reúne hacia ella y se vuelve un único vehículo: una nube que transporta en vez de cubrir.",
+  "There is no climbing and no effort. The cloud already knows the way, as water knows how to flow downhill — toward Amitābha, the Buddha of Immeasurable Light, far to the west.": "No hay nada que escalar ni esfuerzo alguno. La nube ya conoce el camino, como el agua sabe fluir cuesta abajo, hacia Amitābha, el Buda de la Luz Inconmensurable, lejos, en el occidente.",
+  "Low on the western horizon, a sun full and steady, the colour of deep gold. Rest your attention on it without strain. The land lies directly beyond.": "Bajo en el horizonte occidental, un sol pleno y firme, del color del oro profundo. Dejar reposar la atención en él, sin tensión. La tierra se extiende justo más allá.",
+  "The horizon fills with still water. It settles into ice, clear to its depth — and the ice becomes beryl: a ground of blue-green jewel-light, shining from within, held up by columns of diamond.": "El horizonte se llena de agua quieta. Se asienta en hielo, claro hasta su fondo, y el hielo se vuelve berilo: un suelo de luz de joya azul verdosa, que brilla desde dentro, sostenido por columnas de diamante.",
+  "The cloud sets you down on ground of seven jewels. Jewelled trees stand in rows. Clear ponds carry lotuses — blue, yellow, red, white. Even the sound of water and wind is teaching.": "La nube se posa sobre un suelo de siete joyas. Árboles de joyas se alinean en hileras. Estanques cristalinos sostienen lotos: azules, amarillos, rojos, blancos. Hasta el sonido del agua y del viento enseña.",
+  "Light with no boundary you can find. At his sides, Avalokiteśvara and Mahāsthāmaprāpta; around them, the buddhas and bodhisattvas of the ten directions. You need not approach. Simply be held in the light.": "Una luz cuyo límite no se encuentra. A sus lados, Avalokiteśvara y Mahāsthāmaprāpta; a su alrededor, los budas y bodhisattvas de las diez direcciones. No hace falta acercarse. Basta con dejarse sostener por la luz.",
+  "Presence alone, sustained a little longer than feels necessary, is itself the practice here.": "La presencia sola, sostenida un poco más de lo que parece necesario, es en sí misma la práctica aquí.",
+  "When a soft signal tells you it is time, the amber cloud gathers you once more — back through the golden door, spreading through the body until it is simply your own body again, sitting where you have been sitting all along.": "Cuando una señal suave indica que es hora, la nube ámbar vuelve a envolver: regresa por la puerta dorada y se extiende por el cuerpo hasta que es, simplemente, el propio cuerpo otra vez, sentado donde siempre ha estado sentado.",
+  "Refuge & Bodhicitta": "Refugio y bodhicitta",
+  "Go for refuge — Buddha, Dharma, Sangha, and your own teachers. Generate bodhicitta: dedicate this practice to the liberation of all beings.": "Tomar refugio: Buda, Dharma, Sangha y los propios maestros. Generar bodhicitta: dedicar esta práctica a la liberación de todos los seres.",
+  "Dedicate the Merit": "Dedicar el mérito",
+  "To your teachers, to all beings, and to the swift and complete removal of suffering everywhere. May all beings find their way to the Purelands.": "A los maestros, a todos los seres, y a la pronta y completa eliminación del sufrimiento en todas partes. Que todos los seres encuentren el camino a las Tierras Puras.",
+  "Journey to the Land of Utmost Bliss": "Viaje a la Tierra de la Dicha Suprema"
+ },
+ "pt": {
+  "A Guided Meditation for Vajrakula": "Uma meditação guiada para Vajrakula",
+  "Journey to the Land of <em>Utmost Bliss</em>": "Jornada à Terra da <em>Suprema Felicidade</em>",
+  "A visualization of Sukhāvatī, the pure land of Amitābha": "Uma visualização de Sukhāvatī, a terra pura de Amitābha",
+  "Before the journey": "Antes da jornada",
+  "Go for refuge.": "Tomar refúgio.",
+  "Buddha, Dharma, Sangha — and your own teachers.": "Buda, Dharma, Sangha — e os próprios mestres.",
+  "Generate <em>bodhicitta.</em>": "Gerar <em>bodhicitta.</em>",
+  "Dedicate this practice to the liberation of all beings.": "Dedicar esta prática à libertação de todos os seres.",
+  "Closing": "Encerramento",
+  "Dedicate the merit.": "Dedicar o mérito.",
+  "To your teachers, to all beings, and to the swift and complete<br>removal of suffering everywhere.": "Aos mestres, a todos os seres, e à pronta e completa<br>eliminação do sofrimento em toda parte.",
+  "<em>May all beings find their way to the Purelands.</em>": "<em>Que todos os seres encontrem o caminho para as Terras Puras.</em>",
+  "Left nostril": "Narina esquerda",
+  "Right nostril": "Narina direita",
+  "Both together": "Ambas juntas",
+  "Vajrakula · Utmost Bliss": "Vajrakula · Suprema Felicidade",
+  "Prev": "Anterior",
+  "Next": "Próxima",
+  "Pause": "Pausar",
+  "Play": "Reproduzir",
+  "Replay": "Repetir",
+  "Previous scene": "Cena anterior",
+  "Pause or play": "Pausar ou reproduzir",
+  "Next scene": "Próxima cena",
+  "Stage I · Entering": "Etapa I · Entrada",
+  "Stage II · Approaching the Land": "Etapa II · Aproximação da Terra",
+  "Stage III · Arrival": "Etapa III · Chegada",
+  "Stage IV · The Presence": "Etapa IV · A Presença",
+  "Stage V · Abiding and Return": "Etapa V · Permanência e retorno",
+  "Purify the breath": "Purificar a respiração",
+  "The Amber Cloud": "A nuvem âmbar",
+  "Through the Golden Door": "Pela porta dourada",
+  "Carried, Unhurried": "Sem esforço, sem pressa",
+  "The Setting Sun": "O sol poente",
+  "Water, Ice, Beryl": "Água, gelo, berilo",
+  "Jewelled Trees, Ponds of Lotus": "Árvores de joias, lagos de lótus",
+  "In the Presence of Amitābha": "Na presença de Amitābha",
+  "The Return": "O retorno",
+  "Exhale through the left nostril, inhale left. Exhale through the right, inhale right. Exhale through both, releasing whatever remains. Then let the breath settle on its own.": "Expirar pela narina esquerda, inspirar pela esquerda. Expirar pela direita, inspirar pela direita. Expirar pelas duas, soltando o que restar. Depois deixar a respiração assentar por si mesma.",
+  "Just above the head, a small cloud of warm amber light begins to descend — over the eyes, the brow, the jaw; down through the shoulders, hands, heart, spine and legs. Each place softens. There is nothing left to do.": "Logo acima da cabeça, uma pequena nuvem de cálida luz âmbar começa a descer: sobre os olhos, a testa, o maxilar; depois pelos ombros, as mãos, o coração, a coluna e as pernas. Cada lugar se suaviza. Já não resta nada a fazer.",
+  "At the point between the eyebrows, a small golden door stands open. The light gathers itself toward it and becomes a single vehicle — a cloud that carries you rather than covers you.": "No ponto entre as sobrancelhas, uma pequena porta dourada está aberta. A luz se reúne em direção a ela e se torna um único veículo: uma nuvem que transporta, em vez de cobrir.",
+  "There is no climbing and no effort. The cloud already knows the way, as water knows how to flow downhill — toward Amitābha, the Buddha of Immeasurable Light, far to the west.": "Não há nada a escalar, nem esforço algum. A nuvem já conhece o caminho, como a água sabe correr morro abaixo, rumo a Amitābha, o Buda da Luz Incomensurável, longe, no ocidente.",
+  "Low on the western horizon, a sun full and steady, the colour of deep gold. Rest your attention on it without strain. The land lies directly beyond.": "Baixo no horizonte ocidental, um sol pleno e firme, da cor do ouro profundo. Deixar a atenção repousar nele, sem tensão. A terra está logo além.",
+  "The horizon fills with still water. It settles into ice, clear to its depth — and the ice becomes beryl: a ground of blue-green jewel-light, shining from within, held up by columns of diamond.": "O horizonte se enche de água parada. Ela se assenta em gelo, claro até o fundo, e o gelo se torna berilo: um chão de luz de joia azul-esverdeada, que brilha por dentro, sustentado por colunas de diamante.",
+  "The cloud sets you down on ground of seven jewels. Jewelled trees stand in rows. Clear ponds carry lotuses — blue, yellow, red, white. Even the sound of water and wind is teaching.": "A nuvem pousa sobre um chão de sete joias. Árvores de joias se alinham em fileiras. Lagos cristalinos carregam lótus: azuis, amarelos, vermelhos, brancos. Até o som da água e do vento ensina.",
+  "Light with no boundary you can find. At his sides, Avalokiteśvara and Mahāsthāmaprāpta; around them, the buddhas and bodhisattvas of the ten directions. You need not approach. Simply be held in the light.": "Uma luz sem limite que se possa encontrar. A seus lados, Avalokiteśvara e Mahāsthāmaprāpta; ao redor deles, os budas e bodhisattvas das dez direções. Não é preciso se aproximar. Basta deixar-se sustentar pela luz.",
+  "Presence alone, sustained a little longer than feels necessary, is itself the practice here.": "A presença apenas, sustentada um pouco mais do que parece necessário, é em si mesma a prática aqui.",
+  "When a soft signal tells you it is time, the amber cloud gathers you once more — back through the golden door, spreading through the body until it is simply your own body again, sitting where you have been sitting all along.": "Quando um sinal suave diz que é hora, a nuvem âmbar volta a envolver: retorna pela porta dourada e se espalha pelo corpo até ser, simplesmente, o próprio corpo outra vez, sentado onde sempre esteve sentado.",
+  "Refuge & Bodhicitta": "Refúgio e bodhicitta",
+  "Go for refuge — Buddha, Dharma, Sangha, and your own teachers. Generate bodhicitta: dedicate this practice to the liberation of all beings.": "Tomar refúgio: Buda, Dharma, Sangha e os próprios mestres. Gerar bodhicitta: dedicar esta prática à libertação de todos os seres.",
+  "Dedicate the Merit": "Dedicar o mérito",
+  "To your teachers, to all beings, and to the swift and complete removal of suffering everywhere. May all beings find their way to the Purelands.": "Aos mestres, a todos os seres, e à pronta e completa eliminação do sofrimento em toda parte. Que todos os seres encontrem o caminho para as Terras Puras.",
+  "Journey to the Land of Utmost Bliss": "Jornada à Terra da Suprema Felicidade"
+ }
+}, META={"es": "Viaje a la Tierra de la Dicha Suprema · Animación", "pt": "Jornada à Terra da Suprema Felicidade · Animação"}, LANGS=['en','es','pt'];
+const QS=new URLSearchParams(location.search);
+function pickLang(){
+  const p=QS.get('lang'); if(LANGS.includes(p)) return p;
+  try{const v=localStorage.getItem('vk-lang'); if(LANGS.includes(v)) return v;}catch(e){}
+  for(const n of (navigator.languages||[navigator.language||'en'])){const c=String(n).slice(0,2).toLowerCase(); if(LANGS.includes(c)) return c;}
+  return 'en';
+}
+const LANG=pickLang(), D=DICT[LANG]||{}, T=x=>D[x]||x;
+document.documentElement.lang=LANG;
+if(META[LANG]) document.title=META[LANG];
+document.querySelectorAll('[data-t]').forEach(el=>{ const k=el.innerHTML.replace(/\s+/g,' ').trim(); if(D[k]) el.innerHTML=D[k]; });
+document.querySelectorAll('[data-a]').forEach(el=>el.setAttribute('aria-label',T(el.dataset.a)));
+document.querySelectorAll('#lang button').forEach(b=>{
+  if(b.dataset.l===LANG) b.setAttribute('aria-current','true');
+  b.addEventListener('click',()=>{ if(b.dataset.l===LANG) return;
+    try{localStorage.setItem('vk-lang',b.dataset.l);}catch(e){}
+    location.search='?lang='+b.dataset.l+(typeof idx==='number'&&idx>0?'&s='+idx:''); });
+});
+
 const S=[
  {id:'open',d:12000},
  {id:'refuge',d:12000},
@@ -369,8 +514,8 @@ function go(i){
   blks.forEach(b=>b.classList.toggle('on', b.dataset.s===sc.id));
   if(sc.ti){
     cap.classList.remove('hide','go'); void cap.offsetWidth;
-    cap.querySelector('.st').textContent=sc.st; cap.querySelector('.ti').textContent=sc.ti;
-    cap.querySelector('.tx').textContent=sc.tx; cap.querySelector('.qt').textContent=sc.qt||'';
+    cap.querySelector('.st').textContent=T(sc.st); cap.querySelector('.ti').textContent=T(sc.ti);
+    cap.querySelector('.tx').textContent=T(sc.tx); cap.querySelector('.qt').textContent=sc.qt?T(sc.qt):'';
     cap.classList.add('go');
   } else cap.classList.add('hide');
   $('#count').textContent=String(idx+1).padStart(2,'0')+' / '+String(S.length).padStart(2,'0');
@@ -379,11 +524,11 @@ function tick(now){
   const dt=now-last; last=now;
   if(playing && !finished){
     el+=dt; $('#bar').style.width=(el/S[idx].d*100)+'%';
-    if(el>=S[idx].d){ if(idx<S.length-1) go(idx+1); else { finished=true; $('#pp').textContent='Replay'; } }
+    if(el>=S[idx].d){ if(idx<S.length-1) go(idx+1); else { finished=true; $('#pp').textContent=T('Replay'); } }
   }
   requestAnimationFrame(tick);
 }
-function setPlay(p){ playing=p; stage.classList.toggle('paused',!p); $('#pp').textContent=p?'Pause':'Play'; }
+function setPlay(p){ playing=p; stage.classList.toggle('paused',!p); $('#pp').textContent=T(p?'Pause':'Play'); }
 $('#pp').onclick=()=>{ if(finished){ setPlay(true); go(0); } else setPlay(!playing); };
 $('#prev').onclick=()=>go(idx-1);
 $('#next').onclick=()=>go(idx+1);
@@ -410,11 +555,11 @@ requestAnimationFrame(drawMotes);
 /* ───────── Reduced motion → static composition ───────── */
 if(matchMedia('(prefers-reduced-motion: reduce)').matches){
   document.documentElement.classList.add('rm');
-  const st=$('#static'); let h='<div class="st">A Guided Meditation for Vajrakula</div><h1>Journey to the Land of <em>Utmost Bliss</em></h1><p style="font-style:italic;color:var(--bone-dim)">A visualization of Sukhāvatī, the pure land of Amitābha · <span class="deva" style="font-size:20px">अमिताभ</span></p>';
-  S.forEach(s=>{ if(s.ti) h+=`<section><div class="st">${s.st}</div><h2>${s.ti}</h2><p>${s.tx}</p>${s.qt?`<p style="margin-top:10px;font-family:var(--f-display);font-style:italic;color:var(--gilt-soft)">${s.qt}</p>`:''}</section>`;
-    else if(STATIC_EXTRA[s.id]&&s.id!=='open'){const e=STATIC_EXTRA[s.id]; h+=`<section><div class="st">${e[0]}</div><h2>${e[1]}</h2><p>${e[2]}</p></section>`;}});
+  const st=$('#static'); let h='<div class="st">'+T('A Guided Meditation for Vajrakula')+'</div><h1>'+T('Journey to the Land of <em>Utmost Bliss</em>')+'</h1><p style="font-style:italic;color:var(--bone-dim)">'+T('A visualization of Sukhāvatī, the pure land of Amitābha')+' · <span class="deva" style="font-size:20px">अमिताभ</span></p>';
+  S.forEach(s=>{ if(s.ti) h+=`<section><div class="st">${T(s.st)}</div><h2>${T(s.ti)}</h2><p>${T(s.tx)}</p>${s.qt?`<p style="margin-top:10px;font-family:var(--f-display);font-style:italic;color:var(--gilt-soft)">${T(s.qt)}</p>`:''}</section>`;
+    else if(STATIC_EXTRA[s.id]&&s.id!=='open'){const e=STATIC_EXTRA[s.id]; h+=`<section><div class="st">${T(e[0])}</div><h2>${T(e[1])}</h2><p>${T(e[2])}</p></section>`;}});
   st.innerHTML=h;
-} else { go(0); requestAnimationFrame(tick); }
+} else { go(Math.max(0,Math.min(S.length-1,parseInt(QS.get('s'),10)||0))); requestAnimationFrame(tick); }
 </script>
 </body>
 </html>
