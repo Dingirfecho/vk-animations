@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Journey to the Land Endowed with Splendor · Animation</title>
+<meta name="theme-color" content="#0E1525">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Spectral:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400;500&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap">
+<style>
+/* ───────── Tokens (Vajrakula Brand Book) ───────── */
+:root{
+  --midnight:#0E1525; --lapis:#1D3A64; --bone:#ECE2CC; --jade:#3D524A;
+  --cinnabar:#8E2418; --gilt:#B8902A; --sumi:#0A0908;
+  --gilt-soft:#D4AE55; --bone-dim:rgba(236,226,204,.7); --rule:rgba(184,144,42,.35);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --f-display:"Cormorant Garamond","Cormorant",Georgia,serif;
+  --f-body:"Spectral",Georgia,serif;
+  --f-sans:"Inter",system-ui,sans-serif;
+  --f-sanskrit:"Tiro Devanagari Sanskrit","Noto Serif Devanagari",serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--midnight);color:var(--bone);overflow:hidden}
+#stage{position:fixed;inset:0;background:linear-gradient(170deg,var(--midnight) 0%,#101b30 60%,var(--lapis) 220%);overflow:hidden}
+#grain{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 30%,rgba(0,0,0,.55) 100%);z-index:30}
+canvas#motes{position:absolute;inset:0;width:100%;height:100%;z-index:2}
+.layer{position:absolute;inset:0;opacity:0;transition:opacity 1.6s var(--ease);pointer-events:none}
+
+/* ───────── Keyframes (slow, breathing; no bounce) ───────── */
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes sweep{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes cloudMove{from{transform:translate(0,-80px);opacity:0}12%{opacity:1}30%{transform:translate(0,0)}to{transform:translate(335px,0);opacity:.0}}
+@keyframes dim{from{opacity:1}to{opacity:.12}}
+@keyframes settle{from{opacity:1}to{opacity:.0}}
+@keyframes doorGlow{from{opacity:0;transform:scale(1)}40%{opacity:1}to{opacity:1;transform:scale(2.4)}}
+@keyframes orbIn{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:scale(1)}}
+@keyframes orbUp{from{opacity:1;transform:translateY(0) scale(1)}75%{opacity:1}to{opacity:0;transform:translateY(-38vh) scale(.5)}}
+@keyframes orbDown{from{opacity:.95;transform:translateY(-38vh) scale(.5)}70%{opacity:1}to{opacity:0;transform:translateY(0) scale(1)}}
+@keyframes ring{0%{transform:scale(.7)}50%{transform:scale(1)}100%{transform:scale(.7)}}
+@keyframes ph{0%{opacity:0}12%,88%{opacity:1}100%{opacity:0}}
+@keyframes glowL{0%{opacity:.15}4%,33%{opacity:1}37%,66%{opacity:.15}70%,100%{opacity:1}}
+@keyframes glowR{0%,33%{opacity:.15}37%,66%{opacity:1}70%,100%{opacity:1}}
+@keyframes breathe{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes flicker{0%,100%{opacity:.9}35%{opacity:1}60%{opacity:.8}}
+@keyframes ripple{from{transform:scale(.4);opacity:.7}to{transform:scale(1.5);opacity:0}}
+@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:.8}}
+@keyframes dashIn{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes afterimg{0%{opacity:0}40%{opacity:.8}100%{opacity:0}}
+@keyframes petClose{from{transform:rotate(var(--r))}to{transform:rotate(calc(var(--r) * .15))}}
+
+/* ───────── Centre text blocks ───────── */
+.blk{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 7vw;gap:18px;opacity:0;transition:opacity 1.4s var(--ease);pointer-events:none;z-index:5}
+.blk.on{opacity:1}
+.blk .rise{opacity:0}
+.blk.on .rise{animation:rise 1.8s var(--ease) var(--d,0s) both}
+.rule{width:120px;height:1px;background:var(--gilt);transform-origin:left;transform:scaleX(0)}
+.blk.on .rule{animation:draw 2.4s var(--ease) var(--d,0s) forwards}
+.lab{font-family:var(--f-sans);font-weight:300;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--bone-dim)}
+h1{font-family:var(--f-display);font-weight:300;font-size:clamp(34px,8.5vw,76px);line-height:1.08;letter-spacing:-.01em;margin:0;max-width:14ch}
+h1 em{font-style:italic;font-weight:400;color:var(--gilt-soft)}
+.sub{font-family:var(--f-body);font-style:italic;font-weight:300;font-size:clamp(15px,2.4vw,20px);color:var(--bone-dim);line-height:1.6;max-width:36em}
+.sub.small{font-size:clamp(13px,1.7vw,15px);font-style:normal;max-width:44em}
+.deva{font-family:var(--f-sanskrit);font-style:italic;font-size:clamp(22px,3.6vw,30px);color:var(--gilt-soft)}
+.line{font-family:var(--f-display);font-weight:400;font-size:clamp(24px,4.6vw,42px);line-height:1.25;margin:0}
+.line em{font-style:italic;color:var(--gilt-soft)}
+.rosary{display:flex;gap:12px}
+.rosary i{width:5px;height:5px;border-radius:50%;background:var(--gilt);opacity:0}
+.blk.on .rosary i{animation:fadeIn 1.2s var(--ease) calc(var(--d,0s) + var(--k)*.22s) forwards}
+.placeholder{border:1px dashed var(--gilt);padding:10px 18px;font-family:var(--f-sans);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--bone-dim)}
+.cdot{display:block;width:6px;height:6px;border-radius:50%;background:var(--cinnabar)}
+
+/* ───────── Breath ───────── */
+#breath{display:flex;align-items:center;justify-content:center}
+.s-breath #breath{opacity:1}
+#breath svg{width:min(70vw,420px);height:auto;margin-top:-8vh}
+.s-breath #ringg{transform-origin:200px 130px;animation:ring 4s ease-in-out 3 both}
+.s-breath #dotL{animation:glowL 12s linear both}
+.s-breath #dotR{animation:glowR 12s linear both}
+#breath .ph{opacity:0;font-family:var(--f-sans);font-size:11px;letter-spacing:.3em;text-transform:uppercase;fill:var(--gilt-soft)}
+.s-breath #p1{animation:ph 4s ease both}
+.s-breath #p2{animation:ph 4s ease 4s both}
+.s-breath #p3{animation:ph 4s ease 8s both}
+
+/* ───────── Body / amber cloud ───────── */
+#bodyL{display:flex;align-items:center;justify-content:center}
+.s-amber #bodyL,.s-door #bodyL,.s-ret #bodyL{opacity:1}
+#bodyL svg{width:min(92vw,760px);height:auto;margin-top:-10vh;overflow:visible}
+#fill{transform-box:fill-box;transform-origin:left;transform:scaleX(0)}
+.s-amber #fill{animation:sweep 9s ease-in-out 3.5s both}
+.s-door #fill{transform:scaleX(1);animation:dim 4s ease 5s both}
+.s-ret #fill{animation:sweep 8s ease-in-out 4s both, settle 3s ease 12.5s forwards}
+#cloud{opacity:0}
+.s-amber #cloud{animation:cloudMove 9.5s ease-in-out 1s both}
+.s-ret #cloud{animation:cloudMove 8.5s ease-in-out 3s both}
+#door{opacity:0;transform-box:fill-box;transform-origin:center bottom}
+.s-door #door{animation:doorGlow 5s var(--ease) 0.8s both}
+.s-ret #door{animation:fadeIn 3s ease 1s both}
+#orb{position:absolute;left:50%;top:44%;width:96px;height:96px;margin:-48px 0 0 -48px;border-radius:50%;opacity:0;z-index:6;
+  background:radial-gradient(circle,#F3D58A 0%,rgba(212,174,85,.75) 28%,rgba(184,144,42,0) 70%)}
+.s-door #orb{animation:orbIn 3s var(--ease) 5s both}
+.s-ascent #orb{animation:orbUp 9s var(--ease) both}
+.s-ret #orb{animation:orbDown 4s var(--ease) both}
+
+/* ───────── Land of Śrīmat ─────────
+   s-<id> = the scene now playing; r-<id> = scenes reached so far.
+   A thing that is revealed during scene X animates under .s-X and stays under .r-<next scene>. */
+#land{opacity:0}
+#land.on{opacity:1}
+#land svg{position:absolute;inset:0;width:100%;height:100%}
+@media (max-aspect-ratio:1/1){#land svg{bottom:auto;height:60%;overflow:visible}}
+#world{transition:opacity 3s var(--ease)}
+.s-abide #world{opacity:.14}
+
+#stars{opacity:0;transition:opacity 4s var(--ease)}
+.s-ascent #stars{opacity:1}
+#stars circle{animation:twinkle 6s ease-in-out infinite}
+
+#sun{opacity:0;transform:translateY(-18px);transition:opacity 3s var(--ease),transform 5s var(--ease)}
+.r-sun #sun{opacity:1;transform:none}
+.r-gold #sun{opacity:.6}
+.r-throne #sun{opacity:.06}
+#after{opacity:0}
+.s-sun #after{animation:afterimg 7s ease 6s both}
+
+#earth,#gold,#sunref,#cols{opacity:0}
+.s-gold #earth{animation:fadeIn 3s ease .3s forwards}
+.s-gold #gold{animation:fadeIn 5s ease 4.5s forwards}
+.s-gold #sunref{animation:fadeIn 4s ease 8s forwards}
+.s-gold #cols{animation:fadeIn 3s ease 9s forwards}
+.r-arrival #earth{opacity:1}
+.r-arrival #gold{opacity:1}
+.r-arrival #sunref{opacity:.9}
+.r-throne #sunref{opacity:.35}
+.r-arrival #cols{opacity:.6}
+#grid path{stroke-dasharray:1;stroke-dashoffset:1}
+.s-gold #grid path{animation:dashIn 5s var(--ease) 10s forwards}
+.r-arrival #grid path{stroke-dashoffset:0}
+.r-throne #grid{opacity:.4}
+
+#pavil{opacity:0}
+.s-waters #pavil{animation:fadeIn 4s ease 5s forwards}
+.r-pride #pavil{opacity:.9}
+.r-throne #pavil{opacity:.3}
+
+#trees,#pond{opacity:0;transform:translateY(10px);transition:opacity 3s var(--ease) 1s,transform 4s var(--ease) 1s}
+#pond{transition-delay:1.5s}
+.r-trees #trees{opacity:1;transform:none}
+.r-waters #pond{opacity:1;transform:none}
+.r-throne #trees{opacity:.3}
+.r-throne #pond{opacity:0}
+.ripple{transform-box:fill-box;transform-origin:center;opacity:0}
+.s-waters .ripple{animation:ripple 5s ease-out infinite}
+
+#equal circle{opacity:0}
+.s-pride #equal circle{animation:fadeIn 1.4s var(--ease) calc(1s + var(--k) * .45s) forwards}
+#eqline{stroke-dasharray:1;stroke-dashoffset:1}
+.s-pride #eqline{animation:dashIn 6s var(--ease) .6s forwards}
+.s-throne #equal circle,.s-throne #eqline{stroke-dashoffset:0;animation:fadeOut 2.5s ease both}
+@keyframes fadeOut{from{opacity:.9}to{opacity:0}}
+
+#horses,#dais,#lotus,#canopy{opacity:0}
+.s-throne #horses{animation:fadeIn 3s ease .6s forwards}
+.s-throne #dais{animation:fadeIn 3s ease 3.8s forwards}
+.s-throne #lotus{animation:fadeIn 3.5s ease 6.8s forwards}
+.s-throne #canopy{animation:fadeIn 3.5s ease 10s forwards}
+.r-presence #horses,.r-presence #dais,.r-presence #lotus,.r-presence #canopy{opacity:1}
+
+#halo,#attend,#jewel,#giving,#mama,#attlabels{opacity:0;transition:opacity 4s var(--ease) 1s}
+#jewel,#giving{transition-delay:5s}
+.r-presence #halo,.r-presence #attend,.r-presence #jewel,.r-presence #giving{opacity:1}
+.r-mamaki #mama{opacity:1}
+.r-attend #attlabels{opacity:1}
+#core{animation:flicker 5s ease-in-out infinite}
+.rings circle{transform-box:fill-box;transform-origin:center;animation:breathe 7s ease-in-out infinite}
+.rings circle:nth-child(2){animation-delay:1.4s}.rings circle:nth-child(3){animation-delay:2.8s}.rings circle:nth-child(4){animation-delay:4.2s}
+.nm{font-family:var(--f-sans);font-size:7px;letter-spacing:.3em;text-transform:uppercase;fill:#D4AE55}
+
+#rays{transition:opacity 3s var(--ease)}
+#rays line{stroke-dasharray:1;stroke-dashoffset:1}
+.s-light #rays line{animation:dashIn 6s var(--ease) calc(.4s + var(--k) * .12s) forwards}
+.r-attend #rays line{stroke-dashoffset:0}
+.r-attend #rays{opacity:.2}
+
+#self{opacity:0}
+.s-abide #self{animation:fadeIn 3s ease .8s forwards}
+.pet{transform-box:fill-box;transform-origin:50% 100%;transform:rotate(var(--r))}
+.s-abide .pet{animation:petClose 9s var(--ease) 3s both}
+#selfglow{animation:breathe 6s ease-in-out infinite}
+
+/* ───────── Caption ───────── */
+#cap{position:absolute;left:0;right:0;bottom:0;z-index:10;padding:90px 7vw 44px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;background:linear-gradient(to top,rgba(14,21,37,.94) 30%,rgba(14,21,37,0));pointer-events:none}
+#cap.hide{display:none}
+#cap > *{opacity:0}
+#cap.go > *{animation:rise 1.8s var(--ease) both}
+#cap.go .ti{animation-delay:.25s}#cap.go .tx{animation-delay:.6s}#cap.go .qt{animation-delay:1.1s}
+#cap .st{font-family:var(--f-sans);font-weight:300;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gilt-soft)}
+#cap .ti{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,4.2vw,38px);line-height:1.15;margin:0}
+#cap .tx{font-family:var(--f-body);font-weight:300;font-size:clamp(14px,1.5vw,16px);line-height:1.65;color:var(--bone);max-width:72ch;margin:0}
+#cap .qt{font-family:var(--f-display);font-style:italic;font-size:clamp(16px,2.1vw,20px);color:var(--gilt-soft);max-width:58ch;margin:6px 0 0}
+
+/* ───────── Chrome ───────── */
+#top{position:absolute;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:18px clamp(16px,4vw,32px)}
+#top .folio{font-family:var(--f-sans);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--bone-dim)}
+#ctl{display:flex;gap:4px;align-items:center}
+#ctl button{background:none;border:1px solid transparent;color:var(--bone-dim);font-family:var(--f-sans);font-size:10px;letter-spacing:.22em;text-transform:uppercase;padding:8px 10px;cursor:pointer;transition:color .3s,border-color .3s}
+#ctl button:hover,#ctl button:focus-visible{color:var(--gilt-soft);border-color:var(--rule);outline:none}
+#count{font-family:var(--f-sans);font-size:10px;letter-spacing:.2em;color:var(--bone-dim);padding:0 8px}
+#bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--gilt);z-index:25;opacity:.8}
+.paused *{animation-play-state:paused!important}
+
+/* ───────── Language switcher (en · es · pt) ───────── */
+#lang{position:fixed;top:52px;right:clamp(16px,4vw,32px);z-index:40;display:flex;gap:4px;opacity:.6;transition:opacity .6s var(--ease)}
+#lang:hover,#lang:focus-within{opacity:1}
+#lang button{font-family:var(--f-sans);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--bone-dim);background:none;border:0;border-bottom:1px solid transparent;padding:6px 7px 5px;cursor:pointer}
+#lang button:hover{color:var(--bone)}
+#lang button[aria-current="true"]{color:var(--bone);border-bottom-color:var(--gilt)}
+#lang button:focus-visible{outline:1px solid var(--gilt);outline-offset:2px}
+html.rm #lang{top:16px}
+#count{white-space:nowrap}
+@media (max-width:520px){#top .folio{display:none}#top{justify-content:flex-end}}
+
+/* ───────── Reduced motion: static, fully composed ───────── */
+#static{display:none}
+html.rm,html.rm body{overflow:auto}
+html.rm #stage{display:none}
+html.rm #static{display:block;max-width:640px;margin:0 auto;padding:64px 24px 96px}
+#static h1{max-width:none;margin-bottom:12px}
+#static section{padding:28px 0;border-bottom:1px solid var(--rule)}
+#static .st{font-family:var(--f-sans);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gilt-soft);margin-bottom:8px}
+#static h2{font-family:var(--f-display);font-weight:400;font-size:28px;margin:0 0 10px}
+#static p{font-family:var(--f-body);font-weight:300;line-height:1.75;margin:0}
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <canvas id="motes"></canvas>
+
+  <!-- Land: sky, sun, earth→gold, trees, waters, throne, presence -->
+  <div id="land" class="layer">
+    <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0E1525"/><stop offset=".6" stop-color="#1D3A64" stop-opacity=".75"/><stop offset="1" stop-color="#8a6a2c" stop-opacity=".6"/></linearGradient>
+        <radialGradient id="sunG"><stop offset="0" stop-color="#F3D58A"/><stop offset=".55" stop-color="#D4AE55"/><stop offset="1" stop-color="#B8902A"/></radialGradient>
+        <radialGradient id="glow"><stop offset="0" stop-color="#D4AE55" stop-opacity=".55"/><stop offset="1" stop-color="#D4AE55" stop-opacity="0"/></radialGradient>
+        <linearGradient id="goldG" gradientUnits="userSpaceOnUse" x1="0" y1="215" x2="0" y2="450"><stop offset="0" stop-color="#D4AE55" stop-opacity=".6"/><stop offset=".12" stop-color="#A67F2A" stop-opacity=".42"/><stop offset=".38" stop-color="#3a2d12" stop-opacity=".5"/><stop offset="1" stop-color="#0B111F" stop-opacity="0"/></linearGradient>
+        <linearGradient id="earthG" gradientUnits="userSpaceOnUse" x1="0" y1="215" x2="0" y2="450"><stop offset="0" stop-color="#3f3222"/><stop offset="1" stop-color="#0B111F"/></linearGradient>
+        <filter id="blur"><feGaussianBlur stdDeviation="6"/></filter>
+        <ellipse id="pt" cx="0" cy="-20" rx="11" ry="22"/>
+        <g id="hall" fill="#D4AE55" fill-opacity=".08" stroke="#D4AE55" stroke-opacity=".6" stroke-width=".8">
+          <path d="M-14 0 V-20 H14 V0 Z"/><path d="M-19 -20 Q0 -34 19 -20 Z"/><path d="M-10 -20 V-30 H10 V-20"/><path d="M-14 -30 Q0 -42 14 -30 Z"/><path d="M0 -42 V-52"/>
+        </g>
+      </defs>
+
+      <g id="world" transform="translate(56 4) scale(.86)">
+        <rect x="-400" y="-120" width="1600" height="335" fill="url(#sky)"/>
+        <g id="stars" fill="#ECE2CC">
+          <circle cx="90" cy="60" r="1.1" style="animation-delay:0s"/><circle cx="210" cy="110" r="1" style="animation-delay:1.2s"/><circle cx="330" cy="40" r="1.2" style="animation-delay:2.1s"/>
+          <circle cx="520" cy="70" r="1" style="animation-delay:.6s"/><circle cx="640" cy="130" r="1.2" style="animation-delay:3s"/><circle cx="730" cy="50" r="1" style="animation-delay:1.8s"/>
+          <circle cx="440" cy="120" r=".9" style="animation-delay:2.6s"/><circle cx="150" cy="170" r=".9" style="animation-delay:.9s"/><circle cx="690" cy="170" r=".9" style="animation-delay:3.4s"/>
+        </g>
+
+        <!-- midday sun at the zenith: no shadow -->
+        <g id="sun">
+          <circle cx="400" cy="72" r="110" fill="url(#glow)"/>
+          <circle cx="400" cy="72" r="30" fill="url(#sunG)"/>
+        </g>
+        <circle id="after" cx="400" cy="72" r="40" fill="none" stroke="#D4AE55" stroke-opacity=".5" stroke-width=".6"/>
+
+        <!-- ground: primordial earth → refined gold -->
+        <rect id="base" x="-400" y="215" width="1600" height="700" fill="#0B111F"/>
+        <rect id="earth" x="-400" y="215" width="1600" height="700" fill="url(#earthG)"/>
+        <rect id="gold" x="-400" y="215" width="1600" height="700" fill="url(#goldG)"/>
+        <line x1="-400" y1="215" x2="1200" y2="215" stroke="#D4AE55" stroke-opacity=".5" stroke-width=".6"/>
+        <ellipse id="sunref" cx="400" cy="240" rx="60" ry="10" fill="url(#glow)"/>
+        <g id="cols" stroke="#D4AE55" stroke-opacity=".4" stroke-width=".6">
+          <line x1="210" y1="225" x2="210" y2="345"/><line x1="270" y1="222" x2="270" y2="330"/><line x1="330" y1="220" x2="330" y2="320"/>
+          <line x1="470" y1="220" x2="470" y2="320"/><line x1="530" y1="222" x2="530" y2="330"/><line x1="590" y1="225" x2="590" y2="345"/>
+        </g>
+        <g id="grid" stroke="#D4AE55" stroke-opacity=".5" stroke-width=".6" fill="none">
+          <path pathLength="1" d="M400 215 L-350 450"/><path pathLength="1" d="M400 215 L-150 450"/><path pathLength="1" d="M400 215 L50 450"/><path pathLength="1" d="M400 215 L200 450"/>
+          <path pathLength="1" d="M400 215 L300 450"/><path pathLength="1" d="M400 215 L400 450"/><path pathLength="1" d="M400 215 L500 450"/><path pathLength="1" d="M400 215 L600 450"/>
+          <path pathLength="1" d="M400 215 L750 450"/><path pathLength="1" d="M400 215 L950 450"/><path pathLength="1" d="M400 215 L1150 450"/>
+          <path pathLength="1" d="M-400 228 H1200"/><path pathLength="1" d="M-400 246 H1200"/><path pathLength="1" d="M-400 272 H1200"/><path pathLength="1" d="M-400 312 H1200"/><path pathLength="1" d="M-400 372 H1200"/>
+        </g>
+
+        <!-- halls, towers and palaces of the seven jewels -->
+        <g id="pavil">
+          <use href="#hall" transform="translate(62 215) scale(1.15)"/>
+          <use href="#hall" transform="translate(152 215) scale(.8)"/>
+          <use href="#hall" transform="translate(648 215) scale(.8)"/>
+          <use href="#hall" transform="translate(738 215) scale(1.15)"/>
+        </g>
+
+        <!-- wish-granting trees -->
+        <g id="trees">
+          <g fill="url(#glow)"><circle cx="95" cy="150" r="64"/><circle cx="705" cy="150" r="64"/><circle cx="190" cy="165" r="46"/><circle cx="610" cy="165" r="46"/></g>
+          <g stroke="#D4AE55" stroke-opacity=".6" stroke-width="1.2">
+            <line x1="95" y1="300" x2="95" y2="185"/><line x1="190" y1="268" x2="190" y2="200"/><line x1="275" y1="245" x2="275" y2="206"/>
+            <line x1="525" y1="245" x2="525" y2="206"/><line x1="610" y1="268" x2="610" y2="200"/><line x1="705" y1="300" x2="705" y2="185"/>
+          </g>
+          <g fill-opacity=".55">
+            <circle cx="95" cy="165" r="22" fill="#5b9d92"/><circle cx="77" cy="183" r="14" fill="#3b6aa8"/><circle cx="113" cy="183" r="14" fill="#a8453a"/><circle cx="95" cy="196" r="10" fill="#D4AE55"/>
+            <circle cx="190" cy="190" r="17" fill="#3b6aa8"/><circle cx="176" cy="204" r="10" fill="#5b9d92"/><circle cx="204" cy="204" r="10" fill="#D4AE55"/>
+            <circle cx="275" cy="200" r="10" fill="#D4AE55"/><circle cx="265" cy="211" r="6" fill="#a8453a"/><circle cx="285" cy="211" r="6" fill="#5b9d92"/>
+            <circle cx="525" cy="200" r="10" fill="#5b9d92"/><circle cx="515" cy="211" r="6" fill="#D4AE55"/><circle cx="535" cy="211" r="6" fill="#3b6aa8"/>
+            <circle cx="610" cy="190" r="17" fill="#a8453a"/><circle cx="596" cy="204" r="10" fill="#D4AE55"/><circle cx="624" cy="204" r="10" fill="#5b9d92"/>
+            <circle cx="705" cy="165" r="22" fill="#3b6aa8"/><circle cx="687" cy="183" r="14" fill="#5b9d92"/><circle cx="723" cy="183" r="14" fill="#D4AE55"/><circle cx="705" cy="196" r="10" fill="#a8453a"/>
+          </g>
+        </g>
+
+        <!-- eight-branch pond, jewel at its centre, lotuses -->
+        <g id="pond" transform="translate(0 -9)">
+          <ellipse cx="400" cy="300" rx="190" ry="24" fill="#1D3A64" fill-opacity=".7" stroke="#D4AE55" stroke-opacity=".55" stroke-width=".8"/>
+          <g stroke="#D4AE55" stroke-opacity=".5" stroke-width=".7" fill="none">
+            <path d="M400 300 L580 300"/><path d="M400 300 L527 316"/><path d="M400 300 L400 322"/><path d="M400 300 L273 316"/>
+            <path d="M400 300 L220 300"/><path d="M400 300 L273 284"/><path d="M400 300 L400 278"/><path d="M400 300 L527 284"/>
+          </g>
+          <g stroke="#ECE2CC" stroke-opacity=".5" fill="none" stroke-width=".7">
+            <ellipse class="ripple" cx="400" cy="300" rx="120" ry="14"/>
+            <ellipse class="ripple" cx="400" cy="300" rx="120" ry="14" style="animation-delay:2.5s"/>
+          </g>
+          <path d="M400 291 l6 9 -6 9 -6 -9 Z" fill="#F3D58A" fill-opacity=".9" stroke="#D4AE55" stroke-width=".6"/>
+          <g stroke="#0E1525" stroke-width=".5">
+            <g fill="#D98A2B"><ellipse cx="335" cy="306" rx="9" ry="5"/><ellipse cx="335" cy="302" rx="4" ry="7"/></g>
+            <g fill="#D4AE55"><ellipse cx="375" cy="314" rx="9" ry="5"/><ellipse cx="375" cy="310" rx="4" ry="7"/></g>
+            <g fill="#F0CF84"><ellipse cx="440" cy="312" rx="9" ry="5"/><ellipse cx="440" cy="308" rx="4" ry="7"/></g>
+            <g fill="#D98A2B"><ellipse cx="482" cy="303" rx="9" ry="5"/><ellipse cx="482" cy="299" rx="4" ry="7"/></g>
+          </g>
+        </g>
+
+        <!-- equality: identical points resting on the same level ground -->
+        <g id="equal">
+          <line id="eqline" pathLength="1" x1="100" y1="248" x2="700" y2="248" stroke="#D4AE55" stroke-opacity=".7" stroke-width=".8"/>
+        </g>
+
+        <!-- the throne: horses, dais, lotus, canopy (abstract geometry, not likeness) -->
+        <g id="throne" fill="none" stroke="#D4AE55" stroke-opacity=".85" stroke-width=".9">
+          <g id="canopy">
+            <path d="M295 100 Q400 46 505 100"/><path d="M315 100 Q400 62 485 100" stroke-opacity=".5"/>
+            <circle cx="400" cy="52" r="3" fill="#F3D58A" stroke="none"/>
+            <g stroke-dasharray=".1 5" stroke-linecap="round" stroke-width="2" stroke-opacity=".8">
+              <path d="M312 96 V124"/><path d="M346 83 V112"/><path d="M382 76 V104"/><path d="M418 76 V104"/><path d="M454 83 V112"/><path d="M488 96 V124"/>
+            </g>
+            <path d="M295 100 l-6 22 l6 -6 l6 6 Z" fill="#D4AE55" fill-opacity=".25"/><path d="M505 100 l-6 22 l6 -6 l6 6 Z" fill="#D4AE55" fill-opacity=".25"/>
+          </g>
+          <g id="lotus" fill="#D4AE55" fill-opacity=".1">
+            <use href="#pt" transform="translate(400 238) rotate(-72)"/><use href="#pt" transform="translate(400 238) rotate(-48)"/><use href="#pt" transform="translate(400 238) rotate(-24)"/>
+            <use href="#pt" transform="translate(400 238)"/>
+            <use href="#pt" transform="translate(400 238) rotate(24)"/><use href="#pt" transform="translate(400 238) rotate(48)"/><use href="#pt" transform="translate(400 238) rotate(72)"/>
+            <use href="#pt" transform="translate(400 238) rotate(-60) scale(.8)" stroke-opacity=".5"/><use href="#pt" transform="translate(400 238) rotate(-36) scale(.8)" stroke-opacity=".5"/><use href="#pt" transform="translate(400 238) rotate(-12) scale(.8)" stroke-opacity=".5"/>
+            <use href="#pt" transform="translate(400 238) rotate(12) scale(.8)" stroke-opacity=".5"/><use href="#pt" transform="translate(400 238) rotate(36) scale(.8)" stroke-opacity=".5"/><use href="#pt" transform="translate(400 238) rotate(60) scale(.8)" stroke-opacity=".5"/>
+          </g>
+          <g id="dais">
+            <path d="M334 238 H466 L480 262 H320 Z" fill="#D4AE55" fill-opacity=".1"/>
+            <g fill="#F0CF84" stroke="none"><circle cx="345" cy="250" r="2"/><circle cx="372" cy="250" r="2"/><circle cx="400" cy="250" r="2.4"/><circle cx="428" cy="250" r="2"/><circle cx="455" cy="250" r="2"/></g>
+          </g>
+          <g id="horses">
+            <path id="hp" d="M-7 16 V9 Q-7 0 0 0 Q7 0 7 9 V16" transform="translate(325 263)"/>
+            <use href="#hp" x="21.5"/><use href="#hp" x="43"/><use href="#hp" x="64.5"/><use href="#hp" x="86"/><use href="#hp" x="107.5"/><use href="#hp" x="129"/><use href="#hp" x="150.5"/>
+          </g>
+        </g>
+
+        <!-- Ratnasambhava: light, not likeness -->
+        <g id="halo">
+          <circle cx="400" cy="150" r="150" fill="url(#glow)" filter="url(#blur)"/>
+          <g class="rings" fill="none" stroke="#D4AE55" stroke-width=".6">
+            <circle cx="400" cy="150" r="50" stroke-opacity=".7"/><circle cx="400" cy="150" r="74" stroke-opacity=".5"/><circle cx="400" cy="150" r="102" stroke-opacity=".35"/><circle cx="400" cy="150" r="134" stroke-opacity=".2"/>
+          </g>
+          <ellipse id="core" cx="400" cy="150" rx="20" ry="36" fill="url(#sunG)" opacity=".95"/>
+          <ellipse cx="400" cy="150" rx="36" ry="56" fill="none" stroke="#D4AE55" stroke-opacity=".6" stroke-width=".8"/>
+          <circle id="urna" cx="400" cy="132" r="2.2" fill="#ECE2CC"/>
+        </g>
+        <g id="jewel">
+          <circle cx="426" cy="192" r="24" fill="url(#glow)"/>
+          <path d="M426 183 l7 9 -7 9 -7 -9 Z" fill="url(#sunG)" stroke="#F3D58A" stroke-width=".6"/>
+        </g>
+        <g id="giving" stroke="#D4AE55" stroke-opacity=".7" stroke-width=".7" fill="none" stroke-linecap="round">
+          <path d="M366 192 l-12 16"/><path d="M370 196 l-6 20"/><path d="M375 198 l-1 22"/><path d="M380 196 l5 20"/>
+          <g fill="#D4AE55" stroke="none" fill-opacity=".8"><circle cx="354" cy="208" r="1.3"/><circle cx="364" cy="216" r="1.3"/><circle cx="374" cy="220" r="1.3"/><circle cx="385" cy="216" r="1.3"/></g>
+        </g>
+        <g id="attend">
+          <circle cx="305" cy="170" r="36" fill="url(#glow)"/><ellipse cx="305" cy="170" rx="7" ry="14" fill="#D4AE55" fill-opacity=".8"/>
+          <circle cx="495" cy="170" r="36" fill="url(#glow)"/><ellipse cx="495" cy="170" rx="7" ry="14" fill="#D4AE55" fill-opacity=".8"/>
+          <g fill="none" stroke="#D4AE55" stroke-opacity=".6" stroke-width=".7"><ellipse cx="305" cy="194" rx="14" ry="5"/><ellipse cx="495" cy="194" rx="14" ry="5"/></g>
+        </g>
+        <g id="attlabels" text-anchor="middle">
+          <text class="nm" x="305" y="212">Ākāśagarbha</text><text class="nm" x="495" y="212">Ratnapāṇi</text>
+        </g>
+
+        <!-- Māmakī, directly in front of the throne: moon disc, golden light, amber and vermilion silks -->
+        <g id="mama" transform="translate(0 -8)">
+          <circle cx="400" cy="306" r="26" fill="#ECE2CC" fill-opacity=".04" stroke="#ECE2CC" stroke-opacity=".4" stroke-width=".7"/>
+          <circle cx="400" cy="306" r="46" fill="url(#glow)"/>
+          <ellipse cx="400" cy="304" rx="9" ry="19" fill="url(#sunG)" opacity=".95"/>
+          <g fill="#D4AE55" fill-opacity=".12" stroke="#D4AE55" stroke-opacity=".7" stroke-width=".7">
+            <ellipse cx="400" cy="328" rx="5" ry="10" transform="rotate(-60 400 328)"/><ellipse cx="400" cy="328" rx="5" ry="10" transform="rotate(-30 400 328)"/><ellipse cx="400" cy="328" rx="5" ry="10"/>
+            <ellipse cx="400" cy="328" rx="5" ry="10" transform="rotate(30 400 328)"/><ellipse cx="400" cy="328" rx="5" ry="10" transform="rotate(60 400 328)"/>
+          </g>
+          <g fill="none" stroke="#8E2418" stroke-width="1.6" stroke-opacity=".9" stroke-linecap="round"><path d="M392 292 Q372 308 380 328"/><path d="M408 292 Q428 308 420 328"/></g>
+          <path d="M392 302 L384 284" stroke="#D4AE55" stroke-opacity=".8" stroke-width=".7" fill="none"/>
+          <ellipse cx="384" cy="281" rx="2.5" ry="4" fill="#D4AE55" fill-opacity=".6"/>
+          <path d="M384 270 l3 5 -3 5 -3 -5 Z" fill="#F3D58A"/>
+          <path d="M384 280 Q380 292 388 304" stroke="#F0CF84" stroke-opacity=".7" stroke-width=".9" stroke-dasharray="1 3" fill="none" stroke-linecap="round"/>
+          <text class="nm" x="436" y="309">Māmakī</text>
+        </g>
+
+        <!-- impartial light: rays in the ten directions (built in script) -->
+        <g id="rays" stroke="#F0CF84" stroke-opacity=".55" stroke-width=".5" fill="none"></g>
+      </g>
+
+      <!-- seeing yourself there: seated in a golden lotus whose petals draw gently together -->
+      <g id="self" transform="translate(400 250)">
+        <circle id="selfglow" cx="0" cy="-34" r="64" fill="url(#glow)"/>
+        <ellipse cx="0" cy="-34" rx="12" ry="22" fill="url(#sunG)" opacity=".95"/>
+        <g fill="#D4AE55" fill-opacity=".14" stroke="#D4AE55" stroke-opacity=".75" stroke-width=".8">
+          <ellipse class="pet" cx="0" cy="-34" rx="15" ry="34" style="--r:-66deg"/><ellipse class="pet" cx="0" cy="-34" rx="15" ry="34" style="--r:66deg"/>
+          <ellipse class="pet" cx="0" cy="-34" rx="15" ry="34" style="--r:-44deg"/><ellipse class="pet" cx="0" cy="-34" rx="15" ry="34" style="--r:44deg"/>
+          <ellipse class="pet" cx="0" cy="-34" rx="15" ry="34" style="--r:-22deg"/><ellipse class="pet" cx="0" cy="-34" rx="15" ry="34" style="--r:22deg"/>
+          <ellipse class="pet" cx="0" cy="-34" rx="15" ry="34" style="--r:0deg"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Breath -->
+  <div id="breath" class="layer">
+    <svg viewBox="0 0 400 260" aria-hidden="true">
+      <g id="ringg"><circle cx="200" cy="130" r="86" fill="none" stroke="#D4AE55" stroke-opacity=".5" stroke-width=".8"/><circle cx="200" cy="130" r="86" fill="#D4AE55" fill-opacity=".05"/></g>
+      <circle id="dotL" cx="178" cy="130" r="7" fill="#D4AE55" style="filter:drop-shadow(0 0 8px #D4AE55)"/>
+      <circle id="dotR" cx="222" cy="130" r="7" fill="#D4AE55" style="filter:drop-shadow(0 0 8px #D4AE55)"/>
+      <g text-anchor="middle">
+        <text id="p1" x="200" y="248" class="ph" data-t>Left nostril</text>
+        <text id="p2" x="200" y="248" class="ph" data-t>Right nostril</text>
+        <text id="p3" x="200" y="248" class="ph" data-t>Both together</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Body & amber cloud -->
+  <div id="bodyL" class="layer">
+    <svg viewBox="0 0 420 200" aria-hidden="true">
+      <defs>
+        <linearGradient id="amberG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F0CF84"/><stop offset="1" stop-color="#B8902A"/></linearGradient>
+        <radialGradient id="cloudG"><stop offset="0" stop-color="#F3D58A" stop-opacity=".95"/><stop offset=".5" stop-color="#D4AE55" stop-opacity=".5"/><stop offset="1" stop-color="#B8902A" stop-opacity="0"/></radialGradient>
+        <clipPath id="bodyClip">
+          <circle cx="60" cy="100" r="26"/><rect x="80" y="92" width="18" height="16"/>
+          <rect x="92" y="70" width="170" height="60" rx="26"/>
+          <rect x="110" y="52" width="120" height="12" rx="6"/><rect x="110" y="136" width="120" height="12" rx="6"/>
+          <rect x="262" y="82" width="130" height="16" rx="8"/><rect x="262" y="102" width="130" height="16" rx="8"/>
+        </clipPath>
+      </defs>
+      <g fill="none" stroke="#D4AE55" stroke-opacity=".38" stroke-width=".8">
+        <circle cx="60" cy="100" r="26"/><rect x="92" y="70" width="170" height="60" rx="26"/>
+        <rect x="110" y="52" width="120" height="12" rx="6"/><rect x="110" y="136" width="120" height="12" rx="6"/>
+        <rect x="262" y="82" width="130" height="16" rx="8"/><rect x="262" y="102" width="130" height="16" rx="8"/>
+      </g>
+      <g clip-path="url(#bodyClip)"><rect id="fill" x="20" y="40" width="380" height="120" fill="url(#amberG)" fill-opacity=".9"/></g>
+      <ellipse id="cloud" cx="60" cy="100" rx="64" ry="38" fill="url(#cloudG)"/>
+      <g id="door" fill="#D4AE55" fill-opacity=".25" stroke="#F0CF84" stroke-width="1"><path d="M53 66 V46 a7 7 0 0 1 14 0 V66 Z"/></g>
+    </svg>
+  </div>
+  <div id="orb"></div>
+
+  <!-- Centre text blocks -->
+  <div class="blk" data-s="open">
+    <svg class="rise" style="--d:.4s" viewBox="0 0 120 120" width="40" height="40" fill="none" stroke="#D4AE55" stroke-width="1.3" aria-hidden="true">
+      <path d="M60 10 L92 56 L60 110 L28 56 Z"/><path d="M28 56 H92"/><path d="M60 10 L48 56 L60 110 L72 56 Z" stroke-opacity=".6"/><circle cx="60" cy="56" r="4" fill="#D4AE55"/>
+    </svg>
+    <div class="lab rise" style="--d:1s" data-t>A Guided Meditation for Vajrakula</div>
+    <h1 class="rise" style="--d:1.8s;max-width:17ch" data-t>Journey to the Land <em>Endowed with Splendor</em></h1>
+    <div class="rule" style="--d:3.4s"></div>
+    <div class="sub rise" style="--d:4.2s" data-t>A visualization of Śrīmat, the southern pure land of Buddha Ratnasambhava</div>
+    <div class="deva rise" style="--d:5.6s">रत्नसम्भव</div>
+  </div>
+
+  <div class="blk" data-s="intro">
+    <div class="lab rise" style="--d:.4s" data-t>Before you begin</div>
+    <p class="line rise" style="--d:1.2s" data-t>A place of refuge, <em>not a personal projection.</em></p>
+    <div class="sub rise" style="--d:2.6s" data-t>The destination is fixed, its topography defined by the Ratna family. The motivation is not to escape anything, but to stand in the presence of Ratnasambhava and Māmakī, and let the Wisdom of Equanimity transmute whatever pride, comparison or scarcity you bring with you.</div>
+    <div class="rule" style="--d:5s"></div>
+    <div class="sub small rise" style="--d:5.8s" data-t>A thirty-minute session that holds even one element clearly is worth far more than a rushed journey through the whole landscape.</div>
+  </div>
+
+  <div class="blk" data-s="refuge">
+    <div class="lab rise" style="--d:.4s" data-t>Before the journey</div>
+    <p class="line rise" style="--d:1.2s" data-t>Go for refuge.</p>
+    <p class="sub rise" style="--d:2s" data-t>Buddha, Dharma, Sangha — and the root masters and deities of the field of refuge.</p>
+    <div class="rosary" style="--d:3.4s"><i style="--k:0"></i><i style="--k:1"></i><i style="--k:2"></i><i style="--k:3"></i><i style="--k:4"></i><i style="--k:5"></i><i style="--k:6"></i></div>
+    <p class="line rise" style="--d:4.6s" data-t>Generate <em>bodhicitta.</em></p>
+    <p class="sub rise" style="--d:5.4s" data-t>Dedicate this practice, and whatever benefit comes of it, to wandering beings without exception.</p>
+  </div>
+
+  <div class="blk" data-s="dedicate">
+    <div class="lab rise" style="--d:.4s" data-t>Closing</div>
+    <p class="line rise" style="--d:1.2s" data-t>Dedicate the merit.</p>
+    <p class="sub rise" style="--d:2.2s" data-t>For the complete removal of suffering and poverty for all wandering beings everywhere. You bring nothing back from this land except the quiet certainty of equanimity.</p>
+    <div class="rule" style="--d:4.4s"></div>
+    <p class="line rise" style="--d:5.4s;font-size:clamp(20px,3.6vw,32px);max-width:24em" data-t><em>May all beings realize the inexhaustible treasury of their own minds.</em></p>
+    <p class="sub small rise" style="--d:7.4s" data-t>Composed and arranged by Guru Prajnavajra, from the format taught and transmitted by Sri Suryagridha for Vajrakula.</p>
+    <div class="lab rise" style="--d:8.6s;color:var(--gilt-soft)">Sarva Mangalam!</div>
+    <i class="cdot rise" style="--d:9.6s"></i>
+    <div class="placeholder rise" style="--d:10.4s">Wordmark · Lockup A · master file placeholder</div>
+  </div>
+
+  <div id="cap" class="hide"><div class="st"></div><h2 class="ti"></h2><p class="tx"></p><p class="qt"></p></div>
+
+  <div id="top">
+    <div class="folio">Vajrakula · Śrīmat</div>
+    <div id="ctl"><button id="prev" aria-label="Previous scene" data-a="Previous scene" data-t>Prev</button><button id="pp" aria-label="Pause or play" data-a="Pause or play" data-t>Pause</button><button id="next" aria-label="Next scene" data-a="Next scene" data-t>Next</button><span id="count">01 / 21</span></div>
+  </div>
+  <div id="bar"></div>
+  <div id="grain"></div>
+</div>
+
+<nav id="lang" aria-label="Language"><button data-l="en">EN</button><button data-l="es">ES</button><button data-l="pt">PT</button></nav>
+
+<!-- Static fallback for prefers-reduced-motion -->
+<main id="static"></main>
+
+<script>
+/* ───────── Language: ?lang= → saved choice (shared with the other pieces) → browser → English ─────────
+   Strings are keyed by their exact English text. Sanskrit names, mantra-like terms and "Sarva Mangalam!" stay untranslated. */
+const DICT={
+ "es": {
+  "A Guided Meditation for Vajrakula": "Una meditación guiada para Vajrakula",
+  "Journey to the Land <em>Endowed with Splendor</em>": "Viaje a la Tierra <em>Dotada de Esplendor</em>",
+  "A visualization of Śrīmat, the southern pure land of Buddha Ratnasambhava": "Una visualización de Śrīmat, la tierra pura del sur del Buda Ratnasambhava",
+  "Before you begin": "Antes de comenzar",
+  "A place of refuge, <em>not a personal projection.</em>": "Un lugar de refugio, <em>no una proyección personal.</em>",
+  "The destination is fixed, its topography defined by the Ratna family. The motivation is not to escape anything, but to stand in the presence of Ratnasambhava and Māmakī, and let the Wisdom of Equanimity transmute whatever pride, comparison or scarcity you bring with you.": "El destino está fijado y su topografía la define la familia Ratna. La motivación no es escapar de nada, sino estar en presencia de Ratnasambhava y Māmakī y dejar que la Sabiduría de la Ecuanimidad transmute el orgullo, la comparación o la escasez que se traigan.",
+  "A thirty-minute session that holds even one element clearly is worth far more than a rushed journey through the whole landscape.": "Una sesión de treinta minutos que sostenga con claridad aunque sea un solo elemento vale mucho más que un recorrido apresurado por todo el paisaje.",
+  "Before the journey": "Antes del viaje",
+  "Go for refuge.": "Tomar refugio.",
+  "Buddha, Dharma, Sangha — and the root masters and deities of the field of refuge.": "Buda, Dharma, Sangha — y los maestros raíz y las deidades del campo de refugio.",
+  "Generate <em>bodhicitta.</em>": "Generar <em>bodhicitta.</em>",
+  "Dedicate this practice, and whatever benefit comes of it, to wandering beings without exception.": "Dedicar esta práctica, y todo el beneficio que surja de ella, a los seres errantes sin excepción.",
+  "Closing": "Cierre",
+  "Dedicate the merit.": "Dedicar el mérito.",
+  "For the complete removal of suffering and poverty for all wandering beings everywhere. You bring nothing back from this land except the quiet certainty of equanimity.": "Para la completa eliminación del sufrimiento y de la pobreza de todos los seres errantes, en todas partes. De esta tierra no se trae nada, salvo la serena certeza de la ecuanimidad.",
+  "<em>May all beings realize the inexhaustible treasury of their own minds.</em>": "<em>Que todos los seres realicen el tesoro inagotable de su propia mente.</em>",
+  "Composed and arranged by Guru Prajnavajra, from the format taught and transmitted by Sri Suryagridha for Vajrakula.": "Compuesto y ordenado por Guru Prajnavajra, a partir del formato enseñado y transmitido por Sri Suryagridha para Vajrakula.",
+  "Left nostril": "Fosa nasal izquierda",
+  "Right nostril": "Fosa nasal derecha",
+  "Both together": "Ambas a la vez",
+  "Prev": "Anterior",
+  "Next": "Siguiente",
+  "Pause": "Pausa",
+  "Play": "Reproducir",
+  "Replay": "Repetir",
+  "Previous scene": "Escena anterior",
+  "Pause or play": "Pausar o reproducir",
+  "Next scene": "Escena siguiente",
+  "Part I · Relaxation & Ascent": "Parte I · Relajación y ascenso",
+  "Part II · The Southern Horizon": "Parte II · El horizonte del sur",
+  "Part III · Trees, Waters & Pride": "Parte III · Árboles, aguas y orgullo",
+  "Part IV · The Horse Throne": "Parte IV · El trono de los caballos",
+  "Part V · Mother Māmakī": "Parte V · La Madre Māmakī",
+  "Part VI · Absorption & Return": "Parte VI · Absorción y regreso",
+  "Purify the breath": "Purificar la respiración",
+  "The Amber Cloud": "La nube ámbar",
+  "Through the Golden Door": "A través de la puerta dorada",
+  "Carried, Unhurried": "Sin esfuerzo, sin prisa",
+  "The Midday Sun": "El sol del mediodía",
+  "Earth Becoming Gold": "La tierra se vuelve oro",
+  "Arrival": "Llegada",
+  "The Wish-Granting Trees": "Los árboles que conceden deseos",
+  "Ponds of Eight Excellent Waters": "Estanques de las ocho aguas excelentes",
+  "The Soothing Away of Pride": "El apaciguamiento del orgullo",
+  "The Jewel and Horse Throne": "El trono de joyas y caballos",
+  "In the Presence of Ratnasambhava": "En presencia de Ratnasambhava",
+  "Māmakī, Mother of the Jewel Family": "Māmakī, Madre de la familia de la Joya",
+  "The Body of Light": "El cuerpo de luz",
+  "Seeing Yourself There": "Verse allí",
+  "The Return": "El regreso",
+  "Exhale through the left nostril, inhale left. Exhale through the right, inhale right. Exhale through both together, releasing whatever remains. Three slow breaths, each exhale a little longer than the inhale.": "Exhalar por la fosa nasal izquierda, inhalar por la izquierda. Exhalar por la derecha, inhalar por la derecha. Exhalar por ambas a la vez, soltando lo que quede. Tres respiraciones lentas, cada exhalación un poco más larga que la inhalación.",
+  "Just above the crown, a small cloud of warm, almost liquid amber light descends — over the eyes, the brow, the jaw; down the arms, through the heart, the hips, the legs. Each place grows heavy and calm. There is nothing left to do.": "Justo sobre la coronilla, una pequeña nube de luz ámbar, cálida y casi líquida, desciende: sobre los ojos, la frente, la mandíbula; por los brazos, el corazón, las caderas, las piernas. Cada lugar se vuelve pesado y sereno. Ya no queda nada por hacer.",
+  "Between the eyebrows, a small golden door stands slightly ajar. The amber cloud gathers inward into one dense mass of golden light. Step through. The cloud holds you weightless and begins to rise.": "Entre las cejas, una pequeña puerta dorada permanece entornada. La nube ámbar se recoge hacia adentro en una única masa densa de luz dorada. Cruzar la puerta. La nube sostiene sin peso y comienza a ascender.",
+  "The cloud carries you, slow and unhurried, toward the south. The destination is fixed; this is a place of refuge, not a personal projection.": "La nube lleva, lenta y sin prisa, hacia el sur. El destino está fijado; es un lugar de refugio, no una proyección personal.",
+  "High in the southern sky hangs a radiant golden sun at its zenith — not scorching, not blinding; full, warm and steady, without shadow. Rest on it the way you would watch an incandescent jewel suspended in space. Close your eyes within the vision: does the imprint remain?": "Alto en el cielo del sur cuelga un sol dorado y radiante en su cenit: ni abrasador ni cegador; pleno, cálido y firme, sin sombra. Descansar en él como quien contempla una joya incandescente suspendida en el espacio. Cerrar los ojos dentro de la visión: ¿permanece la huella?",
+  "Śrīmat lies directly beyond it.": "Śrīmat se encuentra justo más allá.",
+  "The southern horizon settles into primordial earth, grows completely still, then transmutes — not by violent friction, but by settling into refined, flawless gold: a level mirror shining from within. Beneath it rise eighty-four thousand pillars of diamond, beryl and wish-fulfilling gems.": "El horizonte del sur se asienta en tierra primordial, queda completamente quieto y luego se transmuta: no por fricción violenta, sino asentándose en oro puro y sin mancha, un espejo nivelado que brilla desde dentro. Bajo él se elevan ochenta y cuatro mil pilares de diamante, berilo y gemas que cumplen deseos.",
+  "The cloud opens; its light becomes the all-pervading golden brilliance of Ratnasambhava. The ground is gold and seven jewels, completely level, free of stones, thorns and chasms. It yields beneath your step like celestial silk, and rises as you lift it.": "La nube se abre; su luz se vuelve el resplandor dorado y omnipresente de Ratnasambhava. El suelo es de oro y de siete joyas, perfectamente llano, sin piedras, espinas ni abismos. Cede bajo el paso como seda celestial y se eleva al levantar el pie.",
+  "There is no poverty anywhere in this land. Everything is already complete.": "No hay pobreza en ningún lugar de esta tierra. Todo está ya completo.",
+  "Trees of radiant gems stand in even rows: roots of gold, trunks of silver, branches of beryl, leaves of lapis lazuli, blossoms of coral, fruits of wish-fulfilling gems. Floods of golden light pour from the fruit and gather into canopies overhead.": "Árboles de gemas radiantes se alzan en hileras parejas: raíces de oro, troncos de plata, ramas de berilo, hojas de lapislázuli, flores de coral, frutos de gemas que cumplen deseos. Del fruto brotan torrentes de luz dorada que se reúnen en doseles en lo alto.",
+  "Ponds of the eight excellent waters: cool, sweet, light, soft, clear, free of odor, soothing to the throat, nourishing to the body. The water springs from a wish-fulfilling gem and flows over sands of gold; lotuses as wide as cartwheels float upon it.": "Estanques de las ocho aguas excelentes: frescas, dulces, ligeras, suaves, claras, sin olor, gratas a la garganta, nutritivas para el cuerpo. El agua brota de una gema que cumple deseos y fluye sobre arenas de oro; flotan sobre ella lotos tan anchos como ruedas de carro.",
+  "Celestial instruments play without being touched, proclaiming that all beings possess the untarnished seed of buddhahood.": "Instrumentos celestiales suenan sin que nadie los toque, proclamando que todos los seres poseen la semilla inmaculada de la budeidad.",
+  "The rustle of gem-leaves, chime nets and lapping water becomes one voice: the Dharmadhātu teaching the equality of all phenomena. Like cool golden balm, it reaches the knots of comparison and hierarchy — superiority, competing, feeling deficient — and they begin to unravel.": "El murmullo de las hojas de gemas, las redes de campanillas y el agua que lame se vuelve una sola voz: el Dharmadhātu enseñando la igualdad de todos los fenómenos. Como un bálsamo dorado y fresco, alcanza los nudos de la comparación y la jerarquía —superioridad, competencia, sentirse deficiente— y comienzan a deshacerse.",
+  "The golden ground bears the weight of every being with identical tenderness.": "El suelo dorado sostiene el peso de todos los seres con idéntica ternura.",
+  "Eight magnificent yellow horses — strong, untiring, noble — stand as the foundation: swiftness, vitality, the power of equanimity that carries every burden without strain. Above them a dais of gems; a lotus of one thousand golden petals; a canopy of jewels, pearls and golden banners.": "Ocho magníficos caballos amarillos —fuertes, incansables, nobles— son el cimiento: rapidez, vitalidad, el poder de la ecuanimidad que lleva toda carga sin esfuerzo. Encima, un estrado de gemas; un loto de mil pétalos dorados; un dosel de joyas, perlas y estandartes dorados.",
+  "This is the seat of Ratnasambhava.": "Este es el asiento de Ratnasambhava.",
+  "His body is refined, luminous gold — a mountain of gold lit by a thousand suns, yet gentle to behold. In the vajra posture, his right hand rests over the knee in Varada mudrā, bestowing all attainments without withholding; his left holds a blazing wish-fulfilling jewel.": "Su cuerpo es de oro refinado y luminoso: una montaña de oro iluminada por mil soles, y sin embargo suave de contemplar. En postura vajra, su mano derecha reposa sobre la rodilla en Varada mudrā, otorgando todos los logros sin retener nada; la izquierda sostiene una joya que cumple deseos, ardiente.",
+  "Let every thought of scarcity or self-importance dissolve into this field of impartial golden light.": "Que todo pensamiento de escasez o de importancia propia se disuelva en este campo de luz dorada e imparcial.",
+  "Directly in front of the throne, on golden lotuses and a moon disc, sits Mother Māmakī: golden-yellow, youthful, serene, her silks amber and vermilion. Not in union with Ratnasambhava — each sits in self-contained majesty. Her right hand bestows; her left holds an utpala flower bearing a flaming cintāmaṇi.": "Justo frente al trono, sobre lotos dorados y un disco lunar, se sienta la Madre Māmakī: amarillo dorado, joven, serena, con sedas ámbar y bermellón. No está en unión con Ratnasambhava: cada uno se sienta en una majestad completa en sí misma. Su mano derecha otorga; la izquierda sostiene una flor de utpala con un cintāmaṇi llameante.",
+  "You are already an heir to the boundless treasury of the buddhas.": "Ya se es heredero del tesoro ilimitado de los budas.",
+  "From the white curl of hair between his eyebrows, and from every pore of his golden body, rays of warm light pour out across the ten directions. They touch all beings equally, making no distinction between high and low, worthy and unworthy.": "Desde el rizo de vello blanco entre sus cejas, y desde cada poro de su cuerpo dorado, rayos de luz cálida se derraman por las diez direcciones. Tocan a todos los seres por igual, sin distinguir entre alto y bajo, digno e indigno.",
+  "Rest completely in being embraced by this impartial light.": "Descansar por completo en el abrazo de esta luz imparcial.",
+  "To his right, Ākāśagarbha holds a jewel-bearing lotus that lights the vastness of space; to his left, Ratnapāṇi holds a blossoming wish-fulfilling gem, showering spiritual wealth. Under every jeweled tree this threefold image repeats quietly, filling the entire pure realm.": "A su derecha, Ākāśagarbha sostiene un loto con una joya que ilumina la inmensidad del espacio; a su izquierda, Ratnapāṇi sostiene una gema floreciente que cumple deseos y derrama riqueza espiritual. Bajo cada árbol de joyas, esta imagen triple se repite en silencio, llenando toda la tierra pura.",
+  "The vastness of the treasury, and sovereign richness in action.": "La vastedad del tesoro y la riqueza soberana en acción.",
+  "There is nothing to achieve, nothing to acquire, nothing to prove. If it feels natural, imagine yourself seated in the heart of a golden lotus in the ponds of Śrīmat, its petals drawing gently together around you in a chamber of golden nectar.": "No hay nada que lograr, nada que adquirir, nada que demostrar. Si resulta natural, imaginarse sentado en el corazón de un loto dorado en los estanques de Śrīmat, con sus pétalos cerrándose suavemente alrededor, en una cámara de néctar dorado.",
+  "You are a natural resident of this pure land, not a stranger.": "Se es un habitante natural de esta tierra pura, no un extraño.",
+  "When the return signal sounds — a slowing drumbeat, the soft ring of a chime — the amber cloud gathers around you and carries you back to the golden door. Step through. The light settles into your ordinary body, resting where you have been sitting all along.": "Cuando suena la señal de regreso —un tambor que se ralentiza, el suave tañido de una campanilla—, la nube ámbar vuelve a envolver y lleva de regreso hasta la puerta dorada. Cruzarla. La luz se asienta en el cuerpo ordinario, descansando donde siempre se ha estado sentado.",
+  "Refuge & Bodhicitta": "Refugio y bodhicitta",
+  "Go for refuge — Buddha, Dharma, Sangha, and the root masters and deities of the field of refuge. Generate bodhicitta: dedicate this practice, and whatever benefit comes of it, to wandering beings without exception.": "Tomar refugio: Buda, Dharma, Sangha y los maestros raíz y las deidades del campo de refugio. Generar bodhicitta: dedicar esta práctica, y todo el beneficio que surja de ella, a los seres errantes sin excepción.",
+  "Dedicate the Merit": "Dedicar el mérito",
+  "Journey to the Land Endowed with Splendor": "Viaje a la Tierra Dotada de Esplendor"
+ },
+ "pt": {
+  "A Guided Meditation for Vajrakula": "Uma meditação guiada para Vajrakula",
+  "Journey to the Land <em>Endowed with Splendor</em>": "Jornada à Terra <em>Dotada de Esplendor</em>",
+  "A visualization of Śrīmat, the southern pure land of Buddha Ratnasambhava": "Uma visualização de Śrīmat, a terra pura do sul do Buda Ratnasambhava",
+  "Before you begin": "Antes de começar",
+  "A place of refuge, <em>not a personal projection.</em>": "Um lugar de refúgio, <em>não uma projeção pessoal.</em>",
+  "The destination is fixed, its topography defined by the Ratna family. The motivation is not to escape anything, but to stand in the presence of Ratnasambhava and Māmakī, and let the Wisdom of Equanimity transmute whatever pride, comparison or scarcity you bring with you.": "O destino é fixo e sua topografia é definida pela família Ratna. A motivação não é escapar de nada, mas estar na presença de Ratnasambhava e Māmakī e deixar que a Sabedoria da Equanimidade transmute o orgulho, a comparação ou a escassez que se traga consigo.",
+  "A thirty-minute session that holds even one element clearly is worth far more than a rushed journey through the whole landscape.": "Uma sessão de trinta minutos que sustente com clareza ao menos um elemento vale muito mais do que um percurso apressado por toda a paisagem.",
+  "Before the journey": "Antes da jornada",
+  "Go for refuge.": "Tomar refúgio.",
+  "Buddha, Dharma, Sangha — and the root masters and deities of the field of refuge.": "Buda, Dharma, Sangha — e os mestres-raiz e as divindades do campo de refúgio.",
+  "Generate <em>bodhicitta.</em>": "Gerar <em>bodhicitta.</em>",
+  "Dedicate this practice, and whatever benefit comes of it, to wandering beings without exception.": "Dedicar esta prática, e todo o benefício que dela surgir, aos seres errantes sem exceção.",
+  "Closing": "Encerramento",
+  "Dedicate the merit.": "Dedicar o mérito.",
+  "For the complete removal of suffering and poverty for all wandering beings everywhere. You bring nothing back from this land except the quiet certainty of equanimity.": "Para a completa eliminação do sofrimento e da pobreza de todos os seres errantes, em toda parte. Desta terra não se traz nada, exceto a serena certeza da equanimidade.",
+  "<em>May all beings realize the inexhaustible treasury of their own minds.</em>": "<em>Que todos os seres realizem o tesouro inesgotável de sua própria mente.</em>",
+  "Composed and arranged by Guru Prajnavajra, from the format taught and transmitted by Sri Suryagridha for Vajrakula.": "Composto e organizado por Guru Prajnavajra, a partir do formato ensinado e transmitido por Sri Suryagridha para Vajrakula.",
+  "Left nostril": "Narina esquerda",
+  "Right nostril": "Narina direita",
+  "Both together": "Ambas juntas",
+  "Prev": "Anterior",
+  "Next": "Próxima",
+  "Pause": "Pausar",
+  "Play": "Reproduzir",
+  "Replay": "Repetir",
+  "Previous scene": "Cena anterior",
+  "Pause or play": "Pausar ou reproduzir",
+  "Next scene": "Próxima cena",
+  "Part I · Relaxation & Ascent": "Parte I · Relaxamento e ascensão",
+  "Part II · The Southern Horizon": "Parte II · O horizonte do sul",
+  "Part III · Trees, Waters & Pride": "Parte III · Árvores, águas e orgulho",
+  "Part IV · The Horse Throne": "Parte IV · O trono dos cavalos",
+  "Part V · Mother Māmakī": "Parte V · A Mãe Māmakī",
+  "Part VI · Absorption & Return": "Parte VI · Absorção e retorno",
+  "Purify the breath": "Purificar a respiração",
+  "The Amber Cloud": "A nuvem âmbar",
+  "Through the Golden Door": "Pela porta dourada",
+  "Carried, Unhurried": "Sem esforço, sem pressa",
+  "The Midday Sun": "O sol do meio-dia",
+  "Earth Becoming Gold": "A terra se torna ouro",
+  "Arrival": "Chegada",
+  "The Wish-Granting Trees": "As árvores que realizam desejos",
+  "Ponds of Eight Excellent Waters": "Lagos das oito águas excelentes",
+  "The Soothing Away of Pride": "O abrandamento do orgulho",
+  "The Jewel and Horse Throne": "O trono de joias e cavalos",
+  "In the Presence of Ratnasambhava": "Na presença de Ratnasambhava",
+  "Māmakī, Mother of the Jewel Family": "Māmakī, Mãe da família da Joia",
+  "The Body of Light": "O corpo de luz",
+  "Seeing Yourself There": "Ver-se ali",
+  "The Return": "O retorno",
+  "Exhale through the left nostril, inhale left. Exhale through the right, inhale right. Exhale through both together, releasing whatever remains. Three slow breaths, each exhale a little longer than the inhale.": "Expirar pela narina esquerda, inspirar pela esquerda. Expirar pela direita, inspirar pela direita. Expirar pelas duas juntas, soltando o que restar. Três respirações lentas, cada expiração um pouco mais longa que a inspiração.",
+  "Just above the crown, a small cloud of warm, almost liquid amber light descends — over the eyes, the brow, the jaw; down the arms, through the heart, the hips, the legs. Each place grows heavy and calm. There is nothing left to do.": "Logo acima do alto da cabeça, uma pequena nuvem de luz âmbar, cálida e quase líquida, desce: sobre os olhos, a testa, o maxilar; pelos braços, o coração, os quadris, as pernas. Cada lugar fica pesado e sereno. Já não resta nada a fazer.",
+  "Between the eyebrows, a small golden door stands slightly ajar. The amber cloud gathers inward into one dense mass of golden light. Step through. The cloud holds you weightless and begins to rise.": "Entre as sobrancelhas, uma pequena porta dourada está entreaberta. A nuvem âmbar se recolhe para dentro numa única massa densa de luz dourada. Atravessar a porta. A nuvem sustenta sem peso e começa a subir.",
+  "The cloud carries you, slow and unhurried, toward the south. The destination is fixed; this is a place of refuge, not a personal projection.": "A nuvem leva, lenta e sem pressa, rumo ao sul. O destino é fixo; é um lugar de refúgio, não uma projeção pessoal.",
+  "High in the southern sky hangs a radiant golden sun at its zenith — not scorching, not blinding; full, warm and steady, without shadow. Rest on it the way you would watch an incandescent jewel suspended in space. Close your eyes within the vision: does the imprint remain?": "Alto no céu do sul paira um sol dourado e radiante em seu zênite: nem abrasador nem ofuscante; pleno, cálido e firme, sem sombra. Repousar nele como quem contempla uma joia incandescente suspensa no espaço. Fechar os olhos dentro da visão: a marca permanece?",
+  "Śrīmat lies directly beyond it.": "Śrīmat está logo além.",
+  "The southern horizon settles into primordial earth, grows completely still, then transmutes — not by violent friction, but by settling into refined, flawless gold: a level mirror shining from within. Beneath it rise eighty-four thousand pillars of diamond, beryl and wish-fulfilling gems.": "O horizonte do sul se assenta em terra primordial, fica completamente quieto e então se transmuta: não por atrito violento, mas assentando-se em ouro refinado e sem mácula, um espelho nivelado que brilha por dentro. Sob ele se erguem oitenta e quatro mil pilares de diamante, berilo e gemas que realizam desejos.",
+  "The cloud opens; its light becomes the all-pervading golden brilliance of Ratnasambhava. The ground is gold and seven jewels, completely level, free of stones, thorns and chasms. It yields beneath your step like celestial silk, and rises as you lift it.": "A nuvem se abre; sua luz se torna o brilho dourado e onipresente de Ratnasambhava. O chão é de ouro e de sete joias, perfeitamente plano, sem pedras, espinhos ou abismos. Cede sob o passo como seda celestial e se ergue quando o pé se levanta.",
+  "There is no poverty anywhere in this land. Everything is already complete.": "Não há pobreza em lugar algum desta terra. Tudo já está completo.",
+  "Trees of radiant gems stand in even rows: roots of gold, trunks of silver, branches of beryl, leaves of lapis lazuli, blossoms of coral, fruits of wish-fulfilling gems. Floods of golden light pour from the fruit and gather into canopies overhead.": "Árvores de gemas radiantes se erguem em fileiras regulares: raízes de ouro, troncos de prata, galhos de berilo, folhas de lápis-lazúli, flores de coral, frutos de gemas que realizam desejos. Dos frutos jorram torrentes de luz dourada que se reúnem em dosséis no alto.",
+  "Ponds of the eight excellent waters: cool, sweet, light, soft, clear, free of odor, soothing to the throat, nourishing to the body. The water springs from a wish-fulfilling gem and flows over sands of gold; lotuses as wide as cartwheels float upon it.": "Lagos das oito águas excelentes: frescas, doces, leves, macias, claras, sem odor, agradáveis à garganta, nutritivas para o corpo. A água brota de uma gema que realiza desejos e corre sobre areias de ouro; sobre ela flutuam lótus tão largos quanto rodas de carro.",
+  "Celestial instruments play without being touched, proclaiming that all beings possess the untarnished seed of buddhahood.": "Instrumentos celestiais soam sem que ninguém os toque, proclamando que todos os seres possuem a semente imaculada da budeidade.",
+  "The rustle of gem-leaves, chime nets and lapping water becomes one voice: the Dharmadhātu teaching the equality of all phenomena. Like cool golden balm, it reaches the knots of comparison and hierarchy — superiority, competing, feeling deficient — and they begin to unravel.": "O sussurro das folhas de gemas, das redes de sinos e da água que ondula se torna uma só voz: o Dharmadhātu ensinando a igualdade de todos os fenômenos. Como um bálsamo dourado e fresco, alcança os nós da comparação e da hierarquia — superioridade, competição, sentir-se deficiente — e eles começam a se desfazer.",
+  "The golden ground bears the weight of every being with identical tenderness.": "O chão dourado sustenta o peso de todos os seres com idêntica ternura.",
+  "Eight magnificent yellow horses — strong, untiring, noble — stand as the foundation: swiftness, vitality, the power of equanimity that carries every burden without strain. Above them a dais of gems; a lotus of one thousand golden petals; a canopy of jewels, pearls and golden banners.": "Oito magníficos cavalos amarelos — fortes, incansáveis, nobres — são o alicerce: rapidez, vitalidade, o poder da equanimidade que leva toda carga sem esforço. Acima, um estrado de gemas; um lótus de mil pétalas douradas; um dossel de joias, pérolas e estandartes dourados.",
+  "This is the seat of Ratnasambhava.": "Este é o assento de Ratnasambhava.",
+  "His body is refined, luminous gold — a mountain of gold lit by a thousand suns, yet gentle to behold. In the vajra posture, his right hand rests over the knee in Varada mudrā, bestowing all attainments without withholding; his left holds a blazing wish-fulfilling jewel.": "Seu corpo é de ouro refinado e luminoso: uma montanha de ouro iluminada por mil sóis, e ainda assim suave de contemplar. Na postura vajra, sua mão direita repousa sobre o joelho em Varada mudrā, concedendo todas as realizações sem reter nada; a esquerda segura uma joia ardente que realiza desejos.",
+  "Let every thought of scarcity or self-importance dissolve into this field of impartial golden light.": "Que todo pensamento de escassez ou de importância própria se dissolva neste campo de luz dourada e imparcial.",
+  "Directly in front of the throne, on golden lotuses and a moon disc, sits Mother Māmakī: golden-yellow, youthful, serene, her silks amber and vermilion. Not in union with Ratnasambhava — each sits in self-contained majesty. Her right hand bestows; her left holds an utpala flower bearing a flaming cintāmaṇi.": "Logo à frente do trono, sobre lótus dourados e um disco lunar, está sentada a Mãe Māmakī: amarelo-dourada, jovem, serena, com sedas âmbar e vermelhão. Não está em união com Ratnasambhava: cada um se senta numa majestade completa em si mesma. Sua mão direita concede; a esquerda segura uma flor de utpala com um cintāmaṇi flamejante.",
+  "You are already an heir to the boundless treasury of the buddhas.": "Já se é herdeiro do tesouro ilimitado dos budas.",
+  "From the white curl of hair between his eyebrows, and from every pore of his golden body, rays of warm light pour out across the ten directions. They touch all beings equally, making no distinction between high and low, worthy and unworthy.": "Do cacho de pelos brancos entre suas sobrancelhas, e de cada poro de seu corpo dourado, raios de luz cálida se derramam pelas dez direções. Tocam todos os seres por igual, sem distinguir entre alto e baixo, digno e indigno.",
+  "Rest completely in being embraced by this impartial light.": "Repousar por completo no abraço desta luz imparcial.",
+  "To his right, Ākāśagarbha holds a jewel-bearing lotus that lights the vastness of space; to his left, Ratnapāṇi holds a blossoming wish-fulfilling gem, showering spiritual wealth. Under every jeweled tree this threefold image repeats quietly, filling the entire pure realm.": "À sua direita, Ākāśagarbha segura um lótus com uma joia que ilumina a imensidão do espaço; à sua esquerda, Ratnapāṇi segura uma gema desabrochada que realiza desejos e derrama riqueza espiritual. Sob cada árvore de joias, esta imagem tríplice se repete em silêncio, preenchendo toda a terra pura.",
+  "The vastness of the treasury, and sovereign richness in action.": "A vastidão do tesouro e a riqueza soberana em ação.",
+  "There is nothing to achieve, nothing to acquire, nothing to prove. If it feels natural, imagine yourself seated in the heart of a golden lotus in the ponds of Śrīmat, its petals drawing gently together around you in a chamber of golden nectar.": "Não há nada a alcançar, nada a adquirir, nada a provar. Se parecer natural, imaginar-se sentado no coração de um lótus dourado nos lagos de Śrīmat, com as pétalas se fechando suavemente ao redor, numa câmara de néctar dourado.",
+  "You are a natural resident of this pure land, not a stranger.": "Já se é morador natural desta terra pura, não um estranho.",
+  "When the return signal sounds — a slowing drumbeat, the soft ring of a chime — the amber cloud gathers around you and carries you back to the golden door. Step through. The light settles into your ordinary body, resting where you have been sitting all along.": "Quando soa o sinal de retorno — um tambor que desacelera, o toque suave de um sino —, a nuvem âmbar volta a envolver e leva de volta até a porta dourada. Atravessá-la. A luz se assenta no corpo comum, repousando onde sempre se esteve sentado.",
+  "Refuge & Bodhicitta": "Refúgio e bodhicitta",
+  "Go for refuge — Buddha, Dharma, Sangha, and the root masters and deities of the field of refuge. Generate bodhicitta: dedicate this practice, and whatever benefit comes of it, to wandering beings without exception.": "Tomar refúgio: Buda, Dharma, Sangha e os mestres-raiz e as divindades do campo de refúgio. Gerar bodhicitta: dedicar esta prática, e todo o benefício que dela surgir, aos seres errantes sem exceção.",
+  "Dedicate the Merit": "Dedicar o mérito",
+  "Journey to the Land Endowed with Splendor": "Jornada à Terra Dotada de Esplendor"
+ }
+}, META={"es": "Viaje a la Tierra Dotada de Esplendor · Animación", "pt": "Jornada à Terra Dotada de Esplendor · Animação"}, LANGS=['en','es','pt'];
+const QS=new URLSearchParams(location.search);
+function pickLang(){
+  const p=QS.get('lang'); if(LANGS.includes(p)) return p;
+  try{const v=localStorage.getItem('vk-lang'); if(LANGS.includes(v)) return v;}catch(e){}
+  for(const n of (navigator.languages||[navigator.language||'en'])){const c=String(n).slice(0,2).toLowerCase(); if(LANGS.includes(c)) return c;}
+  return 'en';
+}
+const LANG=pickLang(), D=DICT[LANG]||{}, T=x=>D[x]||x;
+const MISSING=[]; /* ?i18ncheck logs any string without a translation */
+document.documentElement.lang=LANG;
+if(META[LANG]) document.title=META[LANG];
+document.querySelectorAll('[data-t]').forEach(el=>{ const k=el.innerHTML.replace(/\s+/g,' ').trim(); if(D[k]) el.innerHTML=D[k]; else if(LANG!=='en') MISSING.push(k); });
+document.querySelectorAll('[data-a]').forEach(el=>el.setAttribute('aria-label',T(el.dataset.a)));
+document.querySelectorAll('#lang button').forEach(b=>{
+  if(b.dataset.l===LANG) b.setAttribute('aria-current','true');
+  b.addEventListener('click',()=>{ if(b.dataset.l===LANG) return;
+    try{localStorage.setItem('vk-lang',b.dataset.l);}catch(e){}
+    location.search='?lang='+b.dataset.l+(typeof idx==='number'&&idx>0?'&s='+idx:''); });
+});
+
+/* ───────── Scene script ───────── */
+const S=[
+ {id:'open',d:12000},
+ {id:'intro',d:14000},
+ {id:'refuge',d:12000},
+ {id:'breath',d:14000,st:'Before the journey',ti:'Purify the breath',tx:'Exhale through the left nostril, inhale left. Exhale through the right, inhale right. Exhale through both together, releasing whatever remains. Three slow breaths, each exhale a little longer than the inhale.'},
+ {id:'amber',d:15000,st:'Part I · Relaxation & Ascent',ti:'The Amber Cloud',tx:'Just above the crown, a small cloud of warm, almost liquid amber light descends — over the eyes, the brow, the jaw; down the arms, through the heart, the hips, the legs. Each place grows heavy and calm. There is nothing left to do.'},
+ {id:'door',d:12000,st:'Part I · Relaxation & Ascent',ti:'Through the Golden Door',tx:'Between the eyebrows, a small golden door stands slightly ajar. The amber cloud gathers inward into one dense mass of golden light. Step through. The cloud holds you weightless and begins to rise.'},
+ {id:'ascent',d:9000,st:'Part II · The Southern Horizon',ti:'Carried, Unhurried',tx:'The cloud carries you, slow and unhurried, toward the south. The destination is fixed; this is a place of refuge, not a personal projection.'},
+ {id:'sun',d:14000,st:'Part II · The Southern Horizon',ti:'The Midday Sun',tx:'High in the southern sky hangs a radiant golden sun at its zenith — not scorching, not blinding; full, warm and steady, without shadow. Rest on it the way you would watch an incandescent jewel suspended in space. Close your eyes within the vision: does the imprint remain?',qt:'Śrīmat lies directly beyond it.'},
+ {id:'gold',d:16000,st:'Part II · The Southern Horizon',ti:'Earth Becoming Gold',tx:'The southern horizon settles into primordial earth, grows completely still, then transmutes — not by violent friction, but by settling into refined, flawless gold: a level mirror shining from within. Beneath it rise eighty-four thousand pillars of diamond, beryl and wish-fulfilling gems.'},
+ {id:'arrival',d:16000,st:'Part II · The Southern Horizon',ti:'Arrival',tx:'The cloud opens; its light becomes the all-pervading golden brilliance of Ratnasambhava. The ground is gold and seven jewels, completely level, free of stones, thorns and chasms. It yields beneath your step like celestial silk, and rises as you lift it.',qt:'There is no poverty anywhere in this land. Everything is already complete.'},
+ {id:'trees',d:14000,st:'Part III · Trees, Waters & Pride',ti:'The Wish-Granting Trees',tx:'Trees of radiant gems stand in even rows: roots of gold, trunks of silver, branches of beryl, leaves of lapis lazuli, blossoms of coral, fruits of wish-fulfilling gems. Floods of golden light pour from the fruit and gather into canopies overhead.'},
+ {id:'waters',d:15000,st:'Part III · Trees, Waters & Pride',ti:'Ponds of Eight Excellent Waters',tx:'Ponds of the eight excellent waters: cool, sweet, light, soft, clear, free of odor, soothing to the throat, nourishing to the body. The water springs from a wish-fulfilling gem and flows over sands of gold; lotuses as wide as cartwheels float upon it.',qt:'Celestial instruments play without being touched, proclaiming that all beings possess the untarnished seed of buddhahood.'},
+ {id:'pride',d:15000,st:'Part III · Trees, Waters & Pride',ti:'The Soothing Away of Pride',tx:'The rustle of gem-leaves, chime nets and lapping water becomes one voice: the Dharmadhātu teaching the equality of all phenomena. Like cool golden balm, it reaches the knots of comparison and hierarchy — superiority, competing, feeling deficient — and they begin to unravel.',qt:'The golden ground bears the weight of every being with identical tenderness.'},
+ {id:'throne',d:16000,st:'Part IV · The Horse Throne',ti:'The Jewel and Horse Throne',tx:'Eight magnificent yellow horses — strong, untiring, noble — stand as the foundation: swiftness, vitality, the power of equanimity that carries every burden without strain. Above them a dais of gems; a lotus of one thousand golden petals; a canopy of jewels, pearls and golden banners.',qt:'This is the seat of Ratnasambhava.'},
+ {id:'presence',d:18000,st:'Part IV · The Horse Throne',ti:'In the Presence of Ratnasambhava',tx:'His body is refined, luminous gold — a mountain of gold lit by a thousand suns, yet gentle to behold. In the vajra posture, his right hand rests over the knee in Varada mudrā, bestowing all attainments without withholding; his left holds a blazing wish-fulfilling jewel.',qt:'Let every thought of scarcity or self-importance dissolve into this field of impartial golden light.'},
+ {id:'mamaki',d:17000,st:'Part V · Mother Māmakī',ti:'Māmakī, Mother of the Jewel Family',tx:'Directly in front of the throne, on golden lotuses and a moon disc, sits Mother Māmakī: golden-yellow, youthful, serene, her silks amber and vermilion. Not in union with Ratnasambhava — each sits in self-contained majesty. Her right hand bestows; her left holds an utpala flower bearing a flaming cintāmaṇi.',qt:'You are already an heir to the boundless treasury of the buddhas.'},
+ {id:'light',d:15000,st:'Part V · Mother Māmakī',ti:'The Body of Light',tx:'From the white curl of hair between his eyebrows, and from every pore of his golden body, rays of warm light pour out across the ten directions. They touch all beings equally, making no distinction between high and low, worthy and unworthy.',qt:'Rest completely in being embraced by this impartial light.'},
+ {id:'attend',d:15000,st:'Part V · Mother Māmakī',ti:'Ākāśagarbha & Ratnapāṇi',tx:'To his right, Ākāśagarbha holds a jewel-bearing lotus that lights the vastness of space; to his left, Ratnapāṇi holds a blossoming wish-fulfilling gem, showering spiritual wealth. Under every jeweled tree this threefold image repeats quietly, filling the entire pure realm.',qt:'The vastness of the treasury, and sovereign richness in action.'},
+ {id:'abide',d:16000,st:'Part VI · Absorption & Return',ti:'Seeing Yourself There',tx:'There is nothing to achieve, nothing to acquire, nothing to prove. If it feels natural, imagine yourself seated in the heart of a golden lotus in the ponds of Śrīmat, its petals drawing gently together around you in a chamber of golden nectar.',qt:'You are a natural resident of this pure land, not a stranger.'},
+ {id:'ret',d:16000,st:'Part VI · Absorption & Return',ti:'The Return',tx:'When the return signal sounds — a slowing drumbeat, the soft ring of a chime — the amber cloud gathers around you and carries you back to the golden door. Step through. The light settles into your ordinary body, resting where you have been sitting all along.'},
+ {id:'dedicate',d:16000}
+];
+const STATIC_EXTRA={
+ intro:['Before you begin','A place of refuge, <em>not a personal projection.</em>','The destination is fixed, its topography defined by the Ratna family. The motivation is not to escape anything, but to stand in the presence of Ratnasambhava and Māmakī, and let the Wisdom of Equanimity transmute whatever pride, comparison or scarcity you bring with you.'],
+ refuge:['Before the journey','Refuge & Bodhicitta','Go for refuge — Buddha, Dharma, Sangha, and the root masters and deities of the field of refuge. Generate bodhicitta: dedicate this practice, and whatever benefit comes of it, to wandering beings without exception.'],
+ dedicate:['Closing','Dedicate the Merit',['For the complete removal of suffering and poverty for all wandering beings everywhere. You bring nothing back from this land except the quiet certainty of equanimity.','<em>May all beings realize the inexhaustible treasury of their own minds.</em>']]};
+const $=s=>document.querySelector(s), stage=$('#stage'), cap=$('#cap'), land=$('#land');
+const blks=[...document.querySelectorAll('.blk')];
+let idx=0, el=0, playing=true, last=performance.now(), finished=false;
+const LAND_FROM=S.findIndex(s=>s.id==='ascent'), LAND_TO=S.findIndex(s=>s.id==='abide');
+
+/* built in script: the rays of the Body of Light (ten directions) and the row of equal points */
+(function(){
+  const NS='http://www.w3.org/2000/svg', rays=document.getElementById('rays'), eq=document.getElementById('equal');
+  for(let k=0;k<24;k++){ const a=(k+.5)*Math.PI/12, l=document.createElementNS(NS,'line');
+    l.setAttribute('x1',400); l.setAttribute('y1',132);
+    l.setAttribute('x2',(400+Math.cos(a)*760).toFixed(1)); l.setAttribute('y2',(132+Math.sin(a)*760).toFixed(1));
+    l.setAttribute('pathLength',1); l.style.setProperty('--k',k); rays.appendChild(l); }
+  for(let i=0;i<13;i++){ const c=document.createElementNS(NS,'circle');
+    c.setAttribute('cx',100+i*50); c.setAttribute('cy',240); c.setAttribute('r',2.8); c.setAttribute('fill','#F0CF84'); c.style.setProperty('--k',i); eq.appendChild(c); }
+})();
+
+function go(i){
+  idx=Math.max(0,Math.min(S.length-1,i)); el=0; finished=false;
+  const sc=S[idx], want=S.slice(0,idx+1).map(s=>'r-'+s.id);
+  /* keep the classes of scenes already reached, so persistent things do not re-fade; restart only the scene now playing */
+  [...stage.classList].forEach(c=>{ if(c.startsWith('s-')||(c.startsWith('r-')&&!want.includes(c))) stage.classList.remove(c); });
+  void stage.offsetWidth;
+  want.forEach(c=>stage.classList.add(c)); stage.classList.add('s-'+sc.id);
+  stage.classList.toggle('paused',!playing);
+  land.classList.toggle('on', idx>=LAND_FROM && idx<=LAND_TO);
+  blks.forEach(b=>b.classList.toggle('on', b.dataset.s===sc.id));
+  if(sc.ti){
+    cap.classList.remove('hide','go'); void cap.offsetWidth;
+    cap.querySelector('.st').textContent=T(sc.st); cap.querySelector('.ti').textContent=T(sc.ti);
+    cap.querySelector('.tx').textContent=T(sc.tx); cap.querySelector('.qt').textContent=sc.qt?T(sc.qt):'';
+    cap.classList.add('go');
+  } else cap.classList.add('hide');
+  $('#count').textContent=String(idx+1).padStart(2,'0')+' / '+String(S.length).padStart(2,'0');
+}
+function tick(now){
+  const dt=now-last; last=now;
+  if(playing && !finished){
+    el+=dt; $('#bar').style.width=(el/S[idx].d*100)+'%';
+    if(el>=S[idx].d){ if(idx<S.length-1) go(idx+1); else { finished=true; $('#pp').textContent=T('Replay'); } }
+  }
+  requestAnimationFrame(tick);
+}
+function setPlay(p){ playing=p; stage.classList.toggle('paused',!p); $('#pp').textContent=T(p?'Pause':'Play'); }
+$('#pp').onclick=()=>{ if(finished){ setPlay(true); go(0); } else setPlay(!playing); };
+$('#prev').onclick=()=>go(idx-1);
+$('#next').onclick=()=>go(idx+1);
+addEventListener('keydown',e=>{ if(e.key===' '){e.preventDefault();$('#pp').click();} if(e.key==='ArrowRight')go(idx+1); if(e.key==='ArrowLeft')go(idx-1); });
+
+/* ───────── Incense motes (canvas, very low opacity) ───────── */
+const cv=$('#motes'), cx=cv.getContext('2d'); let W,H,motes=[];
+function size(){ W=cv.width=innerWidth*devicePixelRatio; H=cv.height=innerHeight*devicePixelRatio; }
+addEventListener('resize',size); size();
+for(let i=0;i<70;i++) motes.push({x:Math.random(),y:Math.random(),r:Math.random()*1.6+.4,v:Math.random()*.00004+.00002,ph:Math.random()*6.28,a:Math.random()*.18+.05});
+function drawMotes(t){
+  cx.clearRect(0,0,W,H);
+  const boost=['presence','mamaki','light','attend'].includes(S[idx].id)?1.8:1;
+  if(playing) for(const m of motes){
+    m.y-=m.v*16; if(m.y<-.02){m.y=1.02;m.x=Math.random();}
+    const x=(m.x+Math.sin(t/4000+m.ph)*.012)*W, y=m.y*H;
+    cx.beginPath(); cx.arc(x,y,m.r*devicePixelRatio,0,6.283);
+    cx.fillStyle='rgba(212,174,85,'+Math.min(.4,m.a*boost)+')'; cx.fill();
+  }
+  requestAnimationFrame(drawMotes);
+}
+requestAnimationFrame(drawMotes);
+
+if(QS.has('i18ncheck')) console.log('[i18n] untranslated ('+LANG+'):', MISSING.concat(S.flatMap(s=>[s.st,s.ti,s.tx,s.qt]).filter(x=>x&&LANG!=='en'&&!D[x]&&x!=='Ākāśagarbha & Ratnapāṇi')));
+
+/* ───────── Reduced motion → static composition ───────── */
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.documentElement.classList.add('rm');
+  const st=$('#static'); let h='<div class="st">'+T('A Guided Meditation for Vajrakula')+'</div><h1>'+T('Journey to the Land <em>Endowed with Splendor</em>')+'</h1><p style="font-style:italic;color:var(--bone-dim)">'+T('A visualization of Śrīmat, the southern pure land of Buddha Ratnasambhava')+' · <span class="deva" style="font-size:20px">रत्नसम्भव</span></p>';
+  S.forEach(s=>{ if(s.ti) h+=`<section><div class="st">${T(s.st)}</div><h2>${T(s.ti)}</h2><p>${T(s.tx)}</p>${s.qt?`<p style="margin-top:10px;font-family:var(--f-display);font-style:italic;color:var(--gilt-soft)">${T(s.qt)}</p>`:''}</section>`;
+    else if(STATIC_EXTRA[s.id]){const e=STATIC_EXTRA[s.id]; h+=`<section><div class="st">${T(e[0])}</div><h2>${T(e[1])}</h2><p>${Array.isArray(e[2])?e[2].map(T).join(' '):T(e[2])}</p></section>`;}});
+  h+='<section><p style="font-size:14px;color:var(--bone-dim)">'+T('Composed and arranged by Guru Prajnavajra, from the format taught and transmitted by Sri Suryagridha for Vajrakula.')+' Sarva Mangalam!</p></section>';
+  st.innerHTML=h;
+} else { go(Math.max(0,Math.min(S.length-1,parseInt(QS.get('s'),10)||0))); requestAnimationFrame(tick); }
+</script>
+</body>
+</html>
