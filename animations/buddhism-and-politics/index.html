@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Buddhism &amp; Politics — Vajrakula Motion</title>
+<meta name="description" content="An animated essay: why Buddhism and politics have never been apart.">
+<meta name="theme-color" content="#0E1525">
+<script>
+  /* Motion is on by default; static, fully composed page for reduced-motion, no-JS, or ?static */
+  (function () {
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var forceStatic = /[?&]static\b/.test(location.search);
+    var forceMotion = /[?&]motion\b/.test(location.search);
+    if ((!reduce || forceMotion) && !forceStatic) document.documentElement.classList.add('anim');
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500&family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- the dharmachakra, drawn once and used as a faint ground mark -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <symbol id="wheel" viewBox="0 0 200 200">
+    <g fill="none" stroke="#ECE2CC" stroke-width="1.2" stroke-linecap="round">
+      <circle cx="100" cy="100" r="92"/><circle cx="100" cy="100" r="68" opacity=".7"/><circle cx="100" cy="100" r="13"/>
+      <path d="M100 87V32M100 113V168M87 100H32M113 100H168M109 91L148 52M91 109L52 148M91 91L52 52M109 109L148 148"/>
+    </g>
+  </symbol>
+</defs></svg>
+
+<main class="stage" id="stage" aria-label="Buddhism and Politics — an animated essay">
+  <div class="ground" aria-hidden="true"></div>
+  <canvas id="smoke" aria-hidden="true"></canvas>
+  <div class="frame" aria-hidden="true"></div>
+
+  <!-- ───────────── 0 · TITLE ───────────── -->
+  <section class="scene" id="s-title" data-chapter="Title">
+    <div class="center">
+      <svg class="mark flame wheel" data-k="wheel" viewBox="0 0 200 200" aria-hidden="true">
+        <circle cx="100" cy="100" r="92"/><circle cx="100" cy="100" r="68" opacity=".7"/><circle cx="100" cy="100" r="13"/>
+        <path d="M100 87V32M100 113V168M87 100H32M113 100H168M109 91L148 52M91 109L52 148M91 91L52 52M109 109L148 148"/>
+      </svg>
+      <h1 class="display title-h" data-k="title"><span>Buddhism</span> <span>&amp; Politics</span></h1>
+      <i class="taper" data-k="taper"></i>
+      <p class="lockup small" data-k="sub">Why go there, right?</p>
+      <p class="label credit" data-k="credit">An essay by Lama Fede Andino &nbsp;·&nbsp; Vajrakula</p>
+    </div>
+  </section>
+
+  <!-- ───────────── 1 · WHAT I WAS TOLD ───────────── -->
+  <section class="scene" id="s-told" data-chapter="What I was told">
+    <header class="folio" data-k="folio">i · What I was told</header>
+    <div class="center">
+      <p class="statement" data-k="claim">As long as I’ve been a Buddhist practitioner, most of the western Sangha has told me that Buddhism &amp; Politics don’t mix.</p>
+      <p class="opener-word" data-k="atall">At all.</p>
+    </div>
+  </section>
+
+  <!-- ───────────── 2 · VAJJIANS ───────────── -->
+  <section class="scene" id="s-vajjian" data-chapter="Mahāparinibbāna Sutta">
+    <header class="folio" data-k="folio">i · What I was told</header>
+    <div class="cols">
+      <div class="sutra" data-k="q">
+        <p class="ln" data-k="l1">As long as the Vajjians hold regular and frequent assemblies, meet in harmony, conduct their affairs in harmony, and disperse in harmony, they may be expected to prosper and not decline…</p>
+        <p class="ln" data-k="l2">As long as they do not revoke the ancient traditions, they may be expected to prosper and not decline.</p>
+        <p class="attr" data-k="attr">Mahāparinibbāna Sutta</p>
+      </div>
+      <figure class="fig assembly">
+        <svg viewBox="0 0 400 400" role="img" aria-label="Eight points gather around a centre, hold, and disperse">
+          <circle data-k="a-ring" cx="200" cy="200" r="118" class="ring dim"/>
+          <g id="assembly"></g>
+          <circle data-k="a-c" cx="200" cy="200" r="5" class="gilt-fill"/>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ───────────── 3 · AND YET ───────────── -->
+  <section class="scene" id="s-shown" data-chapter="What I was shown">
+    <header class="folio" data-k="folio">ii · What I was shown</header>
+    <div class="center">
+      <p class="opener-word" data-k="yet">And yet…</p>
+      <p class="statement small" data-k="a">as a Buddhologist, a scholar who specializes in Buddhism and its history, I was shown something different.</p>
+      <p class="verse" data-k="b">That in every moment of its history, Buddhism had a very close relationship with politics, with power and with rulers.</p>
+    </div>
+  </section>
+
+  <!-- ───────────── 4 · KŪṬADANTA ───────────── -->
+  <section class="scene" id="s-kutadanta" data-chapter="Kūṭadanta Sutta">
+    <header class="folio" data-k="folio">ii · What I was shown</header>
+    <svg class="bgmark" data-k="bg" viewBox="0 0 200 200" aria-hidden="true"><use href="#wheel"/></svg>
+    <div class="center narrow">
+      <div class="sutra" data-k="q">
+        <p class="ln" data-k="l1">Thus, by giving land to the landless, capital to those who needed it, and sustenance to those who labored, the king alleviated poverty and created conditions in which crime and unrest decreased without harsh punishments.</p>
+        <p class="ln" data-k="l2">In doing so, prosperity increased for all.</p>
+        <p class="attr" data-k="attr">Kūṭadanta Sutta</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 5 · FIRST: HISTORY ───────────── -->
+  <section class="scene" id="s-history" data-chapter="First, history">
+    <header class="folio" data-k="folio">iii · First, history</header>
+    <div class="center wide">
+      <div class="stack tall">
+        <div class="panel" data-k="p1">
+          <p class="statement small" data-k="intro">I suspect that the myth that Buddhism and Politics don’t mix comes from ignoring two key aspects of Buddhist thought:</p>
+        </div>
+        <div class="panel" data-k="p2">
+          <p class="statement small" data-k="first">first, the history of Buddhist expansion, which includes alliances, disputes and outright wars, both in the past and in the present.</p>
+          <svg class="timeline" viewBox="0 0 900 230" role="img" aria-label="A line from past to present with alliances, disputes and wars along it">
+            <path data-k="t-line" d="M40 100 H860" class="thread" pathLength="1"/>
+            <text data-k="t-past" x="40" y="62" class="svg-cap sm">Past</text>
+            <text data-k="t-now" x="860" y="62" text-anchor="end" class="svg-cap sm">Present</text>
+            <g data-k="n1">
+              <circle cx="232" cy="100" r="30" class="ring"/><circle cx="268" cy="100" r="30" class="ring"/>
+              <text x="250" y="176" text-anchor="middle" class="svg-cap">Alliances</text>
+            </g>
+            <g data-k="n2">
+              <circle cx="412" cy="100" r="30" class="ring"/><circle cx="488" cy="100" r="30" class="ring"/>
+              <path d="M450 80 V120" class="ring dashed"/>
+              <text x="450" y="176" text-anchor="middle" class="svg-cap">Disputes</text>
+            </g>
+            <g data-k="n3">
+              <circle cx="640" cy="100" r="30" class="ring"/><circle cx="676" cy="100" r="30" class="ring"/>
+              <circle cx="658" cy="100" r="5" class="cin-fill"/>
+              <text x="658" y="176" text-anchor="middle" class="svg-cap">Wars</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 6 · SUVARṆAPRABHĀSOTTAMA ───────────── -->
+  <section class="scene" id="s-suvarna" data-chapter="Suvarṇaprabhāsottama Sūtra">
+    <header class="folio" data-k="folio">iii · First, history</header>
+    <div class="cols">
+      <div class="sutra verse-lines" data-k="q">
+        <p class="ln" data-k="l1">The righteous king who reveres this sublime teaching</p>
+        <p class="ln" data-k="l2">Rescues beings from suffering and creates the conditions for peace;</p>
+        <p class="ln" data-k="l3">Through virtue and generosity, they dispel the world’s misfortunes,</p>
+        <p class="ln" data-k="l4">And their domain flourishes like a lotus in clear water.</p>
+        <p class="attr" data-k="attr">Suvarṇaprabhāsottama Sūtra</p>
+      </div>
+      <figure class="fig lotus">
+        <svg viewBox="0 0 260 240" role="img" aria-label="A lotus on still water">
+          <g data-k="lotus" class="lotusg">
+            <ellipse cx="130" cy="96" rx="15" ry="52" class="ring"/>
+            <ellipse cx="130" cy="96" rx="15" ry="52" class="ring" transform="rotate(-28 130 148)"/>
+            <ellipse cx="130" cy="96" rx="15" ry="52" class="ring" transform="rotate(28 130 148)"/>
+            <ellipse cx="130" cy="104" rx="14" ry="44" class="ring" transform="rotate(-56 130 148)"/>
+            <ellipse cx="130" cy="104" rx="14" ry="44" class="ring" transform="rotate(56 130 148)"/>
+            <circle cx="130" cy="150" r="5" class="gilt-fill"/>
+          </g>
+          <ellipse data-k="w1" cx="130" cy="176" rx="104" ry="20" class="ring ripple"/>
+          <ellipse data-k="w2" cx="130" cy="176" rx="104" ry="20" class="ring ripple"/>
+          <ellipse data-k="w3" cx="130" cy="176" rx="104" ry="20" class="ring ripple"/>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ───────────── 7 · SECOND: INTERDEPENDENCE ───────────── -->
+  <section class="scene" id="s-interdep" data-chapter="Second, interdependence">
+    <header class="folio" data-k="folio">iv · Second, interdependence</header>
+    <div class="cols wide2">
+      <div class="copy">
+        <p class="statement small" data-k="a">Second, it comes from ignoring interdependence.</p>
+        <p class="quote" data-k="b">How can something be wholly apart from the conditions that it arises?</p>
+      </div>
+      <figure class="fig web2"><svg id="tether" viewBox="0 0 800 520" role="img" aria-label="A centre pulling away from its surroundings, held by threads"></svg></figure>
+    </div>
+  </section>
+
+  <!-- ───────────── 8 · RĀJANIVĀDANĀMA ───────────── -->
+  <section class="scene" id="s-rajani" data-chapter="Ārya Rājanivādanāma">
+    <header class="folio" data-k="folio">iv · Second, interdependence</header>
+    <svg class="bgmark" data-k="bg" viewBox="0 0 200 200" aria-hidden="true"><use href="#wheel"/></svg>
+    <div class="center narrow">
+      <div class="sutra verse-lines" data-k="q">
+        <p class="ln" data-k="l1">The Bodhisattva-King, seeing the sufferings of the people,</p>
+        <p class="ln" data-k="l2">Embraces them with great compassion and skillful means.</p>
+        <p class="ln" data-k="l3">By removing injustice, supporting the needy, and promoting virtue,</p>
+        <p class="ln" data-k="l4">He leads both himself and his subjects toward enlightenment.</p>
+        <p class="attr" data-k="attr">Ārya Rājanivādanāma Mahāyāna Sūtra</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 9 · THE DALAI LAMA ───────────── -->
+  <section class="scene" id="s-dalai" data-chapter="His Holiness">
+    <header class="folio" data-k="folio">v · His Holiness the Dalai Lama</header>
+    <div class="center">
+      <p class="statement small" data-k="a">And then, last week, His Holiness the Dalai Lama suddenly weighed in on immigration in Europe.</p>
+      <p class="verse" data-k="b">This is not something unexpected; the office of the Dalai Lama has always been politically active.</p>
+    </div>
+  </section>
+
+  <!-- ───────────── 10 · SEPARATION ───────────── -->
+  <section class="scene" id="s-separation" data-chapter="Church &amp; state">
+    <header class="folio" data-k="folio">v · His Holiness the Dalai Lama</header>
+    <div class="center">
+      <p class="statement small" data-k="a">This idea of separation of church and state is a Christian idea that came from Europe’s enlightenment.</p>
+      <svg class="apart" viewBox="0 0 640 250" role="img" aria-label="Two circles held apart by a line: church and state">
+        <circle data-k="c1" cx="190" cy="110" r="80" class="ring"/>
+        <circle data-k="c2" cx="450" cy="110" r="80" class="ring"/>
+        <path data-k="rule" d="M320 6 V214" class="thread" pathLength="1"/>
+        <text data-k="c1t" x="190" y="240" text-anchor="middle" class="svg-cap">Church</text>
+        <text data-k="c2t" x="450" y="240" text-anchor="middle" class="svg-cap">State</text>
+      </svg>
+      <p class="reply" data-k="b">It’s not a Buddhist idea.</p>
+    </div>
+  </section>
+
+  <!-- ───────────── 11 · THE QUESTION ───────────── -->
+  <section class="scene" id="s-question" data-chapter="The question">
+    <header class="folio" data-k="folio">vi · A question</header>
+    <div class="center">
+      <div class="stack tall">
+        <div class="panel" data-k="pA">
+          <p class="statement" data-k="a">You can say, of course: but I’m a Western Buddhist.</p>
+          <p class="verse" data-k="b">For me, this separation makes sense.</p>
+        </div>
+        <div class="panel" data-k="pB">
+          <p class="statement tiny" data-k="q">And that’s wonderful, but are you thinking how to reconcile a system of thought that does not rely on separateness, but interdependence into your life?</p>
+          <svg class="sunmoon together" viewBox="0 0 640 170" aria-hidden="true">
+            <defs><clipPath id="clipQ"><circle cx="275" cy="85" r="68"/></clipPath></defs>
+            <g data-k="m-a"><circle cx="275" cy="85" r="68" class="ring"/></g>
+            <g data-k="m-b"><circle cx="365" cy="85" r="68" class="ring"/></g>
+            <g clip-path="url(#clipQ)" data-k="m-lens"><circle cx="365" cy="85" r="68" class="lens"/></g>
+            <circle data-k="m-dot" cx="320" cy="85" r="3.5" class="gilt-fill"/>
+          </svg>
+          <div class="swasti" data-k="end">
+            <i class="cdot"></i>
+            <p class="label credit" data-k="credit">An essay by Lama Fede Andino &nbsp;·&nbsp; Vajrakula</p>
+          </div>
+          <div class="wm-placeholder" data-k="wm" role="img" aria-label="Placeholder for the Vajrakula wordmark, lockup D">
+            <span>Wordmark · Lockup D</span><span>placeholder — master file required</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="langbar" id="langbar" aria-label="Language">
+  <button type="button" data-l="en" lang="en">EN</button><button type="button" data-l="es" lang="es">ES</button><button type="button" data-l="pt" lang="pt">PT</button>
+</nav>
+
+<!-- Transport (hidden in ?embed / ?render) -->
+<nav class="controls" id="controls" aria-label="Playback">
+  <button class="btn" id="btn-play" type="button" aria-label="Play / pause"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M8 5v14M16 5v14"/><path class="i-play" d="M8 5l11 7-11 7z"/><path class="i-replay" d="M5 12a7 7 0 1 0 2.2-5.1M5 4v4h4"/></svg></button>
+  <div class="bar" id="bar" role="group" aria-label="Chapters"></div>
+  <output class="time" id="time">0:00</output>
+</nav>
+
+<noscript><p class="ns">This piece is best seen with JavaScript enabled; the full text is below in static form.</p></noscript>
+<script src="i18n.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
