@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Buddhism and Necromancy — Vajrakula Motion</title>
+<meta name="description" content="An animated companion to the talk on the dead in the Buddhist tradition: what the sources say, and where they go quiet.">
+<meta name="theme-color" content="#0E1525">
+<script>
+  /* Motion is on by default; static, fully composed page for reduced-motion, no-JS, or ?static */
+  (function () {
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var forceStatic = /[?&]static\b/.test(location.search);
+    var forceMotion = /[?&]motion\b/.test(location.search);
+    if ((!reduce || forceMotion) && !forceStatic) document.documentElement.classList.add('anim');
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500&family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- the dharmachakra, drawn once and used as a faint ground mark -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <symbol id="wheel" viewBox="0 0 200 200">
+    <g fill="none" stroke="#ECE2CC" stroke-width="1.2" stroke-linecap="round">
+      <circle cx="100" cy="100" r="92"/><circle cx="100" cy="100" r="68" opacity=".7"/><circle cx="100" cy="100" r="13"/>
+      <path d="M100 87V32M100 113V168M87 100H32M113 100H168M109 91L148 52M91 109L52 148M91 91L52 52M109 109L148 148"/>
+    </g>
+  </symbol>
+</defs></svg>
+
+<main class="stage" id="stage" aria-label="Buddhism and Necromancy — an animated companion to the talk">
+  <div class="ground" aria-hidden="true"></div>
+  <canvas id="smoke" aria-hidden="true"></canvas>
+  <div class="frame" aria-hidden="true"></div>
+
+  <!-- ───────────── 0 · TITLE ───────────── -->
+  <section class="scene" id="s-title" data-chapter="Title">
+    <div class="center">
+      <svg class="mark flame candle" data-k="flame" viewBox="0 0 120 200" aria-hidden="true">
+        <path d="M60 14C86 56 98 84 98 118C98 152 82 176 60 184C38 176 22 152 22 118C22 92 40 70 60 14Z"/>
+        <path d="M60 98C72 118 76 132 70 148C66 158 54 158 50 148C44 132 50 116 60 98Z" opacity=".7"/>
+      </svg>
+      <h1 class="display title-h nec" data-k="title"><span>Does the Buddha</span> <span>raise the dead?</span></h1>
+      <i class="taper" data-k="taper"></i>
+      <p class="lockup small" data-k="sub">Buddhism and Necromancy</p>
+      <p class="verse" data-k="tour">A tour of what the sources say, and where they go quiet.</p>
+      <p class="label credit" data-k="credit">A talk on the dead in the Buddhist tradition &nbsp;·&nbsp; Vajrakula &nbsp;·&nbsp; MMXXVI</p>
+    </div>
+  </section>
+
+  <!-- ───────────── 1 · A NOTE ON CARE ───────────── -->
+  <section class="scene" id="s-care" data-chapter="A note on care">
+    <header class="folio" data-k="folio">Before we begin</header>
+    <div class="center">
+      <p class="statement" data-k="a">We will talk about death and the dead.</p>
+      <p class="verse" data-k="b">Every activity is optional. Step out, mute, or simply listen whenever you need to.</p>
+      <p class="label" data-k="c">The tone of the room</p>
+      <p class="reply" data-k="d">Irreverent about the ideas.<br>Never about anyone’s dead.</p>
+    </div>
+  </section>
+
+  <!-- ───────────── 2 · THE PARADOX ───────────── -->
+  <section class="scene" id="s-paradox" data-chapter="The paradox">
+    <header class="folio" data-k="folio">i · The paradox</header>
+    <div class="cols">
+      <div class="copy">
+        <p class="statement small" data-k="a">Buddhism teaches there is no fixed self.</p>
+        <p class="verse" data-k="b">Yet nearly every Buddhist culture built a dense technology of funerals, feeding rites, guidance for the dying, and care for the dead.</p>
+        <p class="attr" data-k="attr">Cuevas &amp; Stone (eds.), The Buddhist Dead (2007)</p>
+      </div>
+      <figure class="fig">
+        <svg viewBox="0 0 400 400" role="img" aria-label="An empty centre, circled by ever wider rings of rite and care">
+          <circle data-k="c0" cx="200" cy="200" r="16" class="ring dashed"/>
+          <g data-k="r1"><g class="spin" data-k="s1"><circle cx="200" cy="200" r="62" class="ring"/><circle cx="262" cy="200" r="3.4" class="gilt-fill"/></g></g>
+          <g data-k="r2"><g class="spin" data-k="s2"><circle cx="200" cy="200" r="100" class="ring dim"/><circle cx="100" cy="200" r="3.4" class="gilt-fill"/></g></g>
+          <g data-k="r3"><g class="spin" data-k="s3"><circle cx="200" cy="200" r="138" class="ring dim"/><circle cx="200" cy="62" r="3.4" class="gilt-fill"/></g></g>
+          <g data-k="r4"><g class="spin" data-k="s4"><circle cx="200" cy="200" r="176" class="ring dim"/><circle cx="200" cy="376" r="3.4" class="gilt-fill"/></g></g>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ───────────── 3 · THREE KINDS + THE VOTE ───────────── -->
+  <section class="scene" id="s-three" data-chapter="Three kinds of necromancy">
+    <header class="folio" data-k="folio">i · The paradox</header>
+    <div class="center wide">
+      <div class="stack tall">
+        <div class="panel" data-k="pA">
+          <p class="statement small" data-k="h">Three kinds of necromancy</p>
+          <div class="tri">
+            <div data-k="i1">
+              <svg class="icon" viewBox="0 0 120 120" aria-hidden="true"><circle cx="28" cy="60" r="18"/><circle cx="92" cy="60" r="18" stroke-dasharray="3 6"/><path d="M52 44Q62 60 52 76M62 38Q76 60 62 82" opacity=".8"/></svg>
+              <span class="num">I</span>
+              <h3>Speak with</h3>
+              <p class="note">The dead addressed directly. A lama guiding the deceased through the interval after death.</p>
+            </div>
+            <div data-k="i2">
+              <svg class="icon" viewBox="0 0 120 120" aria-hidden="true"><circle cx="40" cy="74" r="22"/><path d="M58 58L92 24"/><circle cx="96" cy="20" r="5" class="gilt-fill"/></svg>
+              <span class="num">II</span>
+              <h3>Use</h3>
+              <p class="note">Remains, relics and corpses as instruments. The most contested kind.</p>
+            </div>
+            <div data-k="i3">
+              <svg class="icon" viewBox="0 0 120 120" aria-hidden="true"><path d="M22 66Q60 114 98 66Z"/><circle cx="60" cy="44" r="2.6" class="gilt-fill"/><circle cx="46" cy="30" r="1.9" class="gilt-fill" opacity=".8"/><circle cx="74" cy="22" r="1.5" class="gilt-fill" opacity=".6"/></svg>
+              <span class="num">III</span>
+              <h3>Serve</h3>
+              <p class="note">Feeding, remembering, releasing. The obligations the living owe.</p>
+            </div>
+          </div>
+          <p class="reply" data-k="r">Buddhism does all three, under very different rules.</p>
+        </div>
+        <div class="panel" data-k="pB">
+          <p class="label" data-k="l">Opening vote</p>
+          <p class="statement small" data-k="q">Which does Buddhism do the most?</p>
+          <ol class="verbs vote">
+            <li data-k="v1"><b>i.</b><span>Speak with</span></li>
+            <li data-k="v2"><b>ii.</b><span>Use</span></li>
+            <li data-k="v3"><b>iii.</b><span>Serve</span></li>
+          </ol>
+          <p class="note" data-k="n">Hold your vote. We come back to it at the end.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 4 · WHO ARE WE TALKING TO? ───────────── -->
+  <section class="scene" id="s-who" data-chapter="Who are we talking to?">
+    <header class="folio" data-k="folio">ii · Who are we talking to?</header>
+    <div class="center wide">
+      <div class="stack tall">
+        <div class="panel" data-k="pQ">
+          <p class="statement" data-k="q">If there is no self, who is the lama talking to?</p>
+        </div>
+        <div class="panel" data-k="pC">
+          <div class="duo">
+            <div class="card" data-k="c1">
+              <p class="label">The doctrine</p>
+              <h3>A stream, not a soul</h3>
+              <p class="body">What continues is a changing continuity driven by karma. It is not a fixed self that travels.</p>
+              <svg class="stream" viewBox="0 0 400 76" aria-hidden="true"><path id="st0" class="sline a" d=""/><path id="st1" class="sline" d=""/><path id="st2" class="sline" d=""/></svg>
+            </div>
+            <div class="card" data-k="c2">
+              <p class="label">The debate</p>
+              <h3>Is there an interval?</h3>
+              <p class="body">Abhidharma schools disagreed on whether an intermediate being (antarābhava) exists at all.</p>
+              <p class="attr">Vasubandhu · Abhidharmakośa, ch. 3</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 5 · THE DEAD ARE THERE ───────────── -->
+  <section class="scene" id="s-there" data-chapter="The dead are there">
+    <header class="folio" data-k="folio">ii · Who are we talking to?</header>
+    <div class="center wide">
+      <p class="statement small" data-k="a">The tradition never denied the dead are there</p>
+      <div class="vs">
+        <div class="card" data-k="cA">
+          <p class="label">What monastics are told to avoid</p>
+          <h3>The “low arts”</h3>
+          <p class="body">Spells, charms and divination (tiracchāna-vijjā). Brahmajāla Sutta, DN 1.</p>
+        </div>
+        <p class="mid" data-k="mid">and yet</p>
+        <div class="card" data-k="cB">
+          <p class="label">What the canon says exists</p>
+          <h3>Ghosts among the living</h3>
+          <p class="body">Petas are present and can receive merit. Petavatthu; Tirokuḍḍa Sutta.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 6 · SERVING THE DEAD ───────────── -->
+  <section class="scene" id="s-serving" data-chapter="Serving the dead">
+    <header class="folio" data-k="folio">iii · Serving the dead</header>
+    <div class="center wide">
+      <div class="stack tall">
+        <div class="panel" data-k="pA">
+          <div class="cols">
+            <div class="copy">
+              <p class="statement small" data-k="a">Hungry ghosts and the debt of the living</p>
+              <p class="verse" data-k="b">Pretas are a realm of rebirth and a social fact.</p>
+              <p class="verse" data-k="c">Beings who need feeding, and a living community obliged to feed them.</p>
+              <p class="attr" data-k="attr">Petavatthu · Teiser 1988</p>
+            </div>
+            <figure class="fig">
+              <svg viewBox="0 0 440 300" role="img" aria-label="A living circle, bound by threads to those who need feeding">
+                <g id="debt"></g>
+                <circle data-k="live" cx="92" cy="150" r="46" class="ring"/>
+                <circle data-k="livedot" cx="92" cy="150" r="5" class="gilt-fill"/>
+              </svg>
+            </figure>
+          </div>
+        </div>
+        <div class="panel" data-k="pB">
+          <p class="statement small" data-k="h">Two feeding rites, two origin stories</p>
+          <div class="duo">
+            <div class="card" data-k="r1">
+              <p class="label">Ullambana · Yulanpen</p>
+              <h3>Mulian and his mother</h3>
+              <p class="body">Likely composed in China, not India. The festival is a Chinese Buddhist invention. (Teiser 1988)</p>
+            </div>
+            <div class="card" data-k="r2">
+              <p class="label">Flaming Mouth</p>
+              <h3>Ānanda and the hungry ghost</h3>
+              <p class="body">A rite of offering, invitation and release. (Orzech)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 7 · THE BARDO THÖDOL ───────────── -->
+  <section class="scene" id="s-bardo" data-chapter="A text spoken to the dead">
+    <header class="folio" data-k="folio">iii · Serving the dead</header>
+    <div class="center wide">
+      <div class="stack tall">
+        <div class="panel" data-k="pA">
+          <p class="statement small" data-k="h">A text spoken to the dead: the Bardo Thödol</p>
+          <div class="tri">
+            <div data-k="i1"><p class="label">Origin</p><h3>A terma</h3><p class="note">Revealed by Karma Lingpa, traditionally dated to the fourteenth century.</p></div>
+            <div data-k="i2"><p class="label">Its use</p><h3>A guide, not a spell</h3><p class="note">Read to guide the dying and the dead through the interval. (Gouin 2010)</p></div>
+            <div data-k="i3"><p class="label">Title</p><h3>A 1927 English name</h3><p class="note">“The Tibetan Book of the Dead” is a Western cultural object. (Cuevas 2003)</p></div>
+          </div>
+        </div>
+        <div class="panel" data-k="pB">
+          <svg class="pages" viewBox="0 0 640 280" role="img" aria-label="An open book: the left page is written, the right page is left blank">
+            <rect data-k="lp" x="20" y="10" width="290" height="220" class="leaf"/>
+            <rect data-k="rp" x="330" y="10" width="290" height="220" class="leaf"/>
+            <g id="textlines"></g>
+            <rect data-k="frame" x="354" y="34" width="242" height="172" class="thread" pathLength="1"/>
+            <text data-k="cl" x="165" y="266" text-anchor="middle" class="svg-cap">Published</text>
+            <text data-k="cr" x="475" y="266" text-anchor="middle" class="svg-cap">Transmitted</text>
+          </svg>
+          <p class="reply" data-k="r">The text is published. The practice is transmitted.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 8 · WHAT THE LIVING OWE ───────────── -->
+  <section class="scene" id="s-owe" data-chapter="What the living owe">
+    <header class="folio" data-k="folio">iii · Serving the dead</header>
+    <div class="center wide">
+      <p class="statement" data-k="a">What do the living owe the dead?</p>
+      <p class="verse" data-k="b">In your family, your tradition, or your own practice.</p>
+      <ol class="verbs">
+        <li data-k="w1"><span>feed</span></li>
+        <li data-k="w2"><span>remember</span></li>
+        <li data-k="w3"><span>speak to</span></li>
+        <li data-k="w4"><span>protect</span></li>
+        <li data-k="w5"><span>release</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ───────────── 9 · THE CHARNEL GROUND ───────────── -->
+  <section class="scene" id="s-charnel" data-chapter="The charnel ground">
+    <header class="folio" data-k="folio">iv · The charnel ground</header>
+    <svg class="bgmark" data-k="bg" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="92" class="ring"/><g id="pitha"></g></svg>
+    <div class="center wide">
+      <p class="statement small" data-k="a">Why did tantra go to the cremation ground?</p>
+      <div class="tri">
+        <div data-k="i1"><p class="label">The margins</p><h3>Skull-bearers</h3><p class="note">Kāpālika and Shaiva ascetics worked the social edge of medieval India.</p></div>
+        <div data-k="i2"><p class="label">The mahasiddhas</p><h3>Figures of the edge</h3><p class="note">Hagiographies of outcasts and wanderers. (Abhayadatta; Robinson)</p></div>
+        <div data-k="i3"><p class="label">The map</p><h3>Twenty-four pīṭhas</h3><p class="note">Cakrasaṃvara’s geography of body, land and dead.</p></div>
+      </div>
+      <p class="note" data-k="n">Scholars disagree on how much Buddhism borrowed and how much it shared a world. (Sanderson; Davidson 2002)</p>
+    </div>
+  </section>
+
+  <!-- ───────────── 10 · CHÖD ───────────── -->
+  <section class="scene" id="s-chod" data-chapter="Chöd">
+    <header class="folio" data-k="folio">iv · The charnel ground</header>
+    <div class="center wide">
+      <p class="statement small" data-k="a">Chöd: necromancy turned inside out</p>
+      <div class="vs">
+        <div class="card" data-k="cA">
+          <svg class="icon wide" viewBox="0 0 200 100" aria-hidden="true">
+            <circle cx="100" cy="50" r="15"/>
+            <g class="arrows" data-k="take"><path d="M14 50H66M58 42L66 50L58 58M186 50H134M142 42L134 50L142 58M100 6V28M92 20L100 28L108 20M100 94V72M92 80L100 72L108 80"/></g>
+          </svg>
+          <p class="label">Using the dead</p>
+          <h3>Takes from the dead.</h3>
+          <p class="body">The corpse as an instrument.</p>
+        </div>
+        <p class="mid arrow" data-k="mid">→</p>
+        <div class="card" data-k="cB">
+          <svg class="icon wide" viewBox="0 0 200 100" aria-hidden="true">
+            <circle cx="100" cy="50" r="15"/>
+            <g class="arrows" data-k="give"><path d="M76 50H24M32 42L24 50L32 58M124 50H176M168 42L176 50L168 58M100 28V8M92 16L100 8L108 16M100 72V92M92 84L100 92L108 84"/></g>
+          </svg>
+          <p class="label">Chöd</p>
+          <h3>Offers one’s own body.</h3>
+          <p class="body">To beings, in order to cut self-grasping. Machik Labdrön.</p>
+        </div>
+      </div>
+      <p class="attr" data-k="attr">Edou 1996 · Harding 2003</p>
+    </div>
+  </section>
+
+  <!-- ───────────── 11 · THE VETĀLA ───────────── -->
+  <section class="scene" id="s-vetala" data-chapter="A story, not a manual">
+    <header class="folio" data-k="folio">v · Using the dead</header>
+    <div class="center">
+      <div class="stack tall">
+        <div class="panel" data-k="pA">
+          <p class="statement small" data-k="a">The vetāla: a story, not a manual</p>
+          <p class="verse" data-k="b">A king carries a haunted corpse and answers its riddles.</p>
+          <p class="note" data-k="c">Sanskrit frame-story literature, via Somadeva’s Kathāsaritsāgara. Not a Buddhist text. The Tibetan Ro-langs tales belong to the same genre.</p>
+        </div>
+        <div class="panel" data-k="pB">
+          <p class="label" data-k="l">The honest finding</p>
+          <svg class="blankpage" viewBox="0 0 240 320" role="img" aria-label="A page left blank, framed in gilt">
+            <rect data-k="leaf" x="10" y="10" width="220" height="300" class="leaf"/>
+            <rect data-k="frame" x="40" y="44" width="160" height="232" class="thread" pathLength="1"/>
+          </svg>
+          <p class="reply" data-k="r">No classical Buddhist manual for commanding the dead.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 12 · THAILAND ───────────── -->
+  <section class="scene" id="s-thai" data-chapter="Spirit-children and amulets">
+    <header class="folio" data-k="folio">v · Using the dead</header>
+    <div class="center">
+      <div class="stack tall">
+        <div class="panel" data-k="pA">
+          <p class="statement small" data-k="a">Thailand: spirit-children and amulets</p>
+          <p class="verse" data-k="b">Kuman Thong and amulet traditions are widely practiced, and contested even within Thai Buddhism.</p>
+          <p class="attr" data-k="attr">McDaniel 2011 · Tambiah 1984 · Kitiarsa 2012</p>
+        </div>
+        <div class="panel" data-k="pB">
+          <p class="label" data-k="l">Wicha</p>
+          <p class="verse" data-k="v">The sorcerer-sages of Southeast Asia.</p>
+          <svg class="ringpair" viewBox="0 0 640 170" role="img" aria-label="Two circles that overlap and will not come apart">
+            <defs><clipPath id="clipW"><circle cx="275" cy="85" r="68"/></clipPath></defs>
+            <circle data-k="ra" cx="275" cy="85" r="68" class="ring"/>
+            <circle data-k="rb" cx="365" cy="85" r="68" class="ring"/>
+            <g clip-path="url(#clipW)" data-k="lens"><circle cx="365" cy="85" r="68" class="lens"/></g>
+            <text data-k="ta" x="188" y="91" text-anchor="end" class="svg-cap">Devotion</text>
+            <text data-k="tb" x="452" y="91" text-anchor="start" class="svg-cap">Working power</text>
+          </svg>
+          <p class="note" data-k="n">Devotion and working power, refusing to be separated.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 13 · BODHICITTA ───────────── -->
+  <section class="scene" id="s-bodhi" data-chapter="Beings, not tools">
+    <header class="folio" data-k="folio">vi · Ethics and guardrails</header>
+    <svg class="bgmark" data-k="bg" viewBox="0 0 200 200" aria-hidden="true"><use href="#wheel"/></svg>
+    <div class="center narrow">
+      <p class="statement" data-k="a">The dead are beings, not tools.</p>
+      <p class="verse" data-k="b">Beings with their own suffering. The vow is what turns a technique into a path.</p>
+      <p class="attr" data-k="attr">Śāntideva · Bodhicaryāvatāra</p>
+    </div>
+  </section>
+
+  <!-- ───────────── 14 · GUARDRAILS ───────────── -->
+  <section class="scene" id="s-guard" data-chapter="What would you ask first?">
+    <header class="folio" data-k="folio">vi · Ethics and guardrails</header>
+    <div class="center wide">
+      <div class="stack tall">
+        <div class="panel" data-k="pA">
+          <p class="label" data-k="l">The scenario</p>
+          <p class="verse" data-k="v">A shop sells an amulet and says it holds a bound spirit that will do whatever you want. $400, with a free recorded ritual.</p>
+          <p class="statement small" data-k="q">What would you ask first?</p>
+        </div>
+        <div class="panel" data-k="pB">
+          <p class="statement small" data-k="h">Your list is the tradition’s own logic</p>
+          <div class="four">
+            <div data-k="f1"><span class="num">i.</span><h3>Lineage</h3><p class="note">Who gave this, and under what commitments?</p></div>
+            <div data-k="f2"><span class="num">ii.</span><h3>Consent</h3><p class="note">What happens to the being involved?</p></div>
+            <div data-k="f3"><span class="num">iii.</span><h3>Benefit</h3><p class="note">What is promised, and who profits?</p></div>
+            <div data-k="f4"><span class="num">iv.</span><h3>Accountability</h3><p class="note">Could a senior teacher be asked?</p></div>
+          </div>
+          <p class="reply" data-k="r">Samaya is a name for taking those questions seriously.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 15 · BACK TO THE VOTE ───────────── -->
+  <section class="scene" id="s-reveal" data-chapter="Back to the vote">
+    <header class="folio" data-k="folio">vii · The close</header>
+    <div class="center wide">
+      <div class="stack tall">
+        <div class="panel" data-k="pA">
+          <p class="statement small" data-k="a">Most people assume Buddhism is wilder or tamer than the record shows.</p>
+        </div>
+        <div class="panel" data-k="pB">
+          <p class="label" data-k="l">Back to the vote</p>
+          <svg class="weights" viewBox="0 0 900 300" role="img" aria-label="Three circles; the third, serving, is by far the largest">
+            <circle data-k="w1" cx="170" cy="130" r="44" class="ring"/>
+            <circle data-k="w2" cx="450" cy="130" r="44" class="ring"/>
+            <circle data-k="w3" cx="730" cy="130" r="112" class="ring"/>
+            <circle data-k="w3f" cx="730" cy="130" r="112" class="lens"/>
+            <circle data-k="w3d" cx="730" cy="130" r="5" class="gilt-fill"/>
+            <text data-k="t1" x="170" y="288" text-anchor="middle" class="svg-cap">Speak with</text>
+            <text data-k="t2" x="450" y="288" text-anchor="middle" class="svg-cap">Use</text>
+            <text data-k="t3" x="730" y="288" text-anchor="middle" class="svg-cap">Serve</text>
+          </svg>
+          <p class="reply" data-k="r">Buddhism does all three. The written record falls most heavily on serving.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 16 · WITH A VOW ───────────── -->
+  <section class="scene" id="s-vow" data-chapter="With a vow">
+    <header class="folio" data-k="folio">vii · The close</header>
+    <div class="center wide">
+      <div class="stack tall">
+        <div class="panel" data-k="pA">
+          <p class="quote" data-k="q">If you are going to talk to the dead, do it with a vow</p>
+        </div>
+        <div class="panel" data-k="pB">
+          <p class="label" data-k="l">What you can actually do</p>
+          <ol class="steps">
+            <li data-k="s1"><b>i.</b><span>Read the published and public texts</span></li>
+            <li data-k="s2"><b>ii.</b><span>Attend a public sutric reading or rite</span></li>
+            <li data-k="s3"><b>iii.</b><span>Learn the history</span></li>
+            <li data-k="s4"><b>iv.</b><span>Talk to a teacher about transmission</span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── 17 · CLOSE ───────────── -->
+  <section class="scene" id="s-close" data-chapter="A Buddha leaves no one behind">
+    <div class="center">
+      <p class="statement" data-k="a">A Buddha leaves no one behind.</p>
+      <p class="reply" data-k="b">That includes the dead.</p>
+      <i class="taper" data-k="taper"></i>
+      <div class="swasti" data-k="end">
+        <i class="cdot"></i>
+        <p class="label credit" data-k="credit">Buddhism and Necromancy &nbsp;·&nbsp; Vajrakula &nbsp;·&nbsp; A school of Vajrayāna</p>
+      </div>
+      <div class="wm-placeholder" data-k="wm" role="img" aria-label="Placeholder for the Vajrakula wordmark, lockup A">
+        <span>Wordmark · Lockup A</span><span>placeholder — master file required</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="langbar" id="langbar" aria-label="Language">
+  <button type="button" data-l="en" lang="en">EN</button><button type="button" data-l="es" lang="es">ES</button><button type="button" data-l="pt" lang="pt">PT</button>
+</nav>
+
+<!-- Transport (hidden in ?embed / ?render) -->
+<nav class="controls" id="controls" aria-label="Playback">
+  <button class="btn" id="btn-play" type="button" aria-label="Play / pause"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M8 5v14M16 5v14"/><path class="i-play" d="M8 5l11 7-11 7z"/><path class="i-replay" d="M5 12a7 7 0 1 0 2.2-5.1M5 4v4h4"/></svg></button>
+  <div class="bar" id="bar" role="group" aria-label="Chapters"></div>
+  <output class="time" id="time">0:00</output>
+</nav>
+
+<noscript><p class="ns">This piece is best seen with JavaScript enabled; the full text is below in static form.</p></noscript>
+<script src="i18n.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
